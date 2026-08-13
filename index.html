@@ -84,6 +84,8 @@ th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:left;vertic
 thead th{font-size:11.5px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;
  letter-spacing:.03em;cursor:pointer;user-select:none;position:sticky;top:49px;
  background:var(--surface-1)}
+table.heat thead th{position:static}
+table.heat th:first-child{width:230px}
 .r{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr{cursor:pointer}tbody tr:hover{background:var(--surface-2)}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px}
@@ -177,6 +179,7 @@ footer{color:var(--text-muted);font-size:12px;border-top:1px solid var(--line);p
 <div id="viewAudit" class="hidden">
   <div class="filters"><span id="auditChips"></span>
     <span class="count">the audit view follows the country filter</span></div>
+  <section><h2>How the run went</h2><div id="runState"></div></section>
   <section><h2>Invariant checks</h2><div id="checkList"></div>
     <p class="note">Each recomputes a stored figure from its own inputs. These ask whether
     the panel agrees with ITSELF; the Test Plan gates ask whether it agrees with the source
@@ -246,21 +249,24 @@ function drawTiles(){
   $("#tiles").innerHTML = Object.entries(D.meta).map(([c,m])=>{
     const rs = D.rows.filter(r=>r.c===c);
     const unf = rs.filter(r=>total(r)<=0).length;
+    const years = Object.keys(m.national||{}).sort();
+    // Distinct programme CODES. m.edges counts programme-strategy pairs, which is a
+    // different number and belongs in the audit view with its own label.
+    const progs = new Set();
+    rs.forEach(r=>(r.edges||[]).forEach(e=>progs.add(e.p)));
+    // Data only. How the run went, how many checks passed and which pass found a match are
+    // the pipeline talking about itself, and they live in the Audit tab.
     return `<div class="tile"><div class="swatch" style="background:${hue(c)}"></div>
       <h3>${esc(c)}</h3>
-      <div class="verdict ${m.verdict==='PASS'?'ok':'warn'}">${esc(m.verdict)}</div>
       <div class="big">${m.share.toFixed(1)}%</div>
-      <div class="cap">of the national budget mapped</div>
+      <div class="cap">of the national budget mapped to a plan strategy</div>
       <div class="qual">
-        <span>Strategies</span><span>${rs.length}</span>
-        <span>Unfunded</span><span class="${unf?'bad':''}">${unf}</span>
-        <span>Programme-strategy pairs</span><span>${m.edges}</span>
-        <span>Matched rows (one per rationale)</span><span>${m.matchrows}</span>
-        <span>Rows with a rationale</span><span>${m.matchrows?Math.round(100*m.with_why/m.matchrows):0}%</span>
-        <span>Rows from the reverse pass</span><span>${m.reverse}</span>
-        <span>Audit checks</span><span class="${m.checks_failed?'bad':'ok'}">${esc(m.checks||"-")}</span>
-        <span>Unclaimed programmes</span><span>${m.unmapped}${
-          m.unmappedYears>m.unmapped?` <span class="cap">in ${m.unmappedYears} year-rows</span>`:""}</span>
+        <span>Strategies in the plan</span><span>${rs.length}</span>
+        <span>With no budget behind them</span><span class="${unf?'bad':''}">${unf}</span>
+        <span>Budget programmes funding them</span><span>${progs.size}</span>
+        <span>Programmes no strategy claims</span><span>${m.unmapped}</span>
+        <span>Years covered</span><span>${years.length?"FY"+years[0]+(years.length>1?" to FY"+years[years.length-1]:""):"-"}</span>
+        <span>Currency</span><span>${esc(m.cur||"-")}</span>
       </div></div>`;}).join("");
 }
 function drawShare(){
@@ -652,6 +658,18 @@ function drawAudit(){
   $("#auditChips").innerHTML = cs.map(c=>
     `<span class="chip on"><i style="width:9px;height:9px;border-radius:50%;display:inline-block;
      background:${hue(c)}"></i>${esc(c)}</span>`).join(" ");
+  $("#runState").innerHTML = `<table><thead><tr><th>Country</th><th>Verdict</th>
+    <th>Checks</th><th class="r">Pairs</th><th class="r">Matched rows</th>
+    <th class="r">With a rationale</th><th class="r">From the reverse pass</th>
+    <th class="r">Unclaimed programme-years</th></tr></thead><tbody>${cs.map(c=>{
+      const m=D.meta[c];
+      return `<tr><td><span class="dot" style="background:${hue(c)}"></span>${esc(c)}</td>
+        <td class="${m.verdict==="PASS"?"ok":"warn"}">${esc(m.verdict)}</td>
+        <td class="${m.checks_failed?"bad":"ok"}">${esc(m.checks||"-")}</td>
+        <td class="r">${m.edges}</td><td class="r">${m.matchrows}</td>
+        <td class="r">${m.matchrows?Math.round(100*m.with_why/m.matchrows):0}%</td>
+        <td class="r">${m.reverse}</td><td class="r">${m.unmappedYears||m.unmapped}</td></tr>`;
+    }).join("")}</tbody></table>`;
   $("#checkList").innerHTML = cs.map(c=>{
     const m=D.meta[c];
     return `<div style="margin-bottom:14px"><strong>${esc(c)}</strong>
