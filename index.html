@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Unveils Tomorrow</title>
+<style>
+:root{--surface-1:#fcfcfb;--surface-2:#f4f3f0;--surface-3:#fff;--text-primary:#0b0b0b;
+ --text-secondary:#52514e;--text-muted:#77766f;--line:#e3e2dd;--good:#0ca30c;--warn:#fab219;
+ --bad:#d03b3b;--accent:#2a78d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface-1:#1a1a19;
+ --surface-2:#232322;--surface-3:#2b2b29;--text-primary:#fff;--text-secondary:#c3c2b7;
+ --text-muted:#96958c;--line:#383835;--accent:#3987e5}}
+:root[data-theme="dark"]{--surface-1:#1a1a19;--surface-2:#232322;--surface-3:#2b2b29;
+ --text-primary:#fff;--text-secondary:#c3c2b7;--text-muted:#96958c;--line:#383835;--accent:#3987e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-1);color:var(--text-primary);
+ font:14.5px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:34px 20px 80px}
+h1{font-size:25px;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:15px;margin:0 0 12px;font-weight:600}
+.sub{color:var(--text-secondary);margin:0 0 26px;font-size:13.5px;max-width:80ch}
+section{margin:0 0 26px;padding:18px;background:var(--surface-2);border:1px solid var(--line);
+ border-radius:10px}
+.hero{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 26px}
+.heroCard{flex:1;min-width:250px;background:var(--surface-2);border:1px solid var(--line);
+ border-radius:10px;padding:16px}
+.heroCard h3{margin:0 0 4px;font-size:14px}
+.heroCard p{margin:0 0 10px;color:var(--text-secondary);font-size:12.5px}
+.heroCard a{display:inline-block;color:var(--accent);font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{font-size:11.5px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;
+ letter-spacing:.03em}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.slug{color:var(--text-muted);font-size:11.5px}
+.ok{color:var(--good);font-weight:600}.warn{color:var(--warn);font-weight:600}
+.fail{color:var(--bad);font-weight:600}.muted{color:var(--text-muted)}
+td a{color:var(--accent);margin-right:10px}
+.missing{color:var(--text-muted);margin-right:10px;text-decoration:line-through;cursor:help}
+.stale{color:var(--bad);font-size:11px;border:1px solid var(--bad);border-radius:9px;
+ padding:0 6px}
+.pill{display:inline-block;padding:1px 8px;border-radius:11px;border:1px solid var(--line);
+ font-size:11.5px;color:var(--text-secondary)}
+.note{color:var(--text-muted);font-size:12.5px;margin:12px 0 0;max-width:80ch}
+footer{color:var(--text-muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;
+ margin-top:26px}
+</style></head><body><div class="wrap">
+<h1>AI Unveils Tomorrow</h1>
+<p class="sub">3 of 7 configured countries have been through the pipeline.
+Generated 2026-08-13 07:57.</p>
+
+<div class="hero">
+  <div class="heroCard"><h3>Cross-country dashboard</h3>
+    <p>The deliverable. Every published country together, comparable on shares and counts.</p>
+    <a href="union_dashboard.html">Open &rarr;</a>
+    <a href="UNION_PANEL.xlsx">Workbook</a></div>
+  <div class="heroCard"><h3>Audit trail</h3>
+    <p>For testing the data: every match rationale, the arithmetic behind every figure, and
+    the plan text each strategy stands on. Filter it to one country with the chips.</p>
+    <a href="union_dashboard.html#audit">Open &rarr;</a></div>
+</div>
+
+<section><h2>Countries</h2>
+<table><thead><tr><th>Country</th><th>Verdict</th><th class="r">Strategies</th>
+<th class="r">Unfunded</th><th class="r">Budget mapped</th><th>Years</th><th>Currency</th>
+<th>Audit checks</th><th>Artefacts</th></tr></thead>
+<tbody><tr><td><strong>Brazil</strong><div class="slug">brazil</div></td><td class="ok">PASS</td><td class="r">93</td><td class="r">3</td><td class="r">30.0%</td><td class="r">2024</td><td>BRL million</td><td class="fail">13/14 (A16)</td><td><a href="brazil/budget_strategy_analytics.html">dashboard</a> <a href="brazil/FINAL_PANEL.xlsx">workbook</a> <a href="brazil/run_report.md">report</a></td></tr><tr><td><strong>Brunei</strong><div class="slug">brunei</div></td><td class="warn">REVIEW NEEDED</td><td class="r">68</td><td class="r">27</td><td class="r">97.4%</td><td class="r">2025</td><td>million Brunei dollars</td><td class="fail">13/14 (A16)</td><td><a href="brunei/budget_strategy_analytics.html">dashboard</a> <a href="brunei/FINAL_PANEL.xlsx">workbook</a> <a href="brunei/run_report.md">report</a></td></tr><tr><td><strong>Ghana</strong><div class="slug">ghana</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country ghana">dashboard</span> <a href="ghana/run_report.md">report</a></td></tr><tr><td><strong>Jamaica</strong><div class="slug">jamaica</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country jamaica">dashboard</span> <a href="jamaica/run_report.md">report</a></td></tr><tr><td><strong>Kenya</strong><div class="slug">kenya</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country kenya">dashboard</span> <a href="kenya/run_report.md">report</a></td></tr><tr><td><strong>Rwanda</strong><div class="slug">rwanda</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country rwanda">dashboard</span> <a href="rwanda/run_report.md">report</a></td></tr><tr><td><strong>Thailand</strong><div class="slug">thailand</div></td><td class="ok">PASS</td><td class="r">30</td><td class="r">-</td><td class="r">35.9%</td><td class="r">2023, 2024, 2025, 2026</td><td>million baht</td><td class="ok">14/14</td><td><a href="thailand/budget_strategy_analytics.html">dashboard</a> <a href="thailand/FINAL_PANEL.xlsx">workbook</a> <a href="thailand/run_report.md">report</a></td></tr></tbody></table>
+<p class="note">Budget mapped is a share, so it compares across countries. Absolute money is
+in each country's own currency and is never summed across them. NOT READY means the
+extraction stages have not produced that country's budget layer yet - it is not a QA failure.</p>
+</section>
+
+<footer>Every artefact linked here is a file on disk under Files/outputs/. A struck-through
+link is one that has not been built; hover it for the command that builds it.</footer>
+</div></body></html>
