@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-12 19:27 by run_pipeline.py
+Generated 2026-08-13 14:50 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,8 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=68 (27 unfunded) | edges=49 |
-| audit_checks | ok | QA FAIL - 13/14 PASS (A16 4 untraceable) [advisory] |
+| audit_checks | ok | QA FAIL - 13/15 PASS (A16 4 untraceable, A18 2 with no component) [advisory] |
+| data_issues | ok | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -20,6 +21,7 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 - FINAL panel (deliverable): `Files/outputs/brunei/FINAL_PANEL.xlsx`
 - Dashboard: `Files/outputs/brunei/budget_strategy_analytics.html`
 - Audit trail: `Files/outputs/union_dashboard.html`, Audit tab, filtered to this country
+- Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
 
@@ -143,7 +145,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brunei 13/14 PASS (A16 4 untraceable)
+AUDIT CHECKS: brunei 13/15 PASS (A16 4 untraceable, A18 2 with no component)
   ok   A1   Stored programme sums              3 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             3 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             39 row(s) / 0 duplicate key(s)
@@ -162,4 +164,18 @@ AUDIT CHECKS: brunei 13/14 PASS (A16 4 untraceable)
             Green Building initiatives under t <- Green Building initiatives under the 12th Na
             Research costs for public higher e <- Research costs for public higher education i
   ok   A17  No workbook open in Excel          0 expected / 0 found
+  FAIL A18  Strategies come from the plan      69 strategy(ies) / 2 with no component
+            Purchase of medicines, medical consumables and laboratory te
+            Payment for medical treatment services at Gleneagles Jerudon
+```
+
+### data_issues
+```
+data issues  Files/outputs/DATA_ISSUES.xlsx
+  9 detected across 1 country(ies): 4 high, 3 medium, 2 low
+  6 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  brunei    D11      Strategy named after the budget line funding it
+  HIGH  brunei    D3       Strategy with no plan text behind it
+  HIGH  brunei    D7       Flag raised while combining the budget years
+  HIGH  brunei    D8       A strategy total its own programmes do not add up to
 ```

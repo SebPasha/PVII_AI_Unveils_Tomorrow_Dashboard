@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-12 19:27 by run_pipeline.py
+Generated 2026-08-13 14:48 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,8 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=30 (0 unfunded) | edges=145 |
-| audit_checks | ok | 14/14 PASS [advisory] |
+| audit_checks | ok | 15/15 PASS [advisory] |
+| data_issues | ok | 4 detected across 1 country(ies): 0 high, 2 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -21,6 +22,7 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 - FINAL panel (deliverable): `Files/outputs/thailand/FINAL_PANEL.xlsx`
 - Dashboard: `Files/outputs/thailand/budget_strategy_analytics.html`
 - Audit trail: `Files/outputs/union_dashboard.html`, Audit tab, filtered to this country
+- Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
 
@@ -293,7 +295,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: thailand 14/14 PASS
+AUDIT CHECKS: thailand 15/15 PASS
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             126 row(s) / 0 duplicate key(s)
@@ -308,4 +310,12 @@ AUDIT CHECKS: thailand 14/14 PASS
   ok   A15  One currency                       1 expected / 1 found
   ok   A16  Components are traceable           882 component(s) / 0 untraceable
   ok   A17  No workbook open in Excel          0 expected / 0 found
+  ok   A18  Strategies come from the plan      30 strategy(ies) / 0 with no component
+```
+
+### data_issues
+```
+data issues  Files/outputs/DATA_ISSUES.xlsx
+  4 detected across 1 country(ies): 0 high, 2 medium, 2 low
+  6 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
 ```

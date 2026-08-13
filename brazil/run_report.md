@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-12 19:27 by run_pipeline.py
+Generated 2026-08-13 14:50 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,8 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | translate_panel | ok | 1177 cell(s) |
 | build_analytics_html | ok | strategies=93 (3 unfunded) | edges=105 |
-| audit_checks | ok | QA FAIL - 13/14 PASS (A16 1 untraceable) [advisory] |
+| audit_checks | ok | QA FAIL - 14/15 PASS (A16 1 untraceable) [advisory] |
+| data_issues | ok | 7 detected across 1 country(ies): 1 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -21,6 +22,7 @@ Generated 2026-08-12 19:27 by run_pipeline.py
 - FINAL panel (deliverable): `Files/outputs/brazil/FINAL_PANEL.xlsx`
 - Dashboard: `Files/outputs/brazil/budget_strategy_analytics.html`
 - Audit trail: `Files/outputs/union_dashboard.html`, Audit tab, filtered to this country
+- Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
 
@@ -165,7 +167,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brazil 13/14 PASS (A16 1 untraceable)
+AUDIT CHECKS: brazil 14/15 PASS (A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             83 row(s) / 0 duplicate key(s)
@@ -181,4 +183,13 @@ AUDIT CHECKS: brazil 13/14 PASS (A16 1 untraceable)
   FAIL A16  Components are traceable           571 component(s) / 1 untraceable
             State Transformation for Citizensh <- Public Service Capacity Expansion and Improv
   ok   A17  No workbook open in Excel          0 expected / 0 found
+  ok   A18  Strategies come from the plan      93 strategy(ies) / 0 with no component
+```
+
+### data_issues
+```
+data issues  Files/outputs/DATA_ISSUES.xlsx
+  7 detected across 1 country(ies): 1 high, 4 medium, 2 low
+  6 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  brazil    D1       A programme code is not unique within a year
 ```
