@@ -125,7 +125,8 @@ footer{color:var(--text-muted);font-size:12px;border-top:1px solid var(--line);p
 <div class="wrap">
 
 <div id="viewOverview">
-  <section><h2>Countries</h2><div class="tiles" id="tiles"></div></section>
+  <section><h2>Countries</h2><div class="tiles" id="tiles"></div>
+    <p class="note" id="hueNote"></p></section>
   <section><h2>Share of the national budget mapped to a plan strategy</h2>
     <div id="shareChart"></div>
     <p class="note">A share, so it compares across currencies. The remainder is budget no
@@ -237,6 +238,8 @@ function visible(){
 
 /* ---------- overview ---------- */
 function drawTiles(){
+  // Said once, where the colour is, rather than left for the reader to work out.
+  $("#hueNote").textContent = D.hueNote || "";
   $("#tiles").innerHTML = Object.entries(D.meta).map(([c,m])=>{
     const rs = D.rows.filter(r=>r.c===c);
     const unf = rs.filter(r=>total(r)<=0).length;
