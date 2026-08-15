@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-15 09:23 by run_pipeline.py
+Generated 2026-08-15 09:27 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -317,5 +317,5 @@ AUDIT CHECKS: thailand 15/15 PASS
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   4 detected across 1 country(ies): 0 high, 2 medium, 2 low
-  9 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  10 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
 ```
