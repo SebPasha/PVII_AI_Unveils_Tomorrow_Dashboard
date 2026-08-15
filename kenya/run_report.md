@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 10:20 by run_pipeline.py
+Generated 2026-08-15 10:40 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
