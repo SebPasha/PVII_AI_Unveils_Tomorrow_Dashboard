@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-13 14:50 by run_pipeline.py
+Generated 2026-08-15 09:22 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -14,7 +14,7 @@ Generated 2026-08-13 14:50 by run_pipeline.py
 | translate_panel | ok | 1177 cell(s) |
 | build_analytics_html | ok | strategies=93 (3 unfunded) | edges=105 |
 | audit_checks | ok | QA FAIL - 14/15 PASS (A16 1 untraceable) [advisory] |
-| data_issues | ok | 7 detected across 1 country(ies): 1 high, 4 medium, 2 low [advisory] |
+| data_issues | ok | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -189,7 +189,8 @@ AUDIT CHECKS: brazil 14/15 PASS (A16 1 untraceable)
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  7 detected across 1 country(ies): 1 high, 4 medium, 2 low
-  6 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  8 detected across 1 country(ies): 2 high, 4 medium, 2 low
+  9 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brazil    D1       A programme code is not unique within a year
+  HIGH  brazil    D12      An output predates the prompt that produced it
 ```

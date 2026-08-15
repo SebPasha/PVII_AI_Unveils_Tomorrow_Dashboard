@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-13 14:50 by run_pipeline.py
+Generated 2026-08-15 09:22 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,7 @@ Generated 2026-08-13 14:50 by run_pipeline.py
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=68 (27 unfunded) | edges=49 |
 | audit_checks | ok | QA FAIL - 13/15 PASS (A16 4 untraceable, A18 2 with no component) [advisory] |
-| data_issues | ok | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
+| data_issues | ok | 10 detected across 1 country(ies): 5 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -172,9 +172,10 @@ AUDIT CHECKS: brunei 13/15 PASS (A16 4 untraceable, A18 2 with no component)
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  6 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  10 detected across 1 country(ies): 5 high, 3 medium, 2 low
+  9 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brunei    D11      Strategy named after the budget line funding it
+  HIGH  brunei    D12      An output predates the prompt that produced it
   HIGH  brunei    D3       Strategy with no plan text behind it
   HIGH  brunei    D7       Flag raised while combining the budget years
   HIGH  brunei    D8       A strategy total its own programmes do not add up to
