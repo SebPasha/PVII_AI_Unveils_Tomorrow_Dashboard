@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jamaica - budget against strategy</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0:#f4f4f2; --surface-1:#fcfcfb; --surface-2:#efefec;
+  --line:#dcdcd6; --line-strong:#c6c6be;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#78776f;
+  --series-1:#2a78d6; --series-2:#eb6834;
+  --seq-1:#86b6ef; --seq-2:#5598e7; --seq-3:#2a78d6; --seq-4:#1c5cab; --seq-5:#0d366b;
+  --good:#1b7f4b; --warn:#a86400; --crit:#b3261e;
+  --focus:#2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0:#111110; --surface-1:#1a1a19; --surface-2:#232322;
+    --line:#33332f; --line-strong:#4a4a45;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#98978c;
+    --series-1:#3987e5; --series-2:#d95926;
+    --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5; --seq-5:#184f95;
+    --good:#4bb87c; --warn:#d9a441; --crit:#e66767;
+    --focus:#3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0:#111110; --surface-1:#1a1a19; --surface-2:#232322;
+  --line:#33332f; --line-strong:#4a4a45;
+  --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#98978c;
+  --series-1:#3987e5; --series-2:#d95926;
+  --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5; --seq-5:#184f95;
+  --good:#4bb87c; --warn:#d9a441; --crit:#e66767;
+  --focus:#3987e5;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--surface-0); color:var(--text-primary);
+  font:15px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+.wrap { max-width:1240px; margin:0 auto; padding:28px 20px 72px; }
+header { display:flex; flex-wrap:wrap; gap:12px; align-items:baseline;
+  justify-content:space-between; margin-bottom:6px; }
+h1 { font-size:22px; font-weight:650; margin:0; letter-spacing:-0.01em; }
+.sub { color:var(--text-secondary); font-size:13px; margin:0 0 20px; }
+.note { color:var(--text-muted); font-size:12.5px; margin:8px 0 0; }
+
+/* filters: one row, above everything, scoping every chart below */
+.filters { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+  background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:12px 14px; margin-bottom:18px; position:sticky; top:0; z-index:20; }
+.f { display:flex; flex-direction:column; gap:4px; }
+.f label { font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-muted); font-weight:600; }
+.f select, .f input { background:var(--surface-2); color:var(--text-primary);
+  border:1px solid var(--line-strong); border-radius:7px; padding:6px 9px; font:inherit;
+  font-size:13px; min-width:150px; }
+.f input { min-width:210px; }
+.f select:focus-visible, .f input:focus-visible, button:focus-visible {
+  outline:2px solid var(--focus); outline-offset:1px; }
+button { background:var(--surface-2); color:var(--text-primary); font:inherit; font-size:13px;
+  border:1px solid var(--line-strong); border-radius:7px; padding:6px 11px; cursor:pointer; }
+button:hover { border-color:var(--text-muted); }
+.spacer { flex:1 1 auto; }
+.count { font-size:12.5px; color:var(--text-secondary); padding-bottom:7px; }
+
+/* tiles */
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px; margin-bottom:20px; }
+.tile { background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; }
+.tile .k { font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-muted); font-weight:600; }
+.tile .v { font-size:26px; font-weight:640; letter-spacing:-0.02em; margin-top:3px;
+  font-variant-numeric:tabular-nums; }
+.tile .u { font-size:12px; color:var(--text-secondary); }
+
+/* cards */
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(430px,1fr)); gap:16px; }
+.card { background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:16px 18px 14px; min-width:0; }
+.card h2 { font-size:15px; font-weight:620; margin:0 0 2px; }
+.card .cap { font-size:12.5px; color:var(--text-secondary); margin:0 0 12px; }
+.card.wide { grid-column:1 / -1; }
+.legend { display:flex; flex-wrap:wrap; gap:14px; margin:0 0 10px; font-size:12.5px;
+  color:var(--text-secondary); }
+.legend i { display:inline-block; width:14px; height:3px; border-radius:2px;
+  vertical-align:middle; margin-right:6px; }
+.legend i.sq { height:11px; width:11px; border-radius:3px; }
+svg { display:block; width:100%; height:auto; overflow:visible; }
+.axis text { fill:var(--text-muted); font-size:11px; }
+.axis line, .axis path { stroke:var(--line); }
+.grid-line { stroke:var(--line); stroke-width:1; }
+.lbl { fill:var(--text-secondary); font-size:11.5px; }
+.val { fill:var(--text-primary); font-size:11.5px; font-variant-numeric:tabular-nums; }
+.mark { transition:opacity .12s; }
+.mark:hover, .mark:focus-visible { opacity:.82; outline:none; }
+.empty { color:var(--text-muted); font-size:13px; padding:26px 0; text-align:center; }
+
+/* table view */
+details.tv { margin-top:10px; }
+details.tv summary { cursor:pointer; font-size:12.5px; color:var(--text-secondary); }
+table { border-collapse:collapse; width:100%; font-size:12.5px; margin-top:8px; }
+th, td { text-align:left; padding:5px 8px; border-bottom:1px solid var(--line); }
+th { color:var(--text-muted); font-weight:600; font-size:11px; text-transform:uppercase;
+  letter-spacing:.04em; position:sticky; top:0; background:var(--surface-1); }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+.scroll { max-height:420px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+
+#tip { position:fixed; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--surface-1); border:1px solid var(--line-strong); border-radius:8px;
+  padding:8px 10px; font-size:12.5px; box-shadow:0 6px 20px rgba(0,0,0,.18); z-index:60;
+  max-width:320px; }
+#tip .tv1 { font-weight:650; font-variant-numeric:tabular-nums; }
+#tip .tl { color:var(--text-secondary); }
+#tip .key { display:inline-block; width:12px; height:3px; border-radius:2px; margin-right:6px;
+  vertical-align:middle; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Jamaica - budget against strategy</h1>
+    <p class="sub">3 fiscal year(s): FY2019, FY2022, FY2024 · amounts in $ &#x27;000 · 207 strategy-programme edges</p>
+  </div>
+  <button id="theme" type="button">Toggle theme</button>
+</header>
+
+<div class="filters" role="group" aria-label="Filters">
+  <div class="f"><label for="f-year">Fiscal year</label><select id="f-year"></select></div>
+  <div class="f"><label for="f-risk">Risk</label><select id="f-risk"></select></div>
+  <div class="f"><label for="f-sector">Sector</label><select id="f-sector"></select></div>
+  <div class="f"><label for="f-sal">Risk salience</label><select id="f-sal"></select></div>
+  <div class="f"><label for="f-q">Search strategy</label><input id="f-q" type="search"
+       placeholder="name contains…" autocomplete="off"></div>
+  <div class="spacer"></div>
+  <div class="count" id="count"></div>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<div class="tiles" id="tiles"></div>
+<div class="grid" id="grid"></div>
+</div>
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script id="data" type="application/json">{"years": ["2019", "2022", "2024"], "currency": "$ '000", "national": {"2019": 39096070.0, "2022": 52130320.0, "2024": 17114272.0}, "edges": [{"s": "Civil Registration and Vital Statistics", "p": "10575", "y": "2019", "pn": "Civil Registration and Vital Statistics", "a": 6254.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Demographic Shifts", "Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Youth Development", "p": "500", "y": "2019", "pn": "Youth Development", "a": 273408.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Support for National Poverty Reduction", "p": "11780", "y": "2019", "pn": "Support for National Poverty Reduction", "a": 23074.0, "sec": "Social Protection", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "General Assistance Grants", "p": "525", "y": "2019", "pn": "General Assistance Grants", "a": 2454685.0, "sec": "Social Protection", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Demographic Shifts", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Social Security and Welfare Services", "p": "526", "y": "2019", "pn": "Social Security and Welfare Services", "a": 779279.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Regulation and Administration of Commerce", "p": "302", "y": "2019", "pn": "Regulation and Administration of Commerce", "a": 584795.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Industrial Development and Export Promotion", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Technological Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Commerce Policy and Facilitation Services", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Shifts in Globalisation", "Technological Change", "Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Commerce Policy and Facilitation Services", "p": "302", "y": "2019", "pn": "Regulation and Administration of Commerce", "a": 584795.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Shifts in Globalisation", "Technological Change", "Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Livestock Research and Improvement", "p": "20", "y": "2019", "pn": "Agricultural Producers' Support", "a": 108913.0, "sec": "Agriculture", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Production and Productivity", "p": "20", "y": "2019", "pn": "Agricultural Producers' Support", "a": 108913.0, "sec": "Agriculture", "hdi": "Domestic Integration", "rk": ["Technological Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Production and Productivity", "p": "21", "y": "2019", "pn": "Dairy Sector Development", "a": 108142.0, "sec": "Agriculture", "hdi": "Domestic Integration", "rk": ["Technological Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Production and Productivity", "p": "26", "y": "2019", "pn": "Rural Development", "a": 2100413.0, "sec": "Agriculture", "hdi": "Domestic Integration", "rk": ["Technological Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Irrigation", "p": "20", "y": "2019", "pn": "Agricultural Producers' Support", "a": 108913.0, "sec": "Water", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Irrigation", "p": "22", "y": "2019", "pn": "Training and Entrepreneurship", "a": 136558.0, "sec": "Water", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Fisheries", "p": "20", "y": "2019", "pn": "Agricultural Producers' Support", "a": 108913.0, "sec": "Environment", "hdi": "Future Generations", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Praedial Larceny Prevention Co- ordination", "p": "21", "y": "2019", "pn": "Dairy Sector Development", "a": 108142.0, "sec": "Agriculture", "hdi": "Human Security", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "reactive"}, {"s": "Mineral Sector and Geological Development", "p": "179", "y": "2019", "pn": "Mineral Sector and Geological Development", "a": 31539.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Technological Change", "Resource and Energy Pressures", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Transport Management and Services", "p": "178", "y": "2019", "pn": "Transport Management and Services", "a": 3655940.0, "sec": "Transport", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Civil Aviation Administration", "p": "178", "y": "2019", "pn": "Transport Management and Services", "a": 3655940.0, "sec": "Transport", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Information and Communication Technology Services", "p": "11520", "y": "2019", "pn": "Information and Communication Technology Services", "a": 84820.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Research and Development", "p": "003", "y": "2019", "pn": "Research and Development", "a": 0.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Fire Protection Services", "p": "475", "y": "2019", "pn": "Fire Protection Services", "a": 6442362.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Integrated Spatial Planning and Development", "p": "02", "y": "2019", "pn": "Planning and Development", "a": 93342.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Land Use Planning and Development", "p": "376", "y": "2019", "pn": "Land Use Planning and Development", "a": 1000.0, "sec": "Governance", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Roads Infrastructure Development and Management", "p": "178", "y": "2019", "pn": "Transport Management and Services", "a": 3655940.0, "sec": "Transport", "hdi": "Domestic Integration", "rk": [], "sal": "", "ori": "proactive"}, {"s": "National Solid Waste Management", "p": "484", "y": "2019", "pn": "National Solid Waste Management", "a": 1681006.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Climate Change"], "sal": "medium", "ori": "transformative"}, {"s": "Environmental Management and Conservation", "p": "625", "y": "2019", "pn": "Protection and Conservation", "a": 48222.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Disaster Management", "p": "005", "y": "2019", "pn": "Disaster Management", "a": 0.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Legal Services", "p": "426", "y": "2019", "pn": "Legal Services", "a": 0.0, "sec": "Justice", "hdi": "Political Will", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Justice Sector Reform Programme", "p": "21858", "y": "2019", "pn": "Justice Sector Reform Programme", "a": 1308210.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "p": "29457", "y": "2019", "pn": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "a": 277889.0, "sec": "Justice", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "10497", "y": "2019", "pn": "Survey of Living Conditions", "a": 8407.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "10575", "y": "2019", "pn": "Civil Registration and Vital Statistics", "a": 6254.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "10633", "y": "2019", "pn": "Technical Support Services", "a": 356075.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "11520", "y": "2019", "pn": "Information and Communication Technology Services", "a": 84820.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "11780", "y": "2019", "pn": "Support for National Poverty Reduction", "a": 23074.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "29364", "y": "2019", "pn": "Development of National Policy and Plan of Action on International Migration and Development", "a": 34733.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "29394", "y": "2019", "pn": "PPCR Phase II - Improving Climate Data and Information Management", "a": 379180.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "29462", "y": "2019", "pn": "Jamaica Foundations for Competiveness and Growth", "a": 1750000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "29503", "y": "2019", "pn": "Technical Cooperation Facility V", "a": 13709.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "29512", "y": "2019", "pn": "Technical Cooperation Facility VI (TCF VI)", "a": 60144.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Fiscal Policy Management", "p": "10663", "y": "2019", "pn": "Fiscal Policy Management", "a": 38768.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Agricultural Planning and Policy", "p": "112", "y": "2019", "pn": "Agricultural Planning and Policy", "a": 706894.0, "sec": "Agriculture", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Shifts in Globalisation", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "10576 | Vision 2030 Jamaica National Development Plan", "p": "10576", "y": "2019", "pn": "Vision 2030 Jamaica National Development Plan", "a": 47994.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "10662 | International Programme Management", "p": "10662", "y": "2019", "pn": "International Programme Management", "a": 34628.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Demographic Shifts"], "sal": "medium", "ori": "transformative"}, {"s": "325 | Social Welfare Services", "p": "325", "y": "2019", "pn": "Social Welfare Services", "a": 423040.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "003 | Research and Development", "p": "003", "y": "2019", "pn": "Research and Development", "a": 0.0, "sec": "Education", "hdi": "Strategic Planning (Anticipation)", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "10572 | Support for Development Planning", "p": "10633", "y": "2019", "pn": "Technical Support Services", "a": 356075.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "transformative"}, {"s": "10572 | Support for Development Planning", "p": "10576", "y": "2019", "pn": "Vision 2030 Jamaica National Development Plan", "a": 47994.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "transformative"}, {"s": "303 | Consumer and Public Protection", "p": "303", "y": "2019", "pn": "Consumer and Public Protection", "a": 271784.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "25 | Promotion of Economic Development", "p": "25", "y": "2019", "pn": "Promotion of Economic Development", "a": 192436.0, "sec": "Tourism", "hdi": "Export-led", "rk": ["Climate Change"], "sal": "medium", "ori": "transformative"}, {"s": "Youth Development and Advocacy Services", "p": "22", "y": "2019", "pn": "Training and Entrepreneurship", "a": 136558.0, "sec": "Youth", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Social Assistance for the Elderly (Social Pension)", "p": "525", "y": "2019", "pn": "General Assistance Grants", "a": 2454685.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Demographic Shifts"], "sal": "medium", "ori": "proactive"}, {"s": "Brand Jamaica Development and Integration", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Community Development Services", "p": "477", "y": "2019", "pn": "Community Development Services", "a": 1160366.0, "sec": "Governance", "hdi": "Civic Engagement", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Provision of Legal Aid Services", "p": "12315", "y": "2019", "pn": "Provision of Legal Aid Services", "a": 324603.0, "sec": "Justice", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "reactive"}, {"s": "Regional and International Cooperation", "p": "004", "y": "2019", "pn": "Regional and International Cooperation", "a": 0.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change", "Shifts in Globalisation", "Environmental Degradation and Pollution", "Biodiversity Loss"], "sal": "high", "ori": "proactive"}, {"s": "Financial Management Information Systems Infrastructure Support", "p": "10475", "y": "2019", "pn": "Financial Management Information Systems Infrastructure Support", "a": 34650.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Compensation Management and Implementation", "p": "11469", "y": "2019", "pn": "Compensation Management and Implementation", "a": 281140.0, "sec": "Governance", "hdi": "Political Will", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Debt Management", "p": "10664", "y": "2019", "pn": "Debt Management", "a": 186121.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Support to Public Bodies", "p": "10882", "y": "2019", "pn": "Support to Public Bodies", "a": 3152509.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Taxation Policy Support", "p": "10235", "y": "2019", "pn": "Taxation Policy Support", "a": 71741.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Macro Economic Planning Management", "p": "10229", "y": "2019", "pn": "Macro Economic Planning Management", "a": 15111.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Strengthening the Institutional Capacity of Financial Services Commission (TC)", "p": "29531", "y": "2019", "pn": "Strengthening the Institutional Capacity of Financial Services Commission (TC)", "a": 13400.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Democratic Backsliding", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Consumer and Public Protection", "p": "303", "y": "2019", "pn": "Consumer and Public Protection", "a": 271784.0, "sec": "Industry", "hdi": "Tackling Structural Exclusion", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Anti-Dumping and Subsidies", "p": "302", "y": "2019", "pn": "Regulation and Administration of Commerce", "a": 584795.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Maritime Organizations", "p": "560", "y": "2019", "pn": "Maritime Organizations", "a": 0.0, "sec": "Transport", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation", "Technological Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "MSME Support and Development", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Growth through Inclusion", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Special Economic Zone Administration", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Export-led", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Plant Quarantine, Produce Inspection and Food Safety", "p": "21", "y": "2019", "pn": "Dairy Sector Development", "a": 108142.0, "sec": "Agriculture", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Plant Quarantine, Produce Inspection and Food Safety", "p": "22", "y": "2019", "pn": "Training and Entrepreneurship", "a": 136558.0, "sec": "Agriculture", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Geological, Geo Technical Regulatory Services", "p": "576", "y": "2019", "pn": "Geological and Geo - Technical Services", "a": 0.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Regulation and Compliance Management", "p": "302", "y": "2019", "pn": "Regulation and Administration of Commerce", "a": 584795.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Regulation and Compliance Management", "p": "303", "y": "2019", "pn": "Consumer and Public Protection", "a": 271784.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Industry and Services Policy and Facilitation", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Industry and Services Policy and Facilitation", "p": "302", "y": "2019", "pn": "Regulation and Administration of Commerce", "a": 584795.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Support for Growth Inducement Programme", "p": "19396", "y": "2019", "pn": "Support for Growth Inducement Programme", "a": 20000.0, "sec": "Governance", "hdi": "Growth through Inclusion", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "MSME and Industrial Resilience Support", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Domestic Integration", "rk": ["Resource and Energy Pressures", "Environmental Degradation and Pollution", "Climate Change", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Capacity Strengthening", "p": "21858", "y": "2019", "pn": "Justice Sector Reform Programme", "a": 1308210.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Citizen Security and Justice Capacity Strengthening", "p": "29388", "y": "2019", "pn": "Justice Undertakings for Social Transformation (JUST)", "a": 33911.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Citizen Security and Justice Capacity Strengthening", "p": "29453", "y": "2019", "pn": "Justice, Security, Accountability and Transparency Project (JSAT)", "a": 80141.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Citizen Security and Justice Capacity Strengthening", "p": "29457", "y": "2019", "pn": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "a": 277889.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Public Service Management and Administration", "p": "138", "y": "2022", "pn": "Public Service Management and Administration", "a": 7508696.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Youth Development", "p": "11826", "y": "2022", "pn": "Youth Development and Advocacy Services", "a": 162646.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Youth Development", "p": "18983", "y": "2022", "pn": "Support for Youth Information Centre", "a": 45900.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Youth Development", "p": "18999", "y": "2022", "pn": "Support to Clubs and Societies", "a": 7000.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Support for Social Intervention", "p": "12715", "y": "2022", "pn": "Support for Social Intervention", "a": 118703.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts", "Increased Polarisation", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Support for National Poverty Reduction", "p": "12715", "y": "2022", "pn": "Support for Social Intervention", "a": 118703.0, "sec": "Social Protection", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Social Security and Welfare Services", "p": "11127", "y": "2022", "pn": "Rehabilitation Support", "a": 361268.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "12715", "y": "2022", "pn": "Support for Social Intervention", "a": 118703.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "12821", "y": "2022", "pn": "PATH Beneficiary Assistance", "a": 7248810.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "12832", "y": "2022", "pn": "PATH Social Assistance", "a": 670715.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "29487", "y": "2022", "pn": "Integrated Support to the Jamaica Social Protection Strategy", "a": 0.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Regulation and Administration of Commerce", "p": "144", "y": "2022", "pn": "Promotion of the Integrity of Contracts and Licenses", "a": 360000.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Information and Communication Technology Services", "p": "11520", "y": "2022", "pn": "Information and Communication Technology Services", "a": 514962.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Research and Development", "p": "10010", "y": "2022", "pn": "Research, Evaluation and Development", "a": 53529.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Fire Protection Services", "p": "001", "y": "2022", "pn": "Executive Direction and Administration", "a": 718671.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Integrated Spatial Planning and Development", "p": "171", "y": "2022", "pn": "Integrated Spatial Planning and Development", "a": 149610.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Roads Infrastructure Development and Management", "p": "174", "y": "2022", "pn": "Roads Infrastructure Development and Management", "a": 927835.0, "sec": "Transport", "hdi": "Domestic Integration", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Environmental Management and Conservation", "p": "172", "y": "2022", "pn": "Environmental Management and Conservation", "a": 215755.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Environmental Management and Conservation", "p": "173", "y": "2022", "pn": "Regulation and Compliance Management", "a": 321185.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "National identification and registration", "p": "10003", "y": "2022", "pn": "Human Resource Management and Other Support Services", "a": 814588.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Research and Preservation of Archival Records", "p": "11650", "y": "2022", "pn": "Research and Preservation of Archival Records", "a": 0.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Access to Information Services", "p": "11674", "y": "2022", "pn": "Access to Information Services", "a": 0.0, "sec": "Governance", "hdi": "Political Will", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Support for housing access and regulation", "p": "171", "y": "2022", "pn": "Integrated Spatial Planning and Development", "a": 149610.0, "sec": "Housing", "hdi": "Tackling Structural Exclusion", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "12821 | PATH Beneficiary Assistance", "p": "12821", "y": "2022", "pn": "PATH Beneficiary Assistance", "a": 7248810.0, "sec": "Social Protection", "hdi": "Growth through Inclusion", "rk": [], "sal": "", "ori": "reactive"}, {"s": "12832 | PATH Social Assistance", "p": "12832", "y": "2022", "pn": "PATH Social Assistance", "a": 670715.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": ["Shifts in Globalisation", "Pandemics"], "sal": "high", "ori": "reactive"}, {"s": "29487 | Integrated Support to the Jamaica Social Protection Strategy", "p": "29487", "y": "2022", "pn": "Integrated Support to the Jamaica Social Protection Strategy", "a": 0.0, "sec": "Social Protection", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "10715 | Delivery of Instruction", "p": "10715", "y": "2022", "pn": "Delivery of Instruction", "a": 30917965.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "10700 | Supervision of Education System", "p": "10700", "y": "2022", "pn": "Supervision of Education System", "a": 299537.0, "sec": "Education", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "12829 | In-Service Support", "p": "12829", "y": "2022", "pn": "In-Service Support", "a": 570000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "12836 | Guidance and Counselling Services", "p": "12836", "y": "2022", "pn": "Guidance and Counselling Services", "a": 25419.0, "sec": "Education", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "10713 | Supervision of Primary Education", "p": "10713", "y": "2022", "pn": "Supervision of Primary Education", "a": 310850.0, "sec": "Education", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "10772 | Supervision of Tertiary Institutions", "p": "10772", "y": "2022", "pn": "Supervision of Tertiary Institutions", "a": 80185.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "12835 | Supervision of Technical and Vocational Education", "p": "12835", "y": "2022", "pn": "Supervision of Technical and Vocational Education", "a": 231324.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "10811 | Training of Nurses", "p": "10811", "y": "2022", "pn": "Training of Nurses", "a": 69472.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "10167 | Rehabilitation of Farm Roads (formerly Farm Roads)", "p": "174", "y": "2022", "pn": "Roads Infrastructure Development and Management", "a": 927835.0, "sec": "Transport", "hdi": "Domestic Integration", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "reactive"}, {"s": "10572 | Support for Development Planning", "p": "142", "y": "2022", "pn": "Integrated Development Planning", "a": 4796920.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Support to Other Private Welfare Organisations", "p": "18998", "y": "2022", "pn": "Support to Other Private Welfare Organisations", "a": 57272.0, "sec": "Social Protection", "hdi": "Fostering the Spirit of Change", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Youth Development and Advocacy Services", "p": "11826", "y": "2022", "pn": "Youth Development and Advocacy Services", "a": 162646.0, "sec": "Youth", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Social Assistance for the Elderly (Social Pension)", "p": "12826", "y": "2022", "pn": "Social Assistance for the Elderly (Social Pension)", "a": 800000.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Demographic Shifts"], "sal": "medium", "ori": "proactive"}, {"s": "Provision of Legal Aid Services", "p": "03", "y": "2022", "pn": "Executive Direction and Administration", "a": 71561.0, "sec": "Justice", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "reactive"}, {"s": "Compensation Management and Implementation", "p": "10003", "y": "2022", "pn": "Human Resource Management and Other Support Services", "a": 814588.0, "sec": "Governance", "hdi": "Political Will", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Project Planning and Implementation", "p": "10918", "y": "2022", "pn": "Project Planning and Implementation", "a": 10307.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Domestic Tax Administration Programme", "p": "137", "y": "2022", "pn": "Management of Public Finances", "a": 33187287.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Special Economic Zone Administration", "p": "144", "y": "2022", "pn": "Promotion of the Integrity of Contracts and Licenses", "a": 360000.0, "sec": "Industry", "hdi": "Export-led", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Energy Sector Policy and Regulatory Reform", "p": "132", "y": "2022", "pn": "Macrofiscal Policy and Management", "a": 1023078.0, "sec": "Energy", "hdi": "Strategic Planning (Anticipation)", "rk": ["Resource and Energy Pressures", "Climate Change", "Environmental Degradation and Pollution", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Plant Quarantine, Produce Inspection and Food Safety", "p": "172", "y": "2022", "pn": "Environmental Management and Conservation", "a": 215755.0, "sec": "Agriculture", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Regulation and Compliance Management", "p": "173", "y": "2022", "pn": "Regulation and Compliance Management", "a": 321185.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Education Infrastructure and Inclusive Access", "p": "10205", "y": "2022", "pn": "Rehabilitation and Maintenance Works", "a": 210000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Education Infrastructure and Inclusive Access", "p": "10714", "y": "2022", "pn": "Private Education Support", "a": 1412070.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Education Infrastructure and Inclusive Access", "p": "10715", "y": "2022", "pn": "Delivery of Instruction", "a": 30917965.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Education Infrastructure and Inclusive Access", "p": "10774", "y": "2022", "pn": "Construction, Renovation and Improvements", "a": 100740.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Education Infrastructure and Inclusive Access", "p": "11520", "y": "2022", "pn": "Information and Communication Technology Services", "a": 514962.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Education Infrastructure and Inclusive Access", "p": "10719", "y": "2022", "pn": "Facilities Management", "a": 74719.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Energy Infrastructure Expansion and Technology Upgrade", "p": "144", "y": "2022", "pn": "Promotion of the Integrity of Contracts and Licenses", "a": 360000.0, "sec": "Energy", "hdi": "Collaborative Leadership", "rk": ["Climate Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Capacity Strengthening", "p": "03", "y": "2022", "pn": "Executive Direction and Administration", "a": 71561.0, "sec": "Governance", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Support for Social Intervention", "p": "12715", "y": "2024", "pn": "Support for Social Intervention", "a": 458839.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts", "Increased Polarisation", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Support for National Poverty Reduction", "p": "11780", "y": "2024", "pn": "Support for National Poverty Reduction", "a": 40878.0, "sec": "Social Protection", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Social Security and Welfare Services", "p": "12715", "y": "2024", "pn": "Support for Social Intervention", "a": 458839.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "12821", "y": "2024", "pn": "PATH Beneficiary Assistance", "a": 10783748.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "12832", "y": "2024", "pn": "PATH Social Assistance", "a": 479825.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "29594", "y": "2024", "pn": "Social Protection for Increased Resilience and Opportunity (SPIRO)", "a": 62239.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Policy Facilitation", "p": "12043", "y": "2024", "pn": "Industry and Services Policy and Facilitation", "a": 58690.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation", "Climate Change", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Policy Facilitation", "p": "12046", "y": "2024", "pn": "Commerce Policy and Facilitation Services", "a": 50169.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation", "Climate Change", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Regulation and Administration of Commerce", "p": "12046", "y": "2024", "pn": "Commerce Policy and Facilitation Services", "a": 50169.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Industrial Development and Export Promotion", "p": "12063", "y": "2024", "pn": "International Trade Support", "a": 21740.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Technological Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Commerce Policy and Facilitation Services", "p": "12046", "y": "2024", "pn": "Commerce Policy and Facilitation Services", "a": 50169.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Shifts in Globalisation", "Technological Change", "Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Information and Communication Technology Services", "p": "11520", "y": "2024", "pn": "Information and Communication Technology Services", "a": 931392.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Environmental Management and Conservation", "p": "12072", "y": "2024", "pn": "Nature Preservation Services", "a": 62813.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Court Administration", "p": "30", "y": "2024", "pn": "Court Administration", "a": 1019000.0, "sec": "Justice", "hdi": "Political Will", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Legal Services", "p": "20", "y": "2024", "pn": "Serious Organized Crime Anti- Corruption Services", "a": 1852438.0, "sec": "Justice", "hdi": "Political Will", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Legal Services", "p": "23", "y": "2024", "pn": "29480 Promoting Community Based Climate Resilience in the Fisheries Sector", "a": 0.0, "sec": "Justice", "hdi": "Political Will", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Justice Sector Reform Programme", "p": "21", "y": "2024", "pn": "29595 Rehabilitation of Research Centres Phase II", "a": 406000.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "p": "21", "y": "2024", "pn": "29595 Rehabilitation of Research Centres Phase II", "a": 406000.0, "sec": "Justice", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "p": "22", "y": "2024", "pn": "29510 Essex Valley Irrigation Infrastructure Development Programme", "a": 1899469.0, "sec": "Justice", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "p": "23", "y": "2024", "pn": "29480 Promoting Community Based Climate Resilience in the Fisheries Sector", "a": 0.0, "sec": "Justice", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Citizen Security and Justice Programme III (IDB/DFID/DFATD/EU)", "p": "25", "y": "2024", "pn": "Justice Sector Professional Development", "a": 117909.0, "sec": "Justice", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "transformative"}, {"s": "Combatting Serious Organized Crimes", "p": "12833", "y": "2024", "pn": "Combatting Serious Organized Crimes", "a": 1319581.0, "sec": "Security", "hdi": "Human Security", "rk": ["Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Cyber Forensic Analysis and Risk Assessment", "p": "12839", "y": "2024", "pn": "Cyber Forensic Analysis and Risk Assessment", "a": 428336.0, "sec": "Security", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "National statistics and open data systems", "p": "10497", "y": "2024", "pn": "Survey of Living Conditions", "a": 27531.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "National statistics and open data systems", "p": "11520", "y": "2024", "pn": "Information and Communication Technology Services", "a": 931392.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Fiscal Policy Management", "p": "10663", "y": "2024", "pn": "Fiscal Policy Management", "a": 30810.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "10576 | Vision 2030 Jamaica National Development Plan", "p": "10576", "y": "2024", "pn": "Vision 2030 Jamaica National Development Plan", "a": 143732.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "11036 | Planning, Monitoring and Evaluation", "p": "11036", "y": "2024", "pn": "Planning, Monitoring and Evaluation", "a": 82832.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "12832 | PATH Social Assistance", "p": "12832", "y": "2024", "pn": "PATH Social Assistance", "a": 479825.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": ["Shifts in Globalisation", "Pandemics"], "sal": "high", "ori": "reactive"}, {"s": "10715 | Delivery of Instruction", "p": "10715", "y": "2024", "pn": "Delivery of Instruction", "a": 41183070.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "12835 | Supervision of Technical and Vocational Education", "p": "12835", "y": "2024", "pn": "Supervision of Technical and Vocational Education", "a": 260349.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "10572 | Support for Development Planning", "p": "10572", "y": "2024", "pn": "Support for Development Planning", "a": 59381.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Support to Other Private Welfare Organisations", "p": "18998", "y": "2024", "pn": "Support to Other Private Welfare Organisations", "a": 66609.0, "sec": "Social Protection", "hdi": "Fostering the Spirit of Change", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Support for Community Renewal", "p": "11781", "y": "2024", "pn": "Support for Community Renewal", "a": 188553.0, "sec": "Community Development", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Youth Development and Advocacy Services", "p": "11826", "y": "2024", "pn": "Youth Development and Advocacy Services", "a": 185757.0, "sec": "Youth", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Provision of Legal Aid Services", "p": "12315", "y": "2024", "pn": "Provision of Legal Aid Services", "a": 547111.0, "sec": "Justice", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "reactive"}, {"s": "Financial Management Information Systems Infrastructure Support", "p": "10475", "y": "2024", "pn": "Financial Management Information Systems Infrastructure Support", "a": 16200.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Debt Management", "p": "10664", "y": "2024", "pn": "Debt Management", "a": 310355.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Support to Public Bodies", "p": "10882", "y": "2024", "pn": "Support to Public Bodies", "a": 6020970.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Taxation Policy Support", "p": "10235", "y": "2024", "pn": "Taxation Policy Support", "a": 120125.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Macro Economic Planning Management", "p": "10229", "y": "2024", "pn": "Macro Economic Planning Management", "a": 27212.0, "sec": "Governance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Anti-Dumping and Subsidies", "p": "12050", "y": "2024", "pn": "Anti-Dumping and Subsidies", "a": 110231.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "MSME Support and Development", "p": "12048", "y": "2024", "pn": "MSME Support and Development", "a": 802956.0, "sec": "Industry", "hdi": "Growth through Inclusion", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Special Economic Zone Administration", "p": "11069", "y": "2024", "pn": "Special Economic Zone Administration", "a": 783431.0, "sec": "Industry", "hdi": "Export-led", "rk": [], "sal": "", "ori": "transformative"}, {"s": "International Standardization Services", "p": "12045", "y": "2024", "pn": "International Standardization Services", "a": 47370.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Industry and Services Policy and Facilitation", "p": "12043", "y": "2024", "pn": "Industry and Services Policy and Facilitation", "a": 58690.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Support for Growth Inducement Programme", "p": "19396", "y": "2024", "pn": "Support for Growth Inducement Programme", "a": 28441.0, "sec": "Governance", "hdi": "Growth through Inclusion", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "National Adaptation Planning", "p": "10573", "y": "2024", "pn": "National Adaptation Planning", "a": 76208.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change"], "sal": "medium", "ori": "transformative"}, {"s": "Regulation and Administration of Commerce", "p": "301", "y": "2019", "pn": "Industrial Development and Export Promotion", "a": 1769725.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Irrigation", "p": "105", "y": "2019", "pn": "Irrigation", "a": 1862471.0, "sec": "Water", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Production and Productivity", "p": "307", "y": "2019", "pn": "Production and Productivity", "a": 2317468.0, "sec": "Agriculture", "hdi": "Domestic Integration", "rk": ["Technological Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Improvement of Public Transport", "p": "558", "y": "2019", "pn": "Improvement of Public Transport", "a": 0.0, "sec": "Transport", "hdi": "Domestic Integration", "rk": ["Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Geological, Geo Technical Regulatory Services", "p": "179", "y": "2019", "pn": "Mineral Sector and Geological Development", "a": 31539.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Justice Sector Reform Programme", "p": "29388", "y": "2019", "pn": "Justice Undertakings for Social Transformation (JUST)", "a": 33911.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Public Service Management and Administration", "p": "11470", "y": "2019", "pn": "Public Service Management Analysis & Establishment", "a": 190509.0, "sec": "Governance", "hdi": "Efficient Action (Agility)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Social Security and Welfare Services", "p": "325", "y": "2019", "pn": "Social Welfare Services", "a": 423040.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Industrial Development and Export Promotion", "p": "25", "y": "2019", "pn": "Promotion of Economic Development", "a": 192436.0, "sec": "Industry", "hdi": "Export-led", "rk": ["Technological Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Land Use Planning and Development", "p": "02", "y": "2019", "pn": "Planning and Development", "a": 93342.0, "sec": "Governance", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Youth Development", "p": "22", "y": "2019", "pn": "Training and Entrepreneurship", "a": 136558.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Fisheries", "p": "172", "y": "2022", "pn": "Environmental Management and Conservation", "a": 215755.0, "sec": "Environment", "hdi": "Future Generations", "rk": ["Biodiversity Loss", "Environmental Degradation and Pollution", "Climate Change"], "sal": "medium", "ori": "proactive"}, {"s": "Integrated Spatial Planning and Development", "p": "172", "y": "2022", "pn": "Environmental Management and Conservation", "a": 215755.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution", "Climate Change", "Resource and Energy Pressures", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "National Solid Waste Management", "p": "172", "y": "2022", "pn": "Environmental Management and Conservation", "a": 215755.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Climate Change"], "sal": "medium", "ori": "transformative"}, {"s": "Support for National Poverty Reduction", "p": "29487", "y": "2022", "pn": "Integrated Support to the Jamaica Social Protection Strategy", "a": 0.0, "sec": "Social Protection", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Support for Social Intervention", "p": "29487", "y": "2022", "pn": "Integrated Support to the Jamaica Social Protection Strategy", "a": 0.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts", "Increased Polarisation", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Youth Development", "p": "11826", "y": "2024", "pn": "Youth Development and Advocacy Services", "a": 185757.0, "sec": "Youth", "hdi": "Tackling Structural Exclusion", "rk": ["Technological Change", "Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "International Financial Services", "p": "11050", "y": "2024", "pn": "International Financial Services", "a": 82051.0, "sec": "Finance", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Support for Social Intervention", "p": "29594", "y": "2024", "pn": "Social Protection for Increased Resilience and Opportunity (SPIRO)", "a": 62239.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts", "Increased Polarisation", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Support for National Poverty Reduction", "p": "29594", "y": "2024", "pn": "Social Protection for Increased Resilience and Opportunity (SPIRO)", "a": 62239.0, "sec": "Social Protection", "hdi": "Strategic Planning (Anticipation)", "rk": [], "sal": "", "ori": "proactive"}, {"s": "General Assistance Grants", "p": "29594", "y": "2024", "pn": "Social Protection for Increased Resilience and Opportunity (SPIRO)", "a": 62239.0, "sec": "Social Protection", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Demographic Shifts", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}], "n_strategies": 117, "n_unfunded": 28}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const CUR = DATA.currency;
+const $ = (s) => document.querySelector(s);
+
+// ---------------------------------------------------------------- formatting
+const fmt = (v) => {
+  const a = Math.abs(v);
+  if (a >= 1e6) return (v / 1e6).toFixed(2) + "M";
+  if (a >= 1e3) return (v / 1e3).toFixed(1) + "k";
+  if (a >= 100) return v.toFixed(0);
+  return v.toFixed(1);
+};
+const full = (v) => v.toLocaleString(undefined, { maximumFractionDigits: 1 });
+const pct = (v) => (100 * v).toFixed(1) + "%";
+
+// ------------------------------------------------------------------- filters
+const state = { year: "all", risk: "all", sector: "all", sal: "all", q: "" };
+
+function options(sel, values, allLabel) {
+  sel.textContent = "";
+  const mk = (v, t) => { const o = document.createElement("option");
+    o.value = v; o.textContent = t; sel.appendChild(o); };
+  mk("all", allLabel);
+  values.forEach(v => mk(v, v));
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  return DATA.edges.filter(e =>
+    (state.year === "all" || e.y === state.year) &&
+    (state.risk === "all" || e.rk.indexOf(state.risk) !== -1) &&
+    (state.sector === "all" || e.sec === state.sector) &&
+    (state.sal === "all" || e.sal === state.sal) &&
+    (!q || e.s.toLowerCase().indexOf(q) !== -1));
+}
+
+// A programme's money counts ONCE per year however many strategies it funds.
+function moneyByYear(edges) {
+  const seen = new Set(), out = {};
+  for (const e of edges) {
+    const k = e.p + "|" + e.y;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out[e.y] = (out[e.y] || 0) + e.a;
+  }
+  return out;
+}
+
+// Exposure: sum over DISTINCT programmes carrying the key. Not additive across keys.
+function exposure(edges, keyOf) {
+  const seen = new Set(), out = new Map();
+  for (const e of edges) {
+    for (const k of keyOf(e)) {
+      if (!k) continue;
+      const dedupe = k + "|" + e.p + "|" + e.y;
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+      const cur = out.get(k) || { total: 0, byYear: {}, progs: new Set(), strats: new Set() };
+      cur.total += e.a;
+      cur.byYear[e.y] = (cur.byYear[e.y] || 0) + e.a;
+      cur.progs.add(e.p);
+      out.set(k, cur);
+    }
+    for (const k of keyOf(e)) {
+      if (k) out.get(k).strats.add(e.s);
+    }
+  }
+  return [...out.entries()].map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.total - a.total);
+}
+
+// -------------------------------------------------------------------- tooltip
+const tip = $("#tip");
+function showTip(ev, rows, title) {
+  tip.textContent = "";
+  if (title) { const h = document.createElement("div");
+    h.className = "tl"; h.textContent = title; tip.appendChild(h); }
+  for (const r of rows) {
+    const d = document.createElement("div");
+    if (r.color) { const k = document.createElement("span");
+      k.className = "key"; k.style.background = r.color; d.appendChild(k); }
+    const v = document.createElement("span");
+    v.className = "tv1"; v.textContent = r.value;      // untrusted data -> textContent
+    d.appendChild(v);
+    if (r.label) { const l = document.createElement("span");
+      l.className = "tl"; l.textContent = "  " + r.label; d.appendChild(l); }
+    tip.appendChild(d);
+  }
+  tip.style.opacity = "1";
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - pad;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - pad;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.opacity = "0"; };
+addEventListener("scroll", hideTip, { passive: true });
+
+// ------------------------------------------------------------------- drawing
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a = {}) => { const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+function card(id, title, caption) {
+  const c = document.createElement("section");
+  c.className = "card" + (id === "table" || id === "heat" ? " wide" : "");
+  const h = document.createElement("h2"); h.textContent = title; c.appendChild(h);
+  if (caption) { const p = document.createElement("p");
+    p.className = "cap"; p.textContent = caption; c.appendChild(p); }
+  const body = document.createElement("div"); body.id = "c-" + id; c.appendChild(body);
+  return { card: c, body };
+}
+
+/* Ranked horizontal bars. ONE measure -> one hue, never a cycled set.
+   4px rounded data-end, anchored to the baseline; 2px surface gap between bars. */
+function rankedBars(host, rows, opts) {
+  const { unit, color = "var(--series-1)", limit = 12 } = opts || {};
+  opts = opts || {};
+  const data = rows.slice(0, limit);
+  if (!data.length) { host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const max = Math.max(...data.map(d => d.value)) || 1;
+  const rowH = 30, padL = 210, padR = 78, top = 6;
+  const H = data.length * rowH + top + 4, W = 720;
+  const bw = W - padL - padR;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  data.forEach((d, i) => {
+    const y = top + i * rowH;
+    const w = Math.max(2, (d.value / max) * bw);
+    const lab = el("text", { x: padL - 10, y: y + 15, "text-anchor": "end", class: "lbl" });
+    lab.textContent = d.key.length > 34 ? d.key.slice(0, 33) + "…" : d.key;
+    svg.appendChild(lab);
+    const g = el("g", { class: "mark", tabindex: "0", role: "listitem" });
+    const r = el("rect", { x: padL, y: y + 4, width: w, height: rowH - 12,
+                           rx: 4, fill: color });
+    g.appendChild(r);
+    const v = el("text", { x: padL + w + 8, y: y + 15, class: "val" });
+    v.textContent = fmt(d.value);
+    g.appendChild(v);
+    const share = opts && opts.total ? d.value / opts.total : 0;
+    const rows_ = [{ value: full(d.value) + " " + unit, label: "", color },
+                   { value: share ? pct(share) : "-", label: "of financing mapped" },
+                   { value: d.count + "", label: d.countLabel || "programmes" }];
+    g.addEventListener("pointermove", (e) => showTip(e, rows_, d.key));
+    g.addEventListener("pointerleave", hideTip);
+    g.addEventListener("focus", (e) => showTip(
+      { clientX: padL + w, clientY: y + 40 }, rows_, d.key));
+    g.addEventListener("blur", hideTip);
+    svg.appendChild(g);
+  });
+  host.textContent = "";
+  host.appendChild(svg);
+  host.appendChild(tableView(["Category", "Amount (" + unit + ")", "Programmes"],
+    data.map(d => [d.key, full(d.value), String(d.count)]), [false, true, true]));
+}
+
+/* Grouped bars, one series per year. Two series -> slots 1 and 2, validated. */
+function groupedBars(host, rows, years, opts) {
+  const { unit, limit = 12 } = opts || {};
+  const data = rows.slice(0, limit);
+  if (!data.length) { host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const colors = ["var(--series-1)", "var(--series-2)"];
+  const max = Math.max(...data.flatMap(d => years.map(y => d.byYear[y] || 0))) || 1;
+  const barH = 11, gap = 2, rowH = years.length * (barH + gap) + 16;
+  const padL = 210, padR = 78, top = 6;
+  const H = data.length * rowH + top + 4, W = 720, bw = W - padL - padR;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  data.forEach((d, i) => {
+    const y0 = top + i * rowH;
+    const lab = el("text", { x: padL - 10, y: y0 + 14, "text-anchor": "end", class: "lbl" });
+    lab.textContent = d.key.length > 34 ? d.key.slice(0, 33) + "…" : d.key;
+    svg.appendChild(lab);
+    years.forEach((yr, j) => {
+      const v = d.byYear[yr] || 0;
+      const w = Math.max(2, (v / max) * bw);
+      const y = y0 + 4 + j * (barH + gap);
+      const g = el("g", { class: "mark", tabindex: "0" });
+      g.appendChild(el("rect", { x: padL, y, width: w, height: barH, rx: 4,
+                                 fill: colors[j % colors.length] }));
+      if (j === years.length - 1) {
+        const t = el("text", { x: padL + w + 8, y: y + barH - 1, class: "val" });
+        t.textContent = fmt(v);
+        g.appendChild(t);
+      }
+      const rows_ = years.map((yy, k) => ({
+        value: full(d.byYear[yy] || 0) + " " + unit, label: "FY" + yy,
+        color: colors[k % colors.length] }));
+      g.addEventListener("pointermove", (e) => showTip(e, rows_, d.key));
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("focus", () => showTip(
+        { clientX: padL + w, clientY: y + 40 }, rows_, d.key));
+      g.addEventListener("blur", hideTip);
+      svg.appendChild(g);
+    });
+  });
+  const leg = document.createElement("div");
+  leg.className = "legend";
+  years.forEach((yr, j) => {
+    const s = document.createElement("span");
+    const i2 = document.createElement("i");
+    i2.className = "sq"; i2.style.background = colors[j % colors.length];
+    s.appendChild(i2);
+    s.appendChild(document.createTextNode("FY" + yr));
+    leg.appendChild(s);
+  });
+  host.textContent = "";
+  host.appendChild(leg);
+  host.appendChild(svg);
+  host.appendChild(tableView(["Category", ...years.map(y => "FY" + y + " (" + unit + ")")],
+    data.map(d => [d.key, ...years.map(y => full(d.byYear[y] || 0))]),
+    [false, ...years.map(() => true)]));
+}
+
+/* Column labels that all begin the same way ("Ministerio da Previdencia Social",
+   "Ministerio da Economia") truncate to six identical headers. Drop the shared leading
+   words so the distinguishing part is what survives; the full name stays in the tooltip. */
+function dropCommonPrefix(labels) {
+  if (labels.length < 2) return labels.slice();
+  const words = labels.map(l => l.split(/\s+/));
+  let n = 0;
+  while (n < Math.min(...words.map(w => w.length)) - 1) {
+    const w = words[0][n].toLowerCase();
+    if (!words.every(x => x[n].toLowerCase() === w)) break;
+    n++;
+  }
+  if (n === 0) return labels.slice();
+  // The shared run usually ends mid-phrase ("Ministerio" | "da Economia"), so a leading
+  // preposition is left stranded on every label. Drop it.
+  const STOP = /^(da|de|do|das|dos|of|the|for|d')\s+/i;
+  return words.map(w => w.slice(n).join(" ").replace(STOP, ""));
+}
+
+/* Heatmap: magnitude across two categoricals -> ONE hue, light to dark. */
+function heatmap(host, rowKeys, colKeys, get, unit) {
+  if (!rowKeys.length || !colKeys.length) {
+    host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const steps = ["var(--seq-1)", "var(--seq-2)", "var(--seq-3)", "var(--seq-4)", "var(--seq-5)"];
+  const vals = [];
+  rowKeys.forEach(r => colKeys.forEach(c => { const v = get(r, c); if (v > 0) vals.push(v); }));
+  const max = Math.max(...vals, 1);
+  const cw = 108, ch = 30, padL = 230, top = 26;
+  const W = padL + colKeys.length * cw + 12, H = top + rowKeys.length * ch + 8;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  const colLabels = dropCommonPrefix(colKeys);
+  colKeys.forEach((c, j) => {
+    const t = el("text", { x: padL + j * cw + cw / 2, y: 16, "text-anchor": "middle",
+                           class: "lbl" });
+    const lab = colLabels[j];
+    t.textContent = lab.length > 15 ? lab.slice(0, 14) + "…" : lab;
+    const ttl = el("title"); ttl.textContent = c; t.appendChild(ttl);
+    svg.appendChild(t);
+  });
+  rowKeys.forEach((r, i) => {
+    const y = top + i * ch;
+    const t = el("text", { x: padL - 10, y: y + 19, "text-anchor": "end", class: "lbl" });
+    t.textContent = r.length > 36 ? r.slice(0, 35) + "…" : r;
+    svg.appendChild(t);
+    colKeys.forEach((c, j) => {
+      const v = get(r, c);
+      const idx = v <= 0 ? -1 : Math.min(steps.length - 1,
+        Math.floor(Math.sqrt(v / max) * steps.length));
+      const g = el("g", { class: "mark", tabindex: "0" });
+      g.appendChild(el("rect", { x: padL + j * cw + 1, y: y + 1, width: cw - 3, height: ch - 3,
+        rx: 4, fill: idx < 0 ? "var(--surface-2)" : steps[idx] }));
+      if (v > 0) {
+        const lt = el("text", { x: padL + j * cw + cw / 2, y: y + 19, "text-anchor": "middle",
+          class: "val", fill: idx >= 3 ? "#fff" : "var(--text-primary)" });
+        lt.textContent = fmt(v);
+        g.appendChild(lt);
+      }
+      const rows_ = [{ value: v > 0 ? full(v) + " " + unit : "no financing" }];
+      g.addEventListener("pointermove", (e) => showTip(e, rows_, r + "  ·  " + c));
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("blur", hideTip);
+      svg.appendChild(g);
+    });
+  });
+  const scale = document.createElement("div");
+  scale.className = "legend";
+  const lo = document.createElement("span"); lo.textContent = "low";
+  scale.appendChild(lo);
+  steps.forEach(s => { const i2 = document.createElement("i");
+    i2.className = "sq"; i2.style.background = s; scale.appendChild(i2); });
+  const hi = document.createElement("span"); hi.textContent = "high";
+  scale.appendChild(hi);
+  host.textContent = "";
+  host.appendChild(scale);
+  const sc = document.createElement("div"); sc.style.overflowX = "auto";
+  sc.appendChild(svg); host.appendChild(sc);
+  host.appendChild(tableView(["Row", ...colKeys],
+    rowKeys.map(r => [r, ...colKeys.map(c => { const v = get(r, c); return v ? full(v) : "—"; })]),
+    [false, ...colKeys.map(() => true)]));
+}
+
+function tableView(cols, rows, numeric) {
+  const d = document.createElement("details");
+  d.className = "tv";
+  const s = document.createElement("summary");
+  s.textContent = "Table view (" + rows.length + " rows)";
+  d.appendChild(s);
+  const wrap = document.createElement("div"); wrap.className = "scroll";
+  const t = document.createElement("table");
+  const thead = document.createElement("thead"), tr = document.createElement("tr");
+  cols.forEach((c, i) => { const th = document.createElement("th");
+    if (numeric && numeric[i]) th.className = "n";
+    th.textContent = c; tr.appendChild(th); });
+  thead.appendChild(tr); t.appendChild(thead);
+  const tb = document.createElement("tbody");
+  rows.forEach(r => { const trr = document.createElement("tr");
+    r.forEach((v, i) => { const td = document.createElement("td");
+      if (numeric && numeric[i]) td.className = "n";
+      td.textContent = v; trr.appendChild(td); });
+    tb.appendChild(trr); });
+  t.appendChild(tb); wrap.appendChild(t); d.appendChild(wrap);
+  return d;
+}
+
+// --------------------------------------------------------------------- render
+function render() {
+  const edges = filtered();
+  const years = state.year === "all" ? DATA.years : [state.year];
+  const money = moneyByYear(edges);
+  const matched = years.reduce((s, y) => s + (money[y] || 0), 0);
+  const national = years.reduce((s, y) => s + (DATA.national[y] || 0), 0);
+  const strategies = new Set(edges.map(e => e.s)).size;
+  const programmes = new Set(edges.map(e => e.p)).size;
+
+  $("#count").textContent = edges.length + " edge(s) · " + strategies + " strateg" +
+    (strategies === 1 ? "y" : "ies") + " · " + programmes + " programme(s)";
+
+  // ---- tiles
+  const tiles = [
+    ["Financing mapped", fmt(matched), CUR],
+    ["Share of national budget", national ? pct(matched / national) : "—",
+      national ? "of " + fmt(national) + " " + CUR : "national total unavailable"],
+    ["Strategies", String(strategies), DATA.n_unfunded + " unfunded in full panel"],
+    ["Budget programmes", String(programmes), "distinct, counted once per year"],
+  ];
+  const th = $("#tiles"); th.textContent = "";
+  tiles.forEach(([k, v, u]) => {
+    const d = document.createElement("div"); d.className = "tile";
+    const kk = document.createElement("div"); kk.className = "k"; kk.textContent = k;
+    const vv = document.createElement("div"); vv.className = "v"; vv.textContent = v;
+    const uu = document.createElement("div"); uu.className = "u"; uu.textContent = u;
+    d.append(kk, vv, uu); th.appendChild(d);
+  });
+
+  // ---- cards
+  const grid = $("#grid"); grid.textContent = "";
+  const byRisk = exposure(edges, e => e.rk);
+  const bySector = exposure(edges, e => [e.sec]);
+
+  const c1 = card("risk", "Financing by risk addressed",
+    "Portfolio exposure: each risk sums the distinct programmes tagged with it. Risks "
+    + "overlap, so these do not add up to the total. The scale is linear and unclipped, so "
+    + "one very large programme flattens the rest; hover any bar for its share.");
+  grid.appendChild(c1.card);
+  if (years.length > 1) {
+    groupedBars(c1.body, byRisk.map(r => ({ key: r.key, byYear: r.byYear,
+      count: r.progs.size })), years, { unit: CUR });
+  } else {
+    rankedBars(c1.body, byRisk.map(r => ({ key: r.key, value: r.total,
+      count: r.progs.size })), { unit: CUR, total: matched });
+  }
+
+  const c2 = card("sector", "Financing by sector", "One measure, ranked. Top 12 shown.");
+  grid.appendChild(c2.card);
+  rankedBars(c2.body, bySector.map(r => ({ key: r.key || "(not stated)", value: r.total,
+    count: r.progs.size })), { unit: CUR, total: matched });
+
+  const byHdi = exposure(edges, e => [e.hdi]);
+  if (byHdi.length && byHdi.some(h => h.key)) {
+    const cH = card("hdi", "Financing by human development category",
+      "Portfolio exposure by HDI category, on the same counting rule as the risk chart.");
+    grid.appendChild(cH.card);
+    rankedBars(cH.body, byHdi.filter(h => h.key).map(r => ({ key: r.key, value: r.total,
+      count: r.progs.size })), { unit: CUR, total: matched });
+  }
+
+  const c3 = card("heat", "Risk by sector", "Financing where a risk and a sector meet.");
+  grid.appendChild(c3.card);
+  const topSectors = bySector.slice(0, 6).map(s => s.key || "(not stated)");
+  const topRisks = byRisk.slice(0, 11).map(r => r.key);
+  const cell = new Map();
+  {
+    const seen = new Set();
+    for (const e of edges) {
+      const sec = e.sec || "(not stated)";
+      if (topSectors.indexOf(sec) === -1) continue;
+      for (const rk of e.rk) {
+        const k = rk + "|" + sec;
+        const dedupe = k + "|" + e.p + "|" + e.y;
+        if (seen.has(dedupe)) continue;
+        seen.add(dedupe);
+        cell.set(k, (cell.get(k) || 0) + e.a);
+      }
+    }
+  }
+  heatmap(c3.body, topRisks, topSectors, (r, c) => cell.get(r + "|" + c) || 0, CUR);
+
+  // ---- strategy table
+  const c4 = card("table", "Strategies", "Every strategy in the current filter, with the "
+    + "programmes funding it. Financing counts each programme once per year.");
+  grid.appendChild(c4.card);
+  const byStrategy = new Map();
+  {
+    const seen = new Set();
+    for (const e of edges) {
+      const cur = byStrategy.get(e.s) ||
+        { total: 0, byYear: {}, progs: new Set(), risks: new Set(), sec: e.sec };
+      const k = e.s + "|" + e.p + "|" + e.y;
+      if (!seen.has(k)) {
+        seen.add(k);
+        cur.total += e.a;
+        cur.byYear[e.y] = (cur.byYear[e.y] || 0) + e.a;
+      }
+      cur.progs.add(e.p);
+      e.rk.forEach(r => cur.risks.add(r));
+      byStrategy.set(e.s, cur);
+    }
+  }
+  const srows = [...byStrategy.entries()].sort((a, b) => b[1].total - a[1].total)
+    .map(([s, v]) => [s, v.sec || "—", [...v.risks].join(", ") || "—",
+      String(v.progs.size), ...years.map(y => full(v.byYear[y] || 0))]);
+  const tv = tableView(["Strategy", "Sector", "Risks", "Programmes",
+    ...years.map(y => "FY" + y + " (" + CUR + ")")], srows,
+    [false, false, false, true, ...years.map(() => true)]);
+  tv.open = true;
+  c4.body.appendChild(tv);
+}
+
+// ---------------------------------------------------------------------- wire
+(function init() {
+  const risks = [...new Set(DATA.edges.flatMap(e => e.rk))].sort();
+  const sectors = [...new Set(DATA.edges.map(e => e.sec).filter(Boolean))].sort();
+  const sals = [...new Set(DATA.edges.map(e => e.sal).filter(Boolean))].sort();
+  options($("#f-year"), DATA.years, "All years");
+  options($("#f-risk"), risks, "All risks");
+  options($("#f-sector"), sectors, "All sectors");
+  options($("#f-sal"), sals, "Any salience");
+  if (!sals.length) $("#f-sal").parentElement.style.display = "none";
+
+  const bind = (id, key) => $(id).addEventListener("input", (e) => {
+    state[key] = e.target.value; render(); });
+  bind("#f-year", "year"); bind("#f-risk", "risk");
+  bind("#f-sector", "sector"); bind("#f-sal", "sal"); bind("#f-q", "q");
+  $("#reset").addEventListener("click", () => {
+    Object.assign(state, { year: "all", risk: "all", sector: "all", sal: "all", q: "" });
+    ["#f-year", "#f-risk", "#f-sector", "#f-sal"].forEach(s => { $(s).value = "all"; });
+    $("#f-q").value = ""; render();
+  });
+  $("#theme").addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const dark = cur ? cur === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+  render();
+})();
+</script>
+</body>
+</html>

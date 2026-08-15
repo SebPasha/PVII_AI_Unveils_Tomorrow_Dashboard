@@ -1,7 +1,7 @@
 # Run report - Jamaica
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 10:04 by run_pipeline.py
+Generated 2026-08-15 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -10,10 +10,10 @@ Generated 2026-08-15 10:04 by run_pipeline.py
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
 | validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (jamaica references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | QA FAIL - ceiling=PASS - no strategy over-counted in any year | unmatched_codes=254 |
-| build_analytics_html | ok | QA FAIL - dashboard built, no summary printed |
-| audit_checks | ok | QA FAIL - 10/12 PASS (A2 3 disagree, A11 10 dangle) [advisory] |
-| data_issues | ok | 7 detected across 1 country(ies): 2 high, 4 medium, 1 low [advisory] |
+| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
+| build_analytics_html | ok | strategies=117 (28 unfunded) | edges=207 |
+| audit_checks | ok | QA FAIL - 12/15 PASS (A2 3 disagree, A4 18 over ceiling, A11 10 dangle) [advisory] |
+| data_issues | ok | 9 detected across 1 country(ies): 3 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -96,7 +96,7 @@ no inputs configured for this check
 ### validate_refs (L3)
 ```
 --- jamaica references
-RESULT: FAIL - 207 dangling reference(s) of 1143
+RESULT: FAIL - 7 dangling reference(s) of 1143
 report -> Files/outputs/jamaica/validation/refs_jamaica_references.xlsx
 ```
 
@@ -190,12 +190,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica
   sheet 'budget_all_years' : 481 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 323 programs x 3 year(s) (funding-over-time)
   sheet 'reconciliation'   : 70 rows (audit)
-  sheet 'data_quality'     : 828 flagged items (see summary below)
+  sheet 'data_quality'     : 417 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 41   MEDIUM: 775   LOW: 9   INFO: 3
+  HIGH: 41   MEDIUM: 364   LOW: 9   INFO: 3
 
   [HIGH] reconciliation_mismatch  (41)
       - FY2019 strat 01: programs sum to 5,419,260.0 but strategy_total is 3,738,254.0 (gap -1,681,006.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -204,27 +204,21 @@ DATA-QUALITY SUMMARY
       ... and 38 more (see 'data_quality' sheet)
 
   [MEDIUM] blank_amount  (47)
-      - FY2019 strat 01 01.004: amount is blank/unparseable.
-      - FY2019 strat 03 03.110: amount is blank/unparseable.
-      - FY2019 strat 05 05.578: amount is blank/unparseable.
+      - FY2019 strat 01 004: amount is blank/unparseable.
+      - FY2019 strat 03 110: amount is blank/unparseable.
+      - FY2019 strat 05 578: amount is blank/unparseable.
       ... and 44 more (see 'data_quality' sheet)
 
-  [MEDIUM] malformed_code_repaired  (411)
-      - FY2019 strat 01 01.001: program_code '001' looked malformed and was normalized to '01.001' - verify against source; fix the year file to avoid this.
-      - FY2019 strat 01 01.004: program_code '004' looked malformed and was normalized to '01.004' - verify against source; fix the year file to avoid this.
-      - FY2019 strat 01 01.301: program_code '301' looked malformed and was normalized to '01.301' - verify against source; fix the year file to avoid this.
-      ... and 408 more (see 'data_quality' sheet)
-
   [MEDIUM] program_missing_in_year  (317)
-      - FY2019,2022 strat 001 001.01: program '001.01' (Central Administration) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
-      - FY2019,2022 strat 001 001.02: program '001.02' (Policy, Planning and Development) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
-      - FY2019,2022 strat 001 001.10001: program '001.10001' (Direction and Management) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2019,2022 strat 001 01: program '01' (Central Administration) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2019,2022 strat 001 02: program '02' (Policy, Planning and Development) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2019,2022 strat 001 10001: program '10001' (Direction and Management) exists in ['2024'] but is absent in ['2019', '2022'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 314 more (see 'data_quality' sheet)
 
   [LOW] large_yoy_swing  (9)
-      - FY2022->2024 strat 02 02.10918: program '02.10918' changed +470% (10,307.0 -> 58,722.0) - verify this is real and not an extraction error.
-      - FY2019->2022 strat 20 20.10005: program '20.10005' changed +444% (157,338.0 -> 856,209.0) - verify this is real and not an extraction error.
-      - FY2019->2022 strat 21 21.10303: program '21.10303' changed +4616% (103,500.0 -> 4,881,274.0) - verify this is real and not an extraction error.
+      - FY2022->2024 strat 02 10918: program '10918' changed +470% (10,307.0 -> 58,722.0) - verify this is real and not an extraction error.
+      - FY2019->2022 strat 20 10005: program '10005' changed +444% (157,338.0 -> 856,209.0) - verify this is real and not an extraction error.
+      - FY2019->2022 strat 21 10303: program '10303' changed +4616% (103,500.0 -> 4,881,274.0) - verify this is real and not an extraction error.
       ... and 6 more (see 'data_quality' sheet)
 ==============================================================================
 DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years
@@ -236,40 +230,50 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/FINAL_PANEL.xlsx
   panel               : 117 strategies x 3 years (2019, 2022, 2024)
   match_review        : 254 matches (BOTH names + rationale)
-  unmatched_codes     : 254 (codes NOT in that year's budget - REVIEW)  <-- !!
-  unfunded_strategies : 117 (strategies with no budget any year)
-  funding_by_program  : 0 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 411 budget programmes with no matched strategy
-  risk_panel          : 10 risks | ceiling: PASS
+  unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
+  unfunded_strategies : 28 (strategies with no budget any year)
+  funding_by_program  : 137 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 174 budget programmes with no matched strategy
+  risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.318 | financing-weighted=0.0 | {'planned': 84, 'aspirational': 28, 'planned_specific': 5}
-  basket/reverse-pass : 0 shared programmes | reverse-pass edges=54 rows -> 0 new matches
-  recall_review       : 0 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.318 financing_weighted=0.0
-CEILING TEST: PASS - no strategy over-counted in any year
-UNMATCHED CODES: 254
-QA: FAIL - 254 unmatched code(s), ceiling PASS, 0 year warning(s)
+  maturity            : mean=0.679 | financing-weighted=0.837 | {'operational_programme': 39, 'partial_operation': 44, 'operational_funded': 6, 'planned': 23, 'aspirational': 3, 'planned_specific': 2}
+  basket/reverse-pass : 44 shared programmes | reverse-pass edges=54 rows -> 21 new matches
+  recall_review       : 26 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.679 financing_weighted=0.837
+CEILING TEST: FAIL - see ceiling sheet
+UNMATCHED CODES: 0
+QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 
 ### build_analytics_html
 ```
-FAILED: /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/FINAL_PANEL.xlsx has no funding_by_program / matches sheet
+dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/budget_strategy_analytics.html
+  years        2019, 2022, 2024
+  edges        207
+  strategies   117 (28 unfunded)
+  size         83 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: jamaica 10/12 PASS (A2 3 disagree, A11 10 dangle)
+AUDIT CHECKS: jamaica 12/15 PASS (A2 3 disagree, A4 18 over ceiling, A11 10 dangle)
   ok   A1   Stored programme sums              70 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             70 strategy-year(s) / 3 disagree
             FY2019 strategy 110: stored 0.0, layer -
             FY2022 strategy 21: stored 0.0, layer -
             FY2024 strategy 25: stored 0.0, layer -
-  --   A3   Programme counted once             sheet absent
-  ok   A4   Ceiling holds                      70 strategy-year(s) / 0 over ceiling
-  --   A6   Panel money matches its edges      sheets absent
+  ok   A3   Programme counted once             137 row(s) / 0 duplicate key(s)
+  FAIL A4   Ceiling holds                      70 strategy-year(s) / 18 over ceiling
+            FY2019 strategy 01: matched 4,307,310.0 of 3,738,254.0
+            FY2019 strategy 20: matched 2,825,722.0 of 49,739.0
+            FY2019 strategy 21: matched 1,747,326.0 of 38,768.0
+            FY2019 strategy 22: matched 657,770.0 of 186,121.0
+            FY2019 strategy 23: matched 324,603.0 of 93,664.0
+            FY2019 strategy 25: matched 3,200,559.0 of 397,357.0
+  ok   A6   Panel money matches its edges      351 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         254 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                117 strategyclean row(s) / 117 panel row(s)
-  ok   A10  Unfunded list is complete          117 zero-funded / 117 listed
+  ok   A10  Unfunded list is complete          28 zero-funded / 28 listed
   FAIL A11  Evidence chain resolves            830 distinct id(s) / 10 dangle
             chunk id 0 has no stage-3 row
             chunk id 1 has no stage-3 row
@@ -278,7 +282,7 @@ AUDIT CHECKS: jamaica 10/12 PASS (A2 3 disagree, A11 10 dangle)
             chunk id 4 has no stage-3 row
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  --   A14  No duplicate edges                 sheet absent
+  ok   A14  No duplicate edges                 207 edge(s) / 0 duplicate(s)
   ok   A15  One currency                       1 expected / 1 found
   ok   A16  Components are traceable           1067 component(s) / 0 untraceable
   ok   A17  No workbook open in Excel          0 expected / 0 found
@@ -288,8 +292,9 @@ AUDIT CHECKS: jamaica 10/12 PASS (A2 3 disagree, A11 10 dangle)
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  7 detected across 1 country(ies): 2 high, 4 medium, 1 low
-  10 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  9 detected across 1 country(ies): 3 high, 4 medium, 2 low
+  11 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  jamaica   D1       A programme code is not unique within a year
   HIGH  jamaica   D7       Flag raised while combining the budget years
   HIGH  jamaica   D8       A strategy total its own programmes do not add up to
 ```

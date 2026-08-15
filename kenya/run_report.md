@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 10:05 by run_pipeline.py
+Generated 2026-08-15 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -10,10 +10,10 @@ Generated 2026-08-15 10:05 by run_pipeline.py
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
 | validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (kenya references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | QA FAIL - ceiling=PASS - no strategy over-counted in any year | unmatched_codes=824 |
-| build_analytics_html | ok | QA FAIL - dashboard built, no summary printed |
-| audit_checks | ok | QA FAIL - 8/12 PASS (A2 4 disagree, A11 10 dangle, A15 2 found) [advisory] |
-| data_issues | ok | 7 detected across 1 country(ies): 2 high, 4 medium, 1 low [advisory] |
+| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
+| build_analytics_html | ok | strategies=264 (10 unfunded) | edges=723 |
+| audit_checks | ok | QA FAIL - 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle) [advisory] |
+| data_issues | ok | 10 detected across 1 country(ies): 4 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -84,7 +84,7 @@ no inputs configured for this check
 ### validate_refs (L3)
 ```
 --- kenya references
-RESULT: FAIL - 645 dangling reference(s) of 2188
+RESULT: FAIL - 37 dangling reference(s) of 2188
 report -> Files/outputs/kenya/validation/refs_kenya_references.xlsx
 ```
 
@@ -499,12 +499,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/b
   sheet 'budget_all_years' : 1378 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 716 programs x 2 year(s) (funding-over-time)
   sheet 'reconciliation'   : 393 rows (audit)
-  sheet 'data_quality'     : 1487 flagged items (see summary below)
+  sheet 'data_quality'     : 502 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 8   MEDIUM: 1455   LOW: 22   INFO: 2
+  HIGH: 8   MEDIUM: 470   LOW: 22   INFO: 2
 
   [HIGH] reconciliation_mismatch  (8)
       - FY2020 strat 0106000: programs sum to 349,247,063.0 but strategy_total is 276,081,719.0 (gap -73,165,344.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -513,27 +513,21 @@ DATA-QUALITY SUMMARY
       ... and 5 more (see 'data_quality' sheet)
 
   [MEDIUM] blank_amount  (23)
-      - FY2020 strat 0105000 0105000.0105060: amount is blank/unparseable.
-      - FY2020 strat 0120000 0120000.0120040: amount is blank/unparseable.
-      - FY2020 strat 0620000 0620000.0620020: amount is blank/unparseable.
+      - FY2020 strat 0105000 0105060: amount is blank/unparseable.
+      - FY2020 strat 0120000 0120040: amount is blank/unparseable.
+      - FY2020 strat 0620000 0620020: amount is blank/unparseable.
       ... and 20 more (see 'data_quality' sheet)
 
-  [MEDIUM] malformed_code_repaired  (985)
-      - FY2020 strat 1011 1011.0702000: program_code '0702000' looked malformed and was normalized to '1011.0702000' - verify against source; fix the year file to avoid this.
-      - FY2020 strat 1011 1011.0703000: program_code '0703000' looked malformed and was normalized to '1011.0703000' - verify against source; fix the year file to avoid this.
-      - FY2020 strat 1011 1011.0704000: program_code '0704000' looked malformed and was normalized to '1011.0704000' - verify against source; fix the year file to avoid this.
-      ... and 982 more (see 'data_quality' sheet)
-
   [MEDIUM] program_missing_in_year  (447)
-      - FY2025 strat 0105000 0105000.0105060: program '0105000.0105060' (NAMATA) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
-      - FY2025 strat 0116000 0116000.0119010: program '0116000.0119010' (General Administration, Planning and Support Services) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
-      - FY2025 strat 0116000 0116000.0119020: program '0116000.0119020' (Land Administration and Management) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2025 strat 0105000 0105060: program '0105060' (NAMATA) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2025 strat 0116000 0119010: program '0119010' (General Administration, Planning and Support Services) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
+      - FY2025 strat 0116000 0119020: program '0119020' (Land Administration and Management) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 444 more (see 'data_quality' sheet)
 
   [LOW] large_yoy_swing  (22)
-      - FY2020->2025 strat 0101000 0101000.0101050: program '0101000.0101050' changed +413% (819,947,827.0 -> 4,207,574,665.0) - verify this is real and not an extraction error.
-      - FY2020->2025 strat 0102000 0102000.0102030: program '0102000.0102030' changed +801% (7,015,000,000.0 -> 63,220,000,000.0) - verify this is real and not an extraction error.
-      - FY2020->2025 strat 0111000 0111000.0111010: program '0111000.0111010' changed +1829% (40,500,000.0 -> 781,401,118.0) - verify this is real and not an extraction error.
+      - FY2020->2025 strat 0101000 0101050: program '0101050' changed +413% (819,947,827.0 -> 4,207,574,665.0) - verify this is real and not an extraction error.
+      - FY2020->2025 strat 0102000 0102030: program '0102030' changed +801% (7,015,000,000.0 -> 63,220,000,000.0) - verify this is real and not an extraction error.
+      - FY2020->2025 strat 0111000 0111010: program '0111010' changed +1829% (40,500,000.0 -> 781,401,118.0) - verify this is real and not an extraction error.
       ... and 19 more (see 'data_quality' sheet)
 ==============================================================================
 DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years
@@ -545,41 +539,46 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/FINAL_PANEL.xlsx
   panel               : 264 strategies x 2 years (2020, 2025)
   match_review        : 824 matches (BOTH names + rationale)
-  unmatched_codes     : 824 (codes NOT in that year's budget - REVIEW)  <-- !!
-  unfunded_strategies : 264 (strategies with no budget any year)
-  funding_by_program  : 0 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 985 budget programmes with no matched strategy
-  risk_panel          : 10 risks | ceiling: PASS
+  unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
+  unfunded_strategies : 10 (strategies with no budget any year)
+  funding_by_program  : 475 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 502 budget programmes with no matched strategy
+  risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.326 | financing-weighted=0.0 | {'planned': 209, 'planned_specific': 8, 'aspirational': 47}
-  basket/reverse-pass : 0 shared programmes | reverse-pass edges=216 rows -> 0 new matches
-  recall_review       : 0 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.326 financing_weighted=0.0
-CEILING TEST: PASS - no strategy over-counted in any year
-UNMATCHED CODES: 824
-QA: FAIL - 824 unmatched code(s), ceiling PASS, 0 year warning(s)
+  maturity            : mean=0.837 | financing-weighted=0.855 | {'operational_programme': 243, 'operational_funded': 11, 'planned': 10}
+  basket/reverse-pass : 181 shared programmes | reverse-pass edges=216 rows -> 115 new matches
+  recall_review       : 67 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.837 financing_weighted=0.855
+CEILING TEST: FAIL - see ceiling sheet
+UNMATCHED CODES: 0
+QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 
 ### build_analytics_html
 ```
-FAILED: /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/FINAL_PANEL.xlsx has no funding_by_program / matches sheet
+dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/budget_strategy_analytics.html
+  years        2020, 2025
+  edges        723
+  strategies   264 (10 unfunded)
+  size         235 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 8/12 PASS (A2 4 disagree, A11 10 dangle, A15 2 found)
+AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
             FY2020 strategy 0740000: stored 0.0, layer -
             FY2020 strategy 1008000: stored 0.0, layer -
             FY2020 strategy 1014000: stored 0.0, layer -
-  --   A3   Programme counted once             sheet absent
-  ok   A4   Ceiling holds                      393 strategy-year(s) / 0 over ceiling
-  --   A6   Panel money matches its edges      sheets absent
+  ok   A3   Programme counted once             475 row(s) / 0 duplicate key(s)
+  FAIL A4   Ceiling holds                      393 strategy-year(s) / 1 over ceiling
+            FY2025 strategy 0710000: matched 4,065,815,260.0 of 2,000,000.0
+  ok   A6   Panel money matches its edges      528 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         824 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                264 strategyclean row(s) / 264 panel row(s)
-  ok   A10  Unfunded list is complete          264 zero-funded / 264 listed
+  ok   A10  Unfunded list is complete          10 zero-funded / 10 listed
   FAIL A11  Evidence chain resolves            1060 distinct id(s) / 10 dangle
             chunk id 0 has no stage-3 row
             chunk id 1 has no stage-3 row
@@ -588,7 +587,7 @@ AUDIT CHECKS: kenya 8/12 PASS (A2 4 disagree, A11 10 dangle, A15 2 found)
             chunk id 4 has no stage-3 row
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  --   A14  No duplicate edges                 sheet absent
+  ok   A14  No duplicate edges                 723 edge(s) / 0 duplicate(s)
   FAIL A15  One currency                       1 expected / 2 found
             KSHS
             KShs.
@@ -597,8 +596,8 @@ AUDIT CHECKS: kenya 8/12 PASS (A2 4 disagree, A11 10 dangle, A15 2 found)
             Promotion and Development of MSMEs <- Entreprenuership and Business Development Se
             Promotion and Development of MSMEs <- Value Addition, Innovation and Incubation fo
             Product and Market Development for <- Market Linkages for MSMEs
-            0706010 | Economic Planning Coordi <- National Population Centre
-            0321000 | Standards and Qualitry I <- Intellectual Property Bill, 2021
+            0107010 | Agricultural Policy, Leg <- Agricultural mechanization Bill
+            0107010 | Agricultural Policy, Leg <- Livestock Bill
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      264 strategy(ies) / 0 with no component
 ```
@@ -606,8 +605,10 @@ AUDIT CHECKS: kenya 8/12 PASS (A2 4 disagree, A11 10 dangle, A15 2 found)
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  7 detected across 1 country(ies): 2 high, 4 medium, 1 low
-  10 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  10 detected across 1 country(ies): 4 high, 4 medium, 2 low
+  11 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  kenya     D1       A programme code is not unique within a year
+  HIGH  kenya     D11      Strategy named after the budget line funding it
   HIGH  kenya     D7       Flag raised while combining the budget years
   HIGH  kenya     D8       A strategy total its own programmes do not add up to
 ```
