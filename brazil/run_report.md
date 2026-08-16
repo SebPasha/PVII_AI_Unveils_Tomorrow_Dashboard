@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-15 16:28 by run_pipeline.py
+Generated 2026-08-15 21:27 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
