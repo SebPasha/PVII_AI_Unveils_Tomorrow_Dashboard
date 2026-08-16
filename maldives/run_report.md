@@ -1,17 +1,13 @@
 # Run report - Maldives
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 21:35 by run_pipeline.py
+Generated 2026-08-16 13:33 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | QA FAIL - FAIL 3/11 (maldives_budget_2017.xlsx, maldives_budget_2018.xlsx, maldives_strategyclean.xlsx) |
-| validate_source_fidelity (L4) | ok | NOT CONFIGURED |
-| validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
-| validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (maldives references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=28 |
-| build_analytics_html | ok | strategies=172 (164 unfunded) | edges=31 |
+| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
+| build_analytics_html | ok | strategies=172 (157 unfunded) | edges=59 |
 | audit_checks | ok | QA FAIL - 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found) [advisory] |
 | data_issues | ok | 7 detected across 1 country(ies): 2 high, 4 medium, 1 low [advisory] |
 
@@ -24,84 +20,6 @@ Generated 2026-08-15 21:35 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
-
-### validate_stage_schema (L2)
-```
---- maldives_budget_2017.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_budget_2017.xlsx
-
-  RESULT: FAIL - 3 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- maldives_budget_2018.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_budget_2018.xlsx
-
-  RESULT: FAIL - 160 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- maldives_budget_2019.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_budget_2019.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_coverage_2017.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_coverage_2017.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_coverage_2018.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_coverage_2018.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_coverage_2019.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_coverage_2019.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_mapping_2017.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_mapping_2017.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_mapping_2018.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_mapping_2018.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_mapping_2019.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_mapping_2019.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- maldives_strategyclean.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_strategyclean.xlsx
-
-  RESULT: FAIL - 3 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- maldives_risk_summary.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/validation/schema_maldives_risk_summary.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-```
-
-### validate_source_fidelity (L4)
-```
-no inputs configured for this check
-```
-
-### validate_recall (L4)
-```
-no inputs configured for this check
-```
-
-### validate_refs (L3)
-```
---- maldives references
-RESULT: FAIL - 28 dangling reference(s) of 2794
-report -> Files/outputs/maldives/validation/refs_maldives_references.xlsx
-```
 
 ### combine_budget_years
 ```
@@ -268,28 +186,28 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/FINAL_PANEL.xlsx
   panel               : 172 strategies x 3 years (2017, 2018, 2019)
   match_review        : 59 matches (BOTH names + rationale)
-  unmatched_codes     : 28 (codes NOT in that year's budget - REVIEW)  <-- !!
-  unfunded_strategies : 164 (strategies with no budget any year)
-  funding_by_program  : 25 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 827 budget programmes with no matched strategy
+  unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
+  unfunded_strategies : 157 (strategies with no budget any year)
+  funding_by_program  : 44 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 808 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.376 | financing-weighted=0.7 | {'partial_operation': 8, 'planned': 130, 'aspirational': 7, 'planned_specific': 27}
-  basket/reverse-pass : 6 shared programmes | reverse-pass edges=1 rows -> 1 new matches
-  recall_review       : 6 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.376 financing_weighted=0.7
+  maturity            : mean=0.394 | financing-weighted=0.703 | {'partial_operation': 12, 'operational_programme': 2, 'operational_funded': 1, 'aspirational': 6, 'planned': 125, 'planned_specific': 26}
+  basket/reverse-pass : 12 shared programmes | reverse-pass edges=1 rows -> 1 new matches
+  recall_review       : 9 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.394 financing_weighted=0.703
 CEILING TEST: FAIL - see ceiling sheet
-UNMATCHED CODES: 28
-QA: FAIL - 28 unmatched code(s), ceiling FAIL, 0 year warning(s)
+UNMATCHED CODES: 0
+QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 
 ### build_analytics_html
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldives/budget_strategy_analytics.html
-  years        2017
-  edges        31
-  strategies   172 (164 unfunded)
-  size         38 KB
+  years        2017, 2019
+  edges        59
+  strategies   172 (157 unfunded)
+  size         47 KB
 ```
 
 ### audit_checks
@@ -303,16 +221,16 @@ AUDIT CHECKS: maldives 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found
             FY2018 strategy 13: stored 0.0, layer -
             FY2018 strategy 15: stored 0.0, layer -
             FY2018 strategy 16: stored 0.0, layer -
-  ok   A3   Programme counted once             25 row(s) / 0 duplicate key(s)
+  ok   A3   Programme counted once             44 row(s) / 0 duplicate key(s)
   FAIL A4   Ceiling holds                      101 strategy-year(s) / 1 over ceiling
             FY2017 strategy 5: matched 431,283,126.0 of 35,615,361.0
   ok   A6   Panel money matches its edges      516 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         59 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                172 strategyclean row(s) / 172 panel row(s)
-  ok   A10  Unfunded list is complete          164 zero-funded / 164 listed
+  ok   A10  Unfunded list is complete          157 zero-funded / 157 listed
   ok   A11  Evidence chain resolves            2713 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 31 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 59 edge(s) / 0 duplicate(s)
   FAIL A15  One currency                       1 expected / 5 found
             2019 392
             currency units
@@ -328,7 +246,7 @@ AUDIT CHECKS: maldives 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 2 high, 4 medium, 1 low
-  11 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  maldives  D7       Flag raised while combining the budget years
   HIGH  maldives  D8       A strategy total its own programmes do not add up to
 ```

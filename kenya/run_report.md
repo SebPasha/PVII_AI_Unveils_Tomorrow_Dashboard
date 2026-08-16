@@ -1,17 +1,13 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 21:35 by run_pipeline.py
+Generated 2026-08-16 13:32 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | QA FAIL - FAIL 3/8 (kenya_mapping_2020.xlsx, kenya_mapping_2025.xlsx, kenya_strategyclean.xlsx) |
-| validate_source_fidelity (L4) | ok | NOT CONFIGURED [advisory] |
-| validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
-| validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (kenya references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=264 (10 unfunded) | edges=723 |
+| build_analytics_html | ok | strategies=242 (8 unfunded) | edges=737 |
 | audit_checks | ok | QA FAIL - 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle) [advisory] |
 | data_issues | ok | 10 detected across 1 country(ies): 4 high, 4 medium, 2 low [advisory] |
 
@@ -24,69 +20,6 @@ Generated 2026-08-15 21:35 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
-
-### validate_stage_schema (L2)
-```
---- kenya_budget_2020.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_budget_2020.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- kenya_budget_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_budget_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- kenya_coverage_2020.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_coverage_2020.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- kenya_coverage_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_coverage_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- kenya_mapping_2020.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_mapping_2020.xlsx
-
-  RESULT: FAIL - 12 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- kenya_mapping_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_mapping_2025.xlsx
-
-  RESULT: FAIL - 8 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- kenya_strategyclean.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_strategyclean.xlsx
-
-  RESULT: FAIL - 8 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
-
---- kenya_risk_summary.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/validation/schema_kenya_risk_summary.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-```
-
-### validate_source_fidelity (L4)
-```
-no inputs configured for this check
-```
-
-### validate_recall (L4)
-```
-no inputs configured for this check
-```
-
-### validate_refs (L3)
-```
---- kenya references
-RESULT: FAIL - 37 dangling reference(s) of 2188
-report -> Files/outputs/kenya/validation/refs_kenya_references.xlsx
-```
 
 ### combine_budget_years
 ```
@@ -537,18 +470,18 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 ### build_final_panel
 ```
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/FINAL_PANEL.xlsx
-  panel               : 264 strategies x 2 years (2020, 2025)
-  match_review        : 824 matches (BOTH names + rationale)
+  panel               : 242 strategies x 2 years (2020, 2025)
+  match_review        : 916 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 10 (strategies with no budget any year)
-  funding_by_program  : 475 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 502 budget programmes with no matched strategy
+  unfunded_strategies : 8 (strategies with no budget any year)
+  funding_by_program  : 501 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 476 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.837 | financing-weighted=0.855 | {'operational_programme': 243, 'operational_funded': 11, 'planned': 10}
-  basket/reverse-pass : 181 shared programmes | reverse-pass edges=216 rows -> 115 new matches
-  recall_review       : 67 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.837 financing_weighted=0.855
+  maturity            : mean=0.839 | financing-weighted=0.854 | {'operational_programme': 225, 'operational_funded': 9, 'planned': 8}
+  basket/reverse-pass : 172 shared programmes | reverse-pass edges=308 rows -> 156 new matches
+  recall_review       : 75 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.839 financing_weighted=0.854
 CEILING TEST: FAIL - see ceiling sheet
 UNMATCHED CODES: 0
 QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
@@ -558,9 +491,9 @@ QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/budget_strategy_analytics.html
   years        2020, 2025
-  edges        723
-  strategies   264 (10 unfunded)
-  size         235 KB
+  edges        737
+  strategies   242 (8 unfunded)
+  size         242 KB
 ```
 
 ### audit_checks
@@ -572,13 +505,13 @@ AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
             FY2020 strategy 0740000: stored 0.0, layer -
             FY2020 strategy 1008000: stored 0.0, layer -
             FY2020 strategy 1014000: stored 0.0, layer -
-  ok   A3   Programme counted once             475 row(s) / 0 duplicate key(s)
+  ok   A3   Programme counted once             501 row(s) / 0 duplicate key(s)
   FAIL A4   Ceiling holds                      393 strategy-year(s) / 1 over ceiling
             FY2025 strategy 0710000: matched 4,065,815,260.0 of 2,000,000.0
-  ok   A6   Panel money matches its edges      528 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         824 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                264 strategyclean row(s) / 264 panel row(s)
-  ok   A10  Unfunded list is complete          10 zero-funded / 10 listed
+  ok   A6   Panel money matches its edges      484 strategy-year figure(s) / 0 disagree
+  ok   A8   Edges cite real programmes         916 accepted edge(s) / 0 dangle
+  ok   A9   No strategy dropped                242 strategyclean row(s) / 242 panel row(s)
+  ok   A10  Unfunded list is complete          8 zero-funded / 8 listed
   FAIL A11  Evidence chain resolves            1060 distinct id(s) / 10 dangle
             chunk id 0 has no stage-3 row
             chunk id 1 has no stage-3 row
@@ -587,11 +520,11 @@ AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
             chunk id 4 has no stage-3 row
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 723 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 737 edge(s) / 0 duplicate(s)
   FAIL A15  One currency                       1 expected / 2 found
             KSHS
             KShs.
-  FAIL A16  Components are traceable           2082 component(s) / 9 untraceable
+  FAIL A16  Components are traceable           1918 component(s) / 8 untraceable
             Promotion and Development of MSMEs <- MSMEs Development and Promotion
             Promotion and Development of MSMEs <- Entreprenuership and Business Development Se
             Promotion and Development of MSMEs <- Value Addition, Innovation and Incubation fo
@@ -606,7 +539,7 @@ AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   10 detected across 1 country(ies): 4 high, 4 medium, 2 low
-  11 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D11      Strategy named after the budget line funding it
   HIGH  kenya     D7       Flag raised while combining the budget years

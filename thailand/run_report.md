@@ -1,15 +1,10 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-15 21:36 by run_pipeline.py
+Generated 2026-08-16 13:32 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | PASS 14/14 |
-| validate_source_fidelity (L4) | ok | PASS 4/4 |
-| validate_recall (L4) | ok | PASS 4/4 |
-| validate_totals (L4) | ok | PASS 1/1 |
-| validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=30 (0 unfunded) | edges=145 |
@@ -25,171 +20,6 @@ Generated 2026-08-15 21:36 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
-
-### validate_stage_schema (L2)
-```
---- thailand_budget_2023.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2023.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_budget_2024.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2024.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_budget_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_budget_2026.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2026.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_coverage_2023.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2023.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_coverage_2024.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2024.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_coverage_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_coverage_2026.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2026.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_mapping_2023.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2023.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_mapping_2024.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2024.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_mapping_2025.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_mapping_2026.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2026.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_strategyclean.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_strategyclean.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- thailand_risk_summary.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_risk_summary.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-```
-
-### validate_source_fidelity (L4)
-```
---- thailand_budget_2023.xlsx
-==============================================================================
-SOURCE FIDELITY  -  thailand_budget_2023.xlsx
-  verified against: 20220726_gov_tha_budget_in_brief_fy_2023.pdf (independent text extraction, 242,997 chars)
-==============================================================================
-  rows                 73
-  amounts traced       73/73
-  codes traced         73/73
-  names matched        73/73
-
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2023.xlsx
-
-  RESULT: PASS - every figure traces back to the source document.
-
---- thailand_budget_2024.xlsx
-==============================================================================
-SOURCE FIDELITY  -  thailand_budget_2024.xlsx
-  verified against: Book-2.pdf (independent text extraction, 247,242 chars)
-==============================================================================
-  rows                 75
-  amounts traced       75/75
-  codes traced         75/75
-  names matched        75/75
-
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2024.xlsx
-
-  RESULT: PASS - every figure traces back to the source document.
-
---- thailand_budget_2025.xlsx
-==============================================================================
-SOURCE FIDELITY  -  thailand_budget_2025.xlsx
-  verified against: Book.pdf (independent text extraction, 228,220 chars)
-==============================================================================
-  rows                 76
-  amounts traced       76/76
-  codes traced         76/76
-  names matched        76/76
-
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2025.xlsx
-
-  RESULT: PASS - every figure traces back to the source document.
-
---- thailand_budget_2026.xlsx
-==============================================================================
-SOURCE FIDELITY  -  thailand_budget_2026.xlsx
-  verified against: Thailand Budget 2026.pdf (independent text extraction, 228,831 chars)
-==============================================================================
-  rows                 77
-  amounts traced       77/77
-  codes traced         77/77
-  names matched        77/77
-
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2026.xlsx
-
-  RESULT: PASS - every figure traces back to the source document.
-```
-
-### validate_recall (L4)
-```
---- thailand_budget_2023.xlsx
-RESULT: PASS - 66 programme code(s) extracted, none missed
-report -> Files/outputs/thailand/validation/recall_thailand_budget_2023.xlsx
-
---- thailand_budget_2024.xlsx
-RESULT: PASS - 68 programme code(s) extracted, none missed
-report -> Files/outputs/thailand/validation/recall_thailand_budget_2024.xlsx
-
---- thailand_budget_2025.xlsx
-RESULT: PASS - 69 programme code(s) extracted, none missed
-report -> Files/outputs/thailand/validation/recall_thailand_budget_2025.xlsx
-
---- thailand_budget_2026.xlsx
-RESULT: PASS - 70 programme code(s) extracted, none missed
-report -> Files/outputs/thailand/validation/recall_thailand_budget_2026.xlsx
-```
-
-### validate_totals (L4)
-```
---- ThaiBudget2026.xlsx
-RESULT: PASS - 7 strategy total(s) reconcile and sum to the document's grand total (0.000% apart)
-report -> Files/outputs/thailand/validation/totals_ThaiBudget2026.xlsx
-```
-
-### validate_refs (L3)
-```
---- thailand references
-RESULT: PASS - every one of 679 reference(s) resolves
-report -> Files/outputs/thailand/validation/refs_thailand_references.xlsx
-```
 
 ### combine_budget_years
 ```
@@ -317,5 +147,5 @@ AUDIT CHECKS: thailand 15/15 PASS
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   4 detected across 1 country(ies): 0 high, 2 medium, 2 low
-  11 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
 ```
