@@ -1,15 +1,15 @@
 # Run report - Maldives
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-16 13:33 by run_pipeline.py
+Generated 2026-08-17 06:40 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=172 (157 unfunded) | edges=59 |
-| audit_checks | ok | QA FAIL - 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found) [advisory] |
-| data_issues | ok | 7 detected across 1 country(ies): 2 high, 4 medium, 1 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 13/15 PASS (A2 8 disagree, A4 1 over ceiling) [advisory] |
+| data_issues | FAILED | 7 detected across 1 country(ies): 2 high, 4 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -212,7 +212,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: maldives 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found)
+AUDIT CHECKS: maldives 13/15 PASS (A2 8 disagree, A4 1 over ceiling)
   ok   A1   Stored programme sums              101 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             101 strategy-year(s) / 8 disagree
             FY2017 strategy 37: stored 0.0, layer -
@@ -231,12 +231,7 @@ AUDIT CHECKS: maldives 12/15 PASS (A2 8 disagree, A4 1 over ceiling, A15 5 found
   ok   A11  Evidence chain resolves            2713 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
   ok   A14  No duplicate edges                 59 edge(s) / 0 duplicate(s)
-  FAIL A15  One currency                       1 expected / 5 found
-            2019 392
-            currency units
-            million
-            million local currency
-            units
+  ok   A15  One currency                       1 expected / 1 found
   ok   A16  Components are traceable           2812 component(s) / 0 untraceable
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      172 strategy(ies) / 0 with no component

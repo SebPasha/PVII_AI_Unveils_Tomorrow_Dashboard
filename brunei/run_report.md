@@ -1,15 +1,15 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-16 13:33 by run_pipeline.py
+Generated 2026-08-17 06:40 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=68 (25 unfunded) | edges=64 |
-| audit_checks | ok | QA FAIL - 13/15 PASS (A16 4 untraceable, A18 2 with no component) [advisory] |
-| data_issues | ok | 10 detected across 1 country(ies): 5 high, 3 medium, 2 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 13/15 PASS (A16 4 untraceable, A18 2 with no component) [advisory] |
+| data_issues | FAILED | 10 detected across 1 country(ies): 5 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
 

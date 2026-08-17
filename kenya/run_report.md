@@ -1,15 +1,15 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-16 13:32 by run_pipeline.py
+Generated 2026-08-17 06:39 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=242 (8 unfunded) | edges=737 |
-| audit_checks | ok | QA FAIL - 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle) [advisory] |
-| data_issues | ok | 10 detected across 1 country(ies): 4 high, 4 medium, 2 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 11/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle) [advisory] |
+| data_issues | FAILED | 10 detected across 1 country(ies): 4 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -475,7 +475,7 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/F
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
   unfunded_strategies : 8 (strategies with no budget any year)
   funding_by_program  : 501 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 476 budget programmes with no matched strategy
+  unmapped_programs   : 484 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
   maturity            : mean=0.839 | financing-weighted=0.854 | {'operational_programme': 225, 'operational_funded': 9, 'planned': 8}
@@ -498,7 +498,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
+AUDIT CHECKS: kenya 11/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
@@ -521,9 +521,7 @@ AUDIT CHECKS: kenya 10/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
   ok   A14  No duplicate edges                 737 edge(s) / 0 duplicate(s)
-  FAIL A15  One currency                       1 expected / 2 found
-            KSHS
-            KShs.
+  ok   A15  One currency                       1 expected / 1 found
   FAIL A16  Components are traceable           1918 component(s) / 8 untraceable
             Promotion and Development of MSMEs <- MSMEs Development and Promotion
             Promotion and Development of MSMEs <- Entreprenuership and Business Development Se

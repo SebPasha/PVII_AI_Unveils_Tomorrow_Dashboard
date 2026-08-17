@@ -1,15 +1,15 @@
 # Run report - Fiji
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-16 13:33 by run_pipeline.py
+Generated 2026-08-17 06:39 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=73 (5 unfunded) | edges=184 |
-| audit_checks | ok | QA FAIL - 12/15 PASS (A4 3 over ceiling, A11 10 dangle, A16 2 untraceable) [advisory] |
-| data_issues | ok | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 12/15 PASS (A4 3 over ceiling, A11 10 dangle, A16 2 untraceable) [advisory] |
+| data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 

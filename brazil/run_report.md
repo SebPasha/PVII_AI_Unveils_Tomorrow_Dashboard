@@ -1,16 +1,16 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-16 13:33 by run_pipeline.py
+Generated 2026-08-17 06:39 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=CLEAN |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
-| translate_panel | ok | 1210 cell(s) |
+| translate_panel | ok | 1323 cell(s) |
 | build_analytics_html | ok | strategies=92 (2 unfunded) | edges=110 |
-| audit_checks | ok | QA FAIL - 14/15 PASS (A16 1 untraceable) [advisory] |
-| data_issues | ok | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 13/15 PASS (A3 2 duplicate key(s), A16 1 untraceable) [advisory] |
+| data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
 
@@ -85,13 +85,13 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brazil/
   match_review        : 169 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
   unfunded_strategies : 2 (strategies with no budget any year)
-  funding_by_program  : 83 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 19 budget programmes with no matched strategy
+  funding_by_program  : 85 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 97 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: PASS
   enrichment          : strategyclean=yes risk_summary=yes
   maturity            : mean=0.836 | financing-weighted=0.85 | {'operational_programme': 90, 'aspirational': 2}
-  basket/reverse-pass : 20 shared programmes | reverse-pass edges=45 rows -> 6 new matches
-  recall_review       : 16 large programmes matched to only 1 strategy (candidate baskets)
+  basket/reverse-pass : 21 shared programmes | reverse-pass edges=45 rows -> 6 new matches
+  recall_review       : 15 large programmes matched to only 1 strategy (candidate baskets)
 MATURITY: mean=0.836 financing_weighted=0.85
 CEILING TEST: PASS - no strategy over-counted in any year
 UNMATCHED CODES: 0
@@ -102,8 +102,8 @@ QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 ```
 country    brazil
 workbooks  FINAL_PANEL.xlsx, budget_layer_all_years.xlsx
-strings    0 new, 110 already cached
-translated 1210 cell(s); originals kept in <column>_source
+strings    0 new, 127 already cached
+translated 1323 cell(s); originals kept in <column>_source
 cache      Files/llm/brazil/translations.json - edit it to correct a translation, then re-run
 ```
 
@@ -118,10 +118,12 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brazil 14/15 PASS (A16 1 untraceable)
+AUDIT CHECKS: brazil 13/15 PASS (A3 2 duplicate key(s), A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             83 row(s) / 0 duplicate key(s)
+  FAIL A3   Programme counted once             85 row(s) / 2 duplicate key(s)
+            FY2024 programme 1158 appears 2 times
+            FY2024 programme 2801 appears 2 times
   ok   A4   Ceiling holds                      28 strategy-year(s) / 0 over ceiling
   ok   A6   Panel money matches its edges      92 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         169 accepted edge(s) / 0 dangle
