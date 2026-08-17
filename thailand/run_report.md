@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-17 06:39 by run_pipeline.py
+Generated 2026-08-17 07:29 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|

@@ -1,14 +1,14 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-17 06:39 by run_pipeline.py
+Generated 2026-08-17 07:29 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=242 (8 unfunded) | edges=737 |
-| audit_checks | FAILED | QA FAIL - 11/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle) [advisory] |
+| audit_checks | FAILED | QA FAIL - 9/15 PASS (A2 4 disagree, A3 1 duplicate key(s), A4 1 over ceiling) [advisory] |
 | data_issues | FAILED | 10 detected across 1 country(ies): 4 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
@@ -474,13 +474,13 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/F
   match_review        : 916 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
   unfunded_strategies : 8 (strategies with no budget any year)
-  funding_by_program  : 501 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 484 budget programmes with no matched strategy
+  funding_by_program  : 502 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 483 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
   maturity            : mean=0.839 | financing-weighted=0.854 | {'operational_programme': 225, 'operational_funded': 9, 'planned': 8}
-  basket/reverse-pass : 172 shared programmes | reverse-pass edges=308 rows -> 156 new matches
-  recall_review       : 75 large programmes matched to only 1 strategy (candidate baskets)
+  basket/reverse-pass : 172 shared programmes | reverse-pass edges=308 rows -> 157 new matches
+  recall_review       : 76 large programmes matched to only 1 strategy (candidate baskets)
 MATURITY: mean=0.839 financing_weighted=0.854
 CEILING TEST: FAIL - see ceiling sheet
 UNMATCHED CODES: 0
@@ -498,14 +498,15 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 11/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
+AUDIT CHECKS: kenya 9/15 PASS (A2 4 disagree, A3 1 duplicate key(s), A4 1 over ceiling)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
             FY2020 strategy 0740000: stored 0.0, layer -
             FY2020 strategy 1008000: stored 0.0, layer -
             FY2020 strategy 1014000: stored 0.0, layer -
-  ok   A3   Programme counted once             501 row(s) / 0 duplicate key(s)
+  FAIL A3   Programme counted once             502 row(s) / 1 duplicate key(s)
+            FY2025 programme 1018000 appears 2 times
   FAIL A4   Ceiling holds                      393 strategy-year(s) / 1 over ceiling
             FY2025 strategy 0710000: matched 4,065,815,260.0 of 2,000,000.0
   ok   A6   Panel money matches its edges      484 strategy-year figure(s) / 0 disagree
@@ -520,7 +521,8 @@ AUDIT CHECKS: kenya 11/15 PASS (A2 4 disagree, A4 1 over ceiling, A11 10 dangle)
             chunk id 4 has no stage-3 row
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 737 edge(s) / 0 duplicate(s)
+  FAIL A14  No duplicate edges                 738 edge(s) / 1 duplicate(s)
+            FY2025 forests development, management and cons -> 1018000 x2
   ok   A15  One currency                       1 expected / 1 found
   FAIL A16  Components are traceable           1918 component(s) / 8 untraceable
             Promotion and Development of MSMEs <- MSMEs Development and Promotion

@@ -1,15 +1,15 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-17 06:39 by run_pipeline.py
+Generated 2026-08-17 07:30 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=CLEAN |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
-| translate_panel | ok | 1323 cell(s) |
-| build_analytics_html | ok | strategies=92 (2 unfunded) | edges=110 |
-| audit_checks | FAILED | QA FAIL - 13/15 PASS (A3 2 duplicate key(s), A16 1 untraceable) [advisory] |
+| translate_panel | ok | 1276 cell(s) |
+| build_analytics_html | ok | strategies=92 (1 unfunded) | edges=110 |
+| audit_checks | FAILED | QA FAIL - 12/15 PASS (A3 13 duplicate key(s), A14 14 duplicate(s), A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
@@ -84,15 +84,15 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brazil/
   panel               : 92 strategies x 1 years (2024)
   match_review        : 169 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 2 (strategies with no budget any year)
-  funding_by_program  : 85 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 97 budget programmes with no matched strategy
+  unfunded_strategies : 1 (strategies with no budget any year)
+  funding_by_program  : 97 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 85 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: PASS
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.836 | financing-weighted=0.85 | {'operational_programme': 90, 'aspirational': 2}
-  basket/reverse-pass : 21 shared programmes | reverse-pass edges=45 rows -> 6 new matches
-  recall_review       : 15 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.836 financing_weighted=0.85
+  maturity            : mean=0.843 | financing-weighted=0.85 | {'operational_programme': 91, 'aspirational': 1}
+  basket/reverse-pass : 21 shared programmes | reverse-pass edges=45 rows -> 21 new matches
+  recall_review       : 18 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.843 financing_weighted=0.85
 CEILING TEST: PASS - no strategy over-counted in any year
 UNMATCHED CODES: 0
 QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
@@ -103,7 +103,7 @@ QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 country    brazil
 workbooks  FINAL_PANEL.xlsx, budget_layer_all_years.xlsx
 strings    0 new, 127 already cached
-translated 1323 cell(s); originals kept in <column>_source
+translated 1276 cell(s); originals kept in <column>_source
 cache      Files/llm/brazil/translations.json - edit it to correct a translation, then re-run
 ```
 
@@ -112,26 +112,36 @@ cache      Files/llm/brazil/translations.json - edit it to correct a translation
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brazil/budget_strategy_analytics.html
   years        2024
   edges        110
-  strategies   92 (2 unfunded)
+  strategies   92 (1 unfunded)
   size         60 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: brazil 13/15 PASS (A3 2 duplicate key(s), A16 1 untraceable)
+AUDIT CHECKS: brazil 12/15 PASS (A3 13 duplicate key(s), A14 14 duplicate(s), A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
-  FAIL A3   Programme counted once             85 row(s) / 2 duplicate key(s)
+  FAIL A3   Programme counted once             97 row(s) / 13 duplicate key(s)
+            FY2024 programme 1144 appears 2 times
             FY2024 programme 1158 appears 2 times
-            FY2024 programme 2801 appears 2 times
+            FY2024 programme 1191 appears 2 times
+            FY2024 programme 2317 appears 2 times
+            FY2024 programme 2320 appears 2 times
+            FY2024 programme 2321 appears 3 times
   ok   A4   Ceiling holds                      28 strategy-year(s) / 0 over ceiling
   ok   A6   Panel money matches its edges      92 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         169 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                92 strategyclean row(s) / 92 panel row(s)
-  ok   A10  Unfunded list is complete          2 zero-funded / 2 listed
+  ok   A10  Unfunded list is complete          1 zero-funded / 1 listed
   ok   A11  Evidence chain resolves            669 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 110 edge(s) / 0 duplicate(s)
+  FAIL A14  No duplicate edges                 125 edge(s) / 14 duplicate(s)
+            FY2024 family farming and agroecology -> 1191 x2
+            FY2024 water resources: water in quantity and q -> 2321 x3
+            FY2024 1158 | climate emergency response -> 1158 x2
+            FY2024 2801 | neo-industrialization, business e -> 2801 x2
+            FY2024 2317 | regional development and territor -> 2317 x2
+            FY2024 1144 | sustainable agriculture -> 1144 x2
   ok   A15  One currency                       1 expected / 1 found
   FAIL A16  Components are traceable           561 component(s) / 1 untraceable
             State Transformation for Citizensh <- Public Service Capacity Expansion and Improv

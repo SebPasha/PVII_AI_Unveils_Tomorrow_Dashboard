@@ -1,15 +1,15 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-17 06:40 by run_pipeline.py
+Generated 2026-08-17 07:27 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=68 (25 unfunded) | edges=64 |
-| audit_checks | FAILED | QA FAIL - 13/15 PASS (A16 4 untraceable, A18 2 with no component) [advisory] |
-| data_issues | FAILED | 10 detected across 1 country(ies): 5 high, 3 medium, 2 low [advisory] |
+| build_final_panel | FAILED | QA FAIL - ceiling=? | unmatched_codes=? |
+| build_analytics_html | FAILED | QA FAIL - SKIPPED |
+| audit_checks | FAILED | SKIPPED [advisory] |
+| data_issues | FAILED | SKIPPED [advisory] |
 
 ## Outputs
 
@@ -57,67 +57,27 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 
 ### build_final_panel
 ```
-Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/FINAL_PANEL.xlsx
-  panel               : 68 strategies x 1 years (2025)
-  match_review        : 79 matches (BOTH names + rationale)
-  unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 25 (strategies with no budget any year)
-  funding_by_program  : 39 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 2 budget programmes with no matched strategy
-  risk_panel          : 10 risks | ceiling: PASS
-  enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.651 | financing-weighted=0.87 | {'operational_programme': 39, 'operational_funded': 4, 'planned': 11, 'aspirational': 12, 'planned_specific': 2}
-  basket/reverse-pass : 13 shared programmes | reverse-pass edges=29 rows -> 15 new matches
-  recall_review       : 9 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.651 financing_weighted=0.87
-CEILING TEST: PASS - no strategy over-counted in any year
-UNMATCHED CODES: 0
-QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
+Traceback (most recent call last):
+  File "/Users/sebastianpasha/Developer/Environment_UNDP/PV2/01_Pipeline/scripts/build_final_panel.py", line 840, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/sebastianpasha/Developer/Environment_UNDP/PV2/01_Pipeline/scripts/build_final_panel.py", line 609, in main
+    "budget_programme_codes": "; ".join(sorted({c for ys in d["yr_progs"].values() for c in ys})),
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: sequence item 0: expected str instance, int found
 ```
 
 ### build_analytics_html
 ```
-dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/budget_strategy_analytics.html
-  years        2025
-  edges        64
-  strategies   68 (25 unfunded)
-  size         52 KB
+SKIPPED (panel not produced)
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: brunei 13/15 PASS (A16 4 untraceable, A18 2 with no component)
-  ok   A1   Stored programme sums              3 strategy-year(s) / 0 disagree
-  ok   A2   Stored strategy totals             3 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             39 row(s) / 0 duplicate key(s)
-  ok   A4   Ceiling holds                      3 strategy-year(s) / 0 over ceiling
-  ok   A6   Panel money matches its edges      68 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         79 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                68 strategyclean row(s) / 68 panel row(s)
-  ok   A10  Unfunded list is complete          25 zero-funded / 25 listed
-  ok   A11  Evidence chain resolves            574 distinct id(s) / 0 dangle
-  ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 64 edge(s) / 0 duplicate(s)
-  ok   A15  One currency                       1 expected / 1 found
-  FAIL A16  Components are traceable           1022 component(s) / 4 untraceable
-            Green Building initiatives under t <- Green Building initiatives under the 12th Na
-            Infrastructure provision for enhan <- Preparation and upgrading works for infrastr
-            Research and innovation allocation <- Knowledge and Expertise and Innovation Enhan
-            Research costs for public higher e <- Research costs for public higher education i
-  ok   A17  No workbook open in Excel          0 expected / 0 found
-  FAIL A18  Strategies come from the plan      69 strategy(ies) / 2 with no component
-            Purchase of medicines, medical consumables and laboratory te
-            Payment for medical treatment services at Gleneagles Jerudon
+SKIPPED (panel not produced)
 ```
 
 ### data_issues
 ```
-data issues  Files/outputs/DATA_ISSUES.xlsx
-  10 detected across 1 country(ies): 5 high, 3 medium, 2 low
-  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
-  HIGH  brunei    D11      Strategy named after the budget line funding it
-  HIGH  brunei    D12      An output predates the prompt that produced it
-  HIGH  brunei    D3       Strategy with no plan text behind it
-  HIGH  brunei    D7       Flag raised while combining the budget years
-  HIGH  brunei    D8       A strategy total its own programmes do not add up to
+SKIPPED (panel not produced)
 ```
