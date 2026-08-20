@@ -1,15 +1,19 @@
 # Run report - Fiji
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-17 07:30 by run_pipeline.py
+Generated 2026-08-20 14:08 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
+| validate_stage_schema (L2) | ok | PASS 11/11 |
+| validate_source_fidelity (L4) | ok | NOT CONFIGURED |
+| validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
+| validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=73 (5 unfunded) | edges=184 |
-| audit_checks | FAILED | QA FAIL - 12/15 PASS (A4 3 over ceiling, A11 10 dangle, A16 2 untraceable) [advisory] |
-| data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
+| build_analytics_html | ok | strategies=220 (23 unfunded) | edges=750 |
+| audit_checks | FAILED | QA FAIL - 14/16 PASS (A4 3 over ceiling, A16 3 untraceable) [advisory] |
+| data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -20,6 +24,81 @@ Generated 2026-08-17 07:30 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
+
+### validate_stage_schema (L2)
+```
+--- fiji_budget_2017.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_budget_2017.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_budget_2018.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_budget_2018.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_budget_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_budget_2019.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_coverage_2017.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_coverage_2017.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_coverage_2018.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_coverage_2018.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_coverage_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_coverage_2019.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_mapping_2017.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_mapping_2017.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_mapping_2018.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_mapping_2018.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_mapping_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_mapping_2019.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_strategyclean.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_strategyclean.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- fiji_risk_summary.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/validation/schema_fiji_risk_summary.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+```
+
+### validate_source_fidelity (L4)
+```
+no inputs configured for this check
+```
+
+### validate_recall (L4)
+```
+no inputs configured for this check
+```
+
+### validate_refs (L3)
+```
+--- fiji references
+RESULT: PASS - every one of 2511 reference(s) resolves
+report -> Files/outputs/fiji/validation/refs_fiji_references.xlsx
+```
 
 ### combine_budget_years
 ```
@@ -145,6 +224,13 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+PROGRAMME CLASS (share of programme money)
+    development           1,960,624.5   17.0%  (40 programme-year rows)
+    standing_function     6,142,113.2   53.4%  (126 programme-year rows)
+    overhead              3,408,985.0   29.6%  (92 programme-year rows)
+
+HEAD NAMES: 21 row(s) renamed so a head reads the same in every year
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 366 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 98 programs x 3 year(s) (funding-over-time)
@@ -179,19 +265,32 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 
 ### build_final_panel
 ```
+STALE EDGES DROPPED: 76 edge(s) name a strategy the inventory does not hold (prog=76)
+   ! 14.1 | Disaster Management
+   ! 14.2 | Meteorological Services
+   ! 16.3 | Department of Communication
+   ! 18.2 | Rural Development Services
+   ! 18.3 | Rural Infrastructure
+   ! 18.4 | Rehabilitation and Rural Housing
+   ! 20.1 | Fiji Police
+   ! 21.2 | Primary Education
+   ! 21.3 | Secondary Education
+   ! 21.4 | Curriculum Development
+   Re-run the stage that produced them against the current strategyclean.
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/FINAL_PANEL.xlsx
-  panel               : 73 strategies x 3 years (2017, 2018, 2019)
-  match_review        : 254 matches (BOTH names + rationale)
+  panel               : 220 strategies x 3 years (2017, 2018, 2019)
+  match_review        : 750 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 5 (strategies with no budget any year)
-  funding_by_program  : 170 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 88 budget programmes with no matched strategy
-  risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
+  unfunded_strategies : 23 (strategies with no budget any year)
+  funding_by_program  : 167 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 91 budget programmes with no matched strategy
+  risk_panel          : 11 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.822 | financing-weighted=0.861 | {'operational_programme': 52, 'operational_funded': 10, 'partial_operation': 6, 'planned': 4, 'aspirational': 1}
-  basket/reverse-pass : 12 shared programmes | reverse-pass edges=76 rows -> 6 new matches
-  recall_review       : 41 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.822 financing_weighted=0.861
+  maturity            : mean=0.78 | financing-weighted=0.853 | {'operational_programme': 155, 'operational_funded': 12, 'partial_operation': 30, 'planned': 12, 'aspirational': 9, 'planned_specific': 2}
+  basket/reverse-pass : 129 shared programmes | reverse-pass edges=76 rows -> 0 new matches
+  recall_review       : 11 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.78 financing_weighted=0.853
 CEILING TEST: FAIL - see ceiling sheet
 UNMATCHED CODES: 0
 QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
@@ -201,47 +300,44 @@ QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/budget_strategy_analytics.html
   years        2017, 2018, 2019
-  edges        184
-  strategies   73 (5 unfunded)
-  size         83 KB
+  edges        750
+  strategies   220 (23 unfunded)
+  size         241 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: fiji 12/15 PASS (A4 3 over ceiling, A11 10 dangle, A16 2 untraceable)
+AUDIT CHECKS: fiji 14/16 PASS (A4 3 over ceiling, A16 3 untraceable)
   ok   A1   Stored programme sums              108 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             108 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             170 row(s) / 0 duplicate key(s)
+  ok   A3   Programme counted once             167 row(s) / 0 duplicate key(s)
   FAIL A4   Ceiling holds                      108 strategy-year(s) / 3 over ceiling
-            FY2018 strategy 2: matched 23,891.3 of 14,262.3
-            FY2018 strategy 21: matched 554,247.0 of 535,365.7
-            FY2018 strategy 3: matched 17,708.4 of 13,708.4
-  ok   A6   Panel money matches its edges      219 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         254 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                73 strategyclean row(s) / 73 panel row(s)
-  ok   A10  Unfunded list is complete          5 zero-funded / 5 listed
-  FAIL A11  Evidence chain resolves            1477 distinct id(s) / 10 dangle
-            chunk id 0 has no stage-3 row
-            chunk id 1 has no stage-3 row
-            chunk id 2 has no stage-3 row
-            chunk id 3 has no stage-3 row
-            chunk id 4 has no stage-3 row
-            chunk id 5 has no stage-3 row
+            FY2017 strategy 52: matched 364,701.0 of 354,607.9
+            FY2018 strategy 52: matched 400,474.3 of 391,274.3
+            FY2019 strategy 52: matched 363,562.9 of 354,362.9
+  ok   A6   Panel money matches its edges      660 strategy-year figure(s) / 0 disagree
+  ok   A8   Edges cite real programmes         750 accepted edge(s) / 0 dangle
+  ok   A9   No strategy dropped                220 strategyclean row(s) / 220 panel row(s)
+  ok   A10  Unfunded list is complete          23 zero-funded / 23 listed
+  ok   A11  Evidence chain resolves            1629 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 184 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 750 edge(s) / 0 duplicate(s)
   ok   A15  One currency                       1 expected / 1 found
-  FAIL A16  Components are traceable           2139 component(s) / 2 untraceable
-            30.2 | Crops <- Women’s Subsistence Farming and Fishing Supp
-            18.2 | Rural Development Services <- Decentralization of Public Services to Rural
+  FAIL A16  Components are traceable           2137 component(s) / 3 untraceable
+            Strengthen civil service capabilit <- Civil Service Planning, Implementation, and 
+            Expand youth skills, entrepreneurs <- Inclusive Education for Children with Specia
+            Promote gender equality, leadershi <- Women’s Equal Access Awareness Campaign
   ok   A17  No workbook open in Excel          0 expected / 0 found
-  ok   A18  Strategies come from the plan      73 strategy(ies) / 0 with no component
+  ok   A18  Strategies come from the plan      220 strategy(ies) / 0 with no component
+  ok   A19  Funding priority is reproducible   155 distinct (salience, funding) group(s) / 0 split across priorities
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  8 detected across 1 country(ies): 2 high, 4 medium, 2 low
-  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  7 detected across 1 country(ies): 3 high, 3 medium, 1 low
+  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  fiji      D12      An output predates the prompt that produced it
   HIGH  fiji      D7       Flag raised while combining the budget years
   HIGH  fiji      D8       A strategy total its own programmes do not add up to
 ```

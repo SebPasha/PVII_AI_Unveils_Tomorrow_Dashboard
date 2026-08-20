@@ -1,7 +1,7 @@
 # Run report - Bhutan
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-15 21:33 by run_pipeline.py
+Generated 2026-08-20 14:08 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|

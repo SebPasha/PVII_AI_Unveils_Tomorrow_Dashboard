@@ -1,15 +1,19 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-17 07:48 by run_pipeline.py
+Generated 2026-08-20 14:09 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
+| validate_stage_schema (L2) | ok | QA FAIL - FAIL 6/17 (malaysia_budget_2024.xlsx, malaysia_budget_2026.xlsx, malaysia_mapping_2024.xlsx) |
+| validate_source_fidelity (L4) | ok | NOT CONFIGURED [advisory] |
+| validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
+| validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (malaysia references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=191 (17 unfunded) | edges=1982 |
-| audit_checks | FAILED | QA FAIL - 12/15 PASS (A4 33 over ceiling, A11 10 dangle, A16 3 untraceable) [advisory] |
-| data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
+| build_analytics_html | ok | strategies=382 (44 unfunded) | edges=2895 |
+| audit_checks | FAILED | QA FAIL - 13/16 PASS (A4 38 over ceiling, A11 9 dangle, A16 1 untraceable) [advisory] |
+| data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -20,6 +24,117 @@ Generated 2026-08-17 07:48 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
+
+### validate_stage_schema (L2)
+```
+--- malaysia_budget_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_budget_2022.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_budget_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_budget_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_budget_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_budget_2024.xlsx
+
+  RESULT: FAIL - 50 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_budget_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_budget_2025.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_budget_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_budget_2026.xlsx
+
+  RESULT: FAIL - 6 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_coverage_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_coverage_2022.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_coverage_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_coverage_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_coverage_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_coverage_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_coverage_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_coverage_2025.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_coverage_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_coverage_2026.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_mapping_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_mapping_2022.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_mapping_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_mapping_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- malaysia_mapping_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_mapping_2024.xlsx
+
+  RESULT: FAIL - 59 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_mapping_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_mapping_2025.xlsx
+
+  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_mapping_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_mapping_2026.xlsx
+
+  RESULT: FAIL - 2 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_strategyclean.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_strategyclean.xlsx
+
+  RESULT: FAIL - 4 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- malaysia_risk_summary.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/validation/schema_malaysia_risk_summary.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+```
+
+### validate_source_fidelity (L4)
+```
+no inputs configured for this check
+```
+
+### validate_recall (L4)
+```
+no inputs configured for this check
+```
+
+### validate_refs (L3)
+```
+--- malaysia references
+RESULT: FAIL - 2894 dangling reference(s) of 4610
+report -> Files/outputs/malaysia/validation/refs_malaysia_references.xlsx
+```
 
 ### combine_budget_years
 ```
@@ -241,6 +356,14 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+PROGRAMME CLASS (share of programme money)
+    development        97,184,789,500.0    5.3%  (660 programme-year rows)
+    standing_function  878,259,138,400.0   47.5%  (1262 programme-year rows)
+    overhead           846,164,137,100.0   45.8%  (846 programme-year rows)
+    mixed              26,304,272,700.0    1.4%  (47 programme-year rows)
+
+HEAD NAMES: 1482 row(s) renamed so a head reads the same in every year
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 3015 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 1207 programs x 5 year(s) (funding-over-time)
@@ -282,19 +405,32 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 
 ### build_final_panel
 ```
+STALE EDGES DROPPED: 556 edge(s) name a strategy the inventory does not hold (prog=556)
+   ! Accelerating Technology Adoption and Innovation
+   ! Affordable Housing Access for B40 and M40 Households
+   ! Affordable Housing Development Programme
+   ! Agensi Pengurusan Bencana Negara (NADMA)
+   ! Agricommodity Entrepreneur Development for Specialty Products
+   ! Agricultural Market Access and Business Development Centres
+   ! Agriculture Sector Reinvigoration and Food Security
+   ! BUMIPUTERA AUTOMOTIVE FUND TRUST FUND
+   ! Basic Development Projects
+   ! Bumiputera Corporate Equity and Investment Participation
+   Re-run the stage that produced them against the current strategyclean.
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/FINAL_PANEL.xlsx
-  panel               : 191 strategies x 5 years (2022, 2023, 2024, 2025, 2026)
-  match_review        : 2124 matches (BOTH names + rationale)
+  panel               : 382 strategies x 5 years (2022, 2023, 2024, 2025, 2026)
+  match_review        : 2895 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 17 (strategies with no budget any year)
-  funding_by_program  : 921 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 1894 budget programmes with no matched strategy
-  risk_panel          : 11 risks | ceiling: FAIL - see 'ceiling' sheet
+  unfunded_strategies : 44 (strategies with no budget any year)
+  funding_by_program  : 872 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 1943 budget programmes with no matched strategy
+  risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.787 | financing-weighted=0.867 | {'operational_funded': 17, 'operational_programme': 122, 'partial_operation': 35, 'aspirational': 7, 'planned_specific': 3, 'planned': 7}
-  basket/reverse-pass : 454 shared programmes | reverse-pass edges=558 rows -> 416 new matches
-  recall_review       : 100 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.787 financing_weighted=0.867
+  maturity            : mean=0.758 | financing-weighted=0.845 | {'operational_programme': 209, 'partial_operation': 102, 'operational_funded': 27, 'aspirational': 12, 'planned': 32}
+  basket/reverse-pass : 516 shared programmes | reverse-pass edges=558 rows -> 2 new matches
+  recall_review       : 66 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.758 financing_weighted=0.845
 CEILING TEST: FAIL - see ceiling sheet
 UNMATCHED CODES: 0
 QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
@@ -304,29 +440,29 @@ QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysia/budget_strategy_analytics.html
   years        2022, 2023, 2024, 2025, 2026
-  edges        1982
-  strategies   191 (17 unfunded)
-  size         661 KB
+  edges        2895
+  strategies   382 (44 unfunded)
+  size         854 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: malaysia 12/15 PASS (A4 33 over ceiling, A11 10 dangle, A16 3 untraceable)
+AUDIT CHECKS: malaysia 13/16 PASS (A4 38 over ceiling, A11 9 dangle, A16 1 untraceable)
   ok   A1   Stored programme sums              200 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             200 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             921 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      200 strategy-year(s) / 33 over ceiling
-            FY2022 strategy 6: matched 1,913,592,400.0 of 504,000.0
-            FY2022 strategy 63: matched 78,621,004,200.0 of 4,013,756,600.0
-            FY2023 strategy 6: matched 2,804,658,200.0 of 504,000.0
-            FY2023 strategy 62: matched 14,715,068,700.0 of 13,803,000,000.0
-            FY2023 strategy 63: matched 86,059,252,000.0 of 4,082,402,000.0
-            FY2023 strategy 64: matched 9,162,842,000.0 of 355,933,300.0
-  ok   A6   Panel money matches its edges      955 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         2124 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                191 strategyclean row(s) / 191 panel row(s)
-  ok   A10  Unfunded list is complete          17 zero-funded / 17 listed
-  FAIL A11  Evidence chain resolves            1420 distinct id(s) / 10 dangle
+  ok   A3   Programme counted once             872 row(s) / 0 duplicate key(s)
+  FAIL A4   Ceiling holds                      200 strategy-year(s) / 38 over ceiling
+            FY2022 strategy 43: matched 1,793,313,900.0 of 1,776,018,800.0
+            FY2022 strategy 6: matched 1,098,130,400.0 of 504,000.0
+            FY2022 strategy 63: matched 40,495,896,900.0 of 4,013,756,600.0
+            FY2022 strategy 7: matched 139,085,000.0 of 2,465,300.0
+            FY2023 strategy 5: matched 20,238,300.0 of 564,000.0
+            FY2023 strategy 6: matched 3,301,632,500.0 of 504,000.0
+  ok   A6   Panel money matches its edges      1910 strategy-year figure(s) / 0 disagree
+  ok   A8   Edges cite real programmes         2895 accepted edge(s) / 0 dangle
+  ok   A9   No strategy dropped                382 strategyclean row(s) / 382 panel row(s)
+  ok   A10  Unfunded list is complete          44 zero-funded / 44 listed
+  FAIL A11  Evidence chain resolves            1447 distinct id(s) / 9 dangle
             chunk id 0 has no stage-3 row
             chunk id 1 has no stage-3 row
             chunk id 2 has no stage-3 row
@@ -334,21 +470,21 @@ AUDIT CHECKS: malaysia 12/15 PASS (A4 33 over ceiling, A11 10 dangle, A16 3 untr
             chunk id 4 has no stage-3 row
             chunk id 5 has no stage-3 row
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 1982 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 2895 edge(s) / 0 duplicate(s)
   ok   A15  One currency                       1 expected / 1 found
-  FAIL A16  Components are traceable           3668 component(s) / 3 untraceable
-            School Education Quality and Acces <- Education Quality Improvement Measures
-            Perbadanan Putrajaya <- Accessible Public Infrastructure Improvement
-            Governance, Policy and Stakeholder <- Strengthening Incentives Coordination and Co
+  FAIL A16  Components are traceable           3666 component(s) / 1 untraceable
+            Affordable and Inclusive Urban Liv <- Accessible Public Infrastructure Improvement
   ok   A17  No workbook open in Excel          0 expected / 0 found
-  ok   A18  Strategies come from the plan      191 strategy(ies) / 0 with no component
+  ok   A18  Strategies come from the plan      382 strategy(ies) / 0 with no component
+  ok   A19  Funding priority is reproducible   336 distinct (salience, funding) group(s) / 0 split across priorities
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  8 detected across 1 country(ies): 2 high, 4 medium, 2 low
-  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  7 detected across 1 country(ies): 3 high, 3 medium, 1 low
+  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to
 ```

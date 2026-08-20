@@ -1,15 +1,20 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-17 07:29 by run_pipeline.py
+Generated 2026-08-20 14:10 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
+| validate_stage_schema (L2) | ok | PASS 14/14 |
+| validate_source_fidelity (L4) | ok | PASS 4/4 |
+| validate_recall (L4) | ok | PASS 4/4 |
+| validate_totals (L4) | ok | PASS 1/1 |
+| validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=30 (0 unfunded) | edges=145 |
-| audit_checks | ok | 15/15 PASS [advisory] |
-| data_issues | ok | 4 detected across 1 country(ies): 0 high, 2 medium, 2 low [advisory] |
+| build_analytics_html | ok | strategies=99 (3 unfunded) | edges=732 |
+| audit_checks | FAILED | QA FAIL - 15/16 PASS (A16 1 untraceable) [advisory] |
+| data_issues | FAILED | 4 detected across 1 country(ies): 1 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -20,6 +25,171 @@ Generated 2026-08-17 07:29 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
+
+### validate_stage_schema (L2)
+```
+--- thailand_budget_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_budget_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_budget_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2025.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_budget_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2026.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_coverage_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_coverage_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_coverage_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2025.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_coverage_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2026.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_mapping_2023.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2023.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_mapping_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_mapping_2025.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2025.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_mapping_2026.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_mapping_2026.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_strategyclean.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_strategyclean.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- thailand_risk_summary.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_risk_summary.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+```
+
+### validate_source_fidelity (L4)
+```
+--- thailand_budget_2023.xlsx
+==============================================================================
+SOURCE FIDELITY  -  thailand_budget_2023.xlsx
+  verified against: 20220726_gov_tha_budget_in_brief_fy_2023.pdf (independent text extraction, 242,997 chars)
+==============================================================================
+  rows                 73
+  amounts traced       73/73
+  codes traced         73/73
+  names matched        73/73
+
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2023.xlsx
+
+  RESULT: PASS - every figure traces back to the source document.
+
+--- thailand_budget_2024.xlsx
+==============================================================================
+SOURCE FIDELITY  -  thailand_budget_2024.xlsx
+  verified against: Book-2.pdf (independent text extraction, 247,242 chars)
+==============================================================================
+  rows                 75
+  amounts traced       75/75
+  codes traced         75/75
+  names matched        75/75
+
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2024.xlsx
+
+  RESULT: PASS - every figure traces back to the source document.
+
+--- thailand_budget_2025.xlsx
+==============================================================================
+SOURCE FIDELITY  -  thailand_budget_2025.xlsx
+  verified against: Book.pdf (independent text extraction, 228,220 chars)
+==============================================================================
+  rows                 76
+  amounts traced       76/76
+  codes traced         76/76
+  names matched        76/76
+
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2025.xlsx
+
+  RESULT: PASS - every figure traces back to the source document.
+
+--- thailand_budget_2026.xlsx
+==============================================================================
+SOURCE FIDELITY  -  thailand_budget_2026.xlsx
+  verified against: Thailand Budget 2026.pdf (independent text extraction, 228,831 chars)
+==============================================================================
+  rows                 77
+  amounts traced       77/77
+  codes traced         77/77
+  names matched        77/77
+
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2026.xlsx
+
+  RESULT: PASS - every figure traces back to the source document.
+```
+
+### validate_recall (L4)
+```
+--- thailand_budget_2023.xlsx
+RESULT: PASS - 66 programme code(s) extracted, none missed
+report -> Files/outputs/thailand/validation/recall_thailand_budget_2023.xlsx
+
+--- thailand_budget_2024.xlsx
+RESULT: PASS - 68 programme code(s) extracted, none missed
+report -> Files/outputs/thailand/validation/recall_thailand_budget_2024.xlsx
+
+--- thailand_budget_2025.xlsx
+RESULT: PASS - 69 programme code(s) extracted, none missed
+report -> Files/outputs/thailand/validation/recall_thailand_budget_2025.xlsx
+
+--- thailand_budget_2026.xlsx
+RESULT: PASS - 70 programme code(s) extracted, none missed
+report -> Files/outputs/thailand/validation/recall_thailand_budget_2026.xlsx
+```
+
+### validate_totals (L4)
+```
+--- ThaiBudget2026.xlsx
+RESULT: PASS - 7 strategy total(s) reconcile and sum to the document's grand total (0.000% apart)
+report -> Files/outputs/thailand/validation/totals_ThaiBudget2026.xlsx
+```
+
+### validate_refs (L3)
+```
+--- thailand references
+RESULT: PASS - every one of 1330 reference(s) resolves
+report -> Files/outputs/thailand/validation/refs_thailand_references.xlsx
+```
 
 ### combine_budget_years
 ```
@@ -67,6 +237,11 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: PASS - all years reconcile
 
+PROGRAMME CLASS (share of programme money)
+    development           8,405,114.3   59.2%  (224 programme-year rows)
+    standing_function       579,196.4    4.1%  (8 programme-year rows)
+    overhead              5,213,989.3   36.7%  (41 programme-year rows)
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 301 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 71 programs x 4 year(s) (funding-over-time)
@@ -96,19 +271,32 @@ DATA QUALITY: OK with minor flags - review MEDIUM/LOW as needed
 
 ### build_final_panel
 ```
+STALE EDGES DROPPED: 52 edge(s) name a strategy the inventory does not hold (prog=52)
+   ! Integrated Program on Development of Future Industries and Services
+   ! Integrated Program on Digital Government
+   ! Integrated Program on Preparedness to Accommodate the Aging Society
+   ! Strategic Program on Coping with Repercussions from Climate Change
+   ! Strategic Program on Creation of Sustainable Growth with Regard to Conservation, Rehabil
+   ! Strategic Program on Development of Digital Economy and Society
+   ! Strategic Program on Development of Education and Learning Quality
+   ! Strategic Program on Development of Human Potentials on a Life-Long Basis
+   ! Strategic Program on Development of Science, Technology and Innovation Potentials
+   ! Strategic Program on Development of Special Economic Zones
+   Re-run the stage that produced them against the current strategyclean.
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/FINAL_PANEL.xlsx
-  panel               : 30 strategies x 4 years (2023, 2024, 2025, 2026)
-  match_review        : 172 matches (BOTH names + rationale)
+  panel               : 99 strategies x 4 years (2023, 2024, 2025, 2026)
+  match_review        : 732 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 0 (strategies with no budget any year)
-  funding_by_program  : 126 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 147 budget programmes with no matched strategy
-  risk_panel          : 11 risks | ceiling: PASS
+  unfunded_strategies : 3 (strategies with no budget any year)
+  funding_by_program  : 153 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 120 budget programmes with no matched strategy
+  risk_panel          : 9 risks | ceiling: PASS
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.85 | financing-weighted=0.85 | {'operational_programme': 30}
-  basket/reverse-pass : 10 shared programmes | reverse-pass edges=52 rows -> 25 new matches
-  recall_review       : 32 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.85 financing_weighted=0.85
+  maturity            : mean=0.829 | financing-weighted=0.849 | {'operational_programme': 92, 'partial_operation': 4, 'planned': 3}
+  basket/reverse-pass : 131 shared programmes | reverse-pass edges=52 rows -> 0 new matches
+  recall_review       : 6 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.829 financing_weighted=0.849
 CEILING TEST: PASS - no strategy over-counted in any year
 UNMATCHED CODES: 0
 QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
@@ -118,34 +306,37 @@ QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/budget_strategy_analytics.html
   years        2023, 2024, 2025, 2026
-  edges        145
-  strategies   30 (0 unfunded)
-  size         86 KB
+  edges        732
+  strategies   99 (3 unfunded)
+  size         250 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: thailand 15/15 PASS
+AUDIT CHECKS: thailand 15/16 PASS (A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             126 row(s) / 0 duplicate key(s)
+  ok   A3   Programme counted once             153 row(s) / 0 duplicate key(s)
   ok   A4   Ceiling holds                      28 strategy-year(s) / 0 over ceiling
-  ok   A6   Panel money matches its edges      120 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         172 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                30 strategyclean row(s) / 30 panel row(s)
-  ok   A10  Unfunded list is complete          0 zero-funded / 0 listed
-  ok   A11  Evidence chain resolves            528 distinct id(s) / 0 dangle
+  ok   A6   Panel money matches its edges      396 strategy-year figure(s) / 0 disagree
+  ok   A8   Edges cite real programmes         732 accepted edge(s) / 0 dangle
+  ok   A9   No strategy dropped                99 strategyclean row(s) / 99 panel row(s)
+  ok   A10  Unfunded list is complete          3 zero-funded / 3 listed
+  ok   A11  Evidence chain resolves            525 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 145 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 732 edge(s) / 0 duplicate(s)
   ok   A15  One currency                       1 expected / 1 found
-  ok   A16  Components are traceable           882 component(s) / 0 untraceable
+  FAIL A16  Components are traceable           890 component(s) / 1 untraceable
+            SME regulatory reform, competition <- Fair Competition and Opportunity Promotion
   ok   A17  No workbook open in Excel          0 expected / 0 found
-  ok   A18  Strategies come from the plan      30 strategy(ies) / 0 with no component
+  ok   A18  Strategies come from the plan      99 strategy(ies) / 0 with no component
+  ok   A19  Funding priority is reproducible   82 distinct (salience, funding) group(s) / 0 split across priorities
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  4 detected across 1 country(ies): 0 high, 2 medium, 2 low
-  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  4 detected across 1 country(ies): 1 high, 2 medium, 1 low
+  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  thailand  D12      An output predates the prompt that produced it
 ```

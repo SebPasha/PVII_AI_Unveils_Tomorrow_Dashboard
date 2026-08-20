@@ -1,15 +1,19 @@
 # Run report - Jamaica
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-17 07:30 by run_pipeline.py
+Generated 2026-08-20 14:09 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
+| validate_stage_schema (L2) | ok | QA FAIL - FAIL 3/11 (jamaica_budget_2019.xlsx, jamaica_budget_2022.xlsx, jamaica_budget_2024.xlsx) |
+| validate_source_fidelity (L4) | ok | NOT CONFIGURED [advisory] |
+| validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
+| validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
-| build_analytics_html | ok | strategies=115 (7 unfunded) | edges=399 |
-| audit_checks | FAILED | QA FAIL - 13/15 PASS (A4 15 over ceiling, A11 10 dangle) [advisory] |
-| data_issues | FAILED | 7 detected across 1 country(ies): 2 high, 3 medium, 2 low [advisory] |
+| build_analytics_html | ok | strategies=135 (4 unfunded) | edges=572 |
+| audit_checks | FAILED | QA FAIL - 15/16 PASS (A4 17 over ceiling) [advisory] |
+| data_issues | FAILED | 6 detected across 1 country(ies): 3 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -20,6 +24,84 @@ Generated 2026-08-17 07:30 by run_pipeline.py
 - Data oddities: `Files/outputs/DATA_ISSUES.xlsx`
 
 ## Full stage logs
+
+### validate_stage_schema (L2)
+```
+--- jamaica_budget_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_budget_2019.xlsx
+
+  RESULT: FAIL - 108 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- jamaica_budget_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_budget_2022.xlsx
+
+  RESULT: FAIL - 143 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- jamaica_budget_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_budget_2024.xlsx
+
+  RESULT: FAIL - 169 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
+
+--- jamaica_coverage_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_coverage_2019.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_coverage_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_coverage_2022.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_coverage_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_coverage_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_mapping_2019.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_mapping_2019.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_mapping_2022.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_mapping_2022.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_mapping_2024.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_mapping_2024.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_strategyclean.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_strategyclean.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+
+--- jamaica_risk_summary.xlsx
+  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/validation/schema_jamaica_risk_summary.xlsx
+
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+```
+
+### validate_source_fidelity (L4)
+```
+no inputs configured for this check
+```
+
+### validate_recall (L4)
+```
+no inputs configured for this check
+```
+
+### validate_refs (L3)
+```
+--- jamaica references
+RESULT: PASS - every one of 1585 reference(s) resolves
+report -> Files/outputs/jamaica/validation/refs_jamaica_references.xlsx
+```
 
 ### combine_budget_years
 ```
@@ -116,6 +198,14 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+PROGRAMME CLASS (share of programme money)
+    development         182,852,879.0   14.2%  (89 programme-year rows)
+    standing_function   727,880,271.0   56.7%  (136 programme-year rows)
+    overhead            371,416,346.0   28.9%  (114 programme-year rows)
+    mixed                 1,294,558.0    0.1%  (2 programme-year rows)
+
+HEAD NAMES: 107 row(s) renamed so a head reads the same in every year
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 420 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 222 programs x 3 year(s) (funding-over-time)
@@ -149,19 +239,32 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 
 ### build_final_panel
 ```
+STALE EDGES DROPPED: 81 edge(s) name a strategy the inventory does not hold (prog=81)
+   ! 10700 | Supervision of Education System
+   ! 10713 | Supervision of Primary Education
+   ! 10715 | Delivery of Instruction
+   ! 10772 | Supervision of Tertiary Institutions
+   ! 10811 | Training of Nurses
+   ! 12829 | In-Service Support
+   ! 12835 | Supervision of Technical and Vocational Education
+   ! 12836 | Guidance and Counselling Services
+   ! 325 | Social Welfare Services
+   ! Agricultural Planning and Policy
+   Re-run the stage that produced them against the current strategyclean.
+
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/FINAL_PANEL.xlsx
-  panel               : 115 strategies x 3 years (2019, 2022, 2024)
-  match_review        : 451 matches (BOTH names + rationale)
+  panel               : 135 strategies x 3 years (2019, 2022, 2024)
+  match_review        : 572 matches (BOTH names + rationale)
   unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
-  unfunded_strategies : 7 (strategies with no budget any year)
-  funding_by_program  : 158 (per programme x year, amount once - SAFE TO SUM)
-  unmapped_programs   : 183 budget programmes with no matched strategy
+  unfunded_strategies : 4 (strategies with no budget any year)
+  funding_by_program  : 177 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 164 budget programmes with no matched strategy
   risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
   enrichment          : strategyclean=yes risk_summary=yes
-  maturity            : mean=0.79 | financing-weighted=0.84 | {'operational_programme': 81, 'operational_funded': 4, 'partial_operation': 23, 'aspirational': 4, 'planned': 3}
-  basket/reverse-pass : 94 shared programmes | reverse-pass edges=81 rows -> 32 new matches
-  recall_review       : 13 large programmes matched to only 1 strategy (candidate baskets)
-MATURITY: mean=0.79 financing_weighted=0.84
+  maturity            : mean=0.824 | financing-weighted=0.848 | {'operational_programme': 120, 'partial_operation': 10, 'operational_funded': 1, 'planned': 3, 'aspirational': 1}
+  basket/reverse-pass : 128 shared programmes | reverse-pass edges=81 rows -> 0 new matches
+  recall_review       : 16 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.824 financing_weighted=0.848
 CEILING TEST: FAIL - see ceiling sheet
 UNMATCHED CODES: 0
 QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
@@ -171,48 +274,44 @@ QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
 ```
 dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica/budget_strategy_analytics.html
   years        2019, 2022, 2024
-  edges        399
-  strategies   115 (7 unfunded)
-  size         140 KB
+  edges        572
+  strategies   135 (4 unfunded)
+  size         183 KB
 ```
 
 ### audit_checks
 ```
-AUDIT CHECKS: jamaica 13/15 PASS (A4 15 over ceiling, A11 10 dangle)
+AUDIT CHECKS: jamaica 15/16 PASS (A4 17 over ceiling)
   ok   A1   Stored programme sums              79 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             79 strategy-year(s) / 0 disagree
-  ok   A3   Programme counted once             158 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      79 strategy-year(s) / 15 over ceiling
+  ok   A3   Programme counted once             177 row(s) / 0 duplicate key(s)
+  FAIL A4   Ceiling holds                      79 strategy-year(s) / 17 over ceiling
             FY2019 strategy 15020: matched 583,057.0 of 10,480.0
             FY2019 strategy 28000: matched 2,823,196.0 of 2,061,385.0
             FY2019 strategy 50038: matched 483,604.0 of 14,019.0
             FY2022 strategy 15020: matched 823,245.0 of 659,370.0
             FY2022 strategy 19000: matched 29,765,294.0 of 8,927,891.0
             FY2022 strategy 19047: matched 2,076,926.0 of 858,517.0
-  ok   A6   Panel money matches its edges      345 strategy-year figure(s) / 0 disagree
-  ok   A8   Edges cite real programmes         451 accepted edge(s) / 0 dangle
-  ok   A9   No strategy dropped                115 strategyclean row(s) / 115 panel row(s)
-  ok   A10  Unfunded list is complete          7 zero-funded / 7 listed
-  FAIL A11  Evidence chain resolves            830 distinct id(s) / 10 dangle
-            chunk id 0 has no stage-3 row
-            chunk id 1 has no stage-3 row
-            chunk id 2 has no stage-3 row
-            chunk id 3 has no stage-3 row
-            chunk id 4 has no stage-3 row
-            chunk id 5 has no stage-3 row
+  ok   A6   Panel money matches its edges      405 strategy-year figure(s) / 0 disagree
+  ok   A8   Edges cite real programmes         572 accepted edge(s) / 0 dangle
+  ok   A9   No strategy dropped                135 strategyclean row(s) / 135 panel row(s)
+  ok   A10  Unfunded list is complete          4 zero-funded / 4 listed
+  ok   A11  Evidence chain resolves            993 distinct id(s) / 0 dangle
   ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
-  ok   A14  No duplicate edges                 399 edge(s) / 0 duplicate(s)
+  ok   A14  No duplicate edges                 572 edge(s) / 0 duplicate(s)
   ok   A15  One currency                       1 expected / 1 found
-  ok   A16  Components are traceable           1038 component(s) / 0 untraceable
+  ok   A16  Components are traceable           1086 component(s) / 0 untraceable
   ok   A17  No workbook open in Excel          0 expected / 0 found
-  ok   A18  Strategies come from the plan      117 strategy(ies) / 0 with no component
+  ok   A18  Strategies come from the plan      135 strategy(ies) / 0 with no component
+  ok   A19  Funding priority is reproducible   129 distinct (salience, funding) group(s) / 0 split across priorities
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  7 detected across 1 country(ies): 2 high, 3 medium, 2 low
-  16 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  6 detected across 1 country(ies): 3 high, 2 medium, 1 low
+  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  jamaica   D12      An output predates the prompt that produced it
   HIGH  jamaica   D7       Flag raised while combining the budget years
   HIGH  jamaica   D8       A strategy total its own programmes do not add up to
 ```
