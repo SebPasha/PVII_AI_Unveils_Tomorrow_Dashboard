@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:08 by run_pipeline.py
+Generated 2026-08-21 08:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:08 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=83 (37 unfunded) | edges=83 |
-| audit_checks | FAILED | QA FAIL - 14/16 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/17 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 4 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -100,6 +100,11 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2025  heads 3,068.4  programmes 3,033.0  gap   1.2%  -> HEADS
+
+READABILITY  0 of 41 programme name(s) unreadable (0%), 0 of 3 head(s) (0%), 0% of the money
+
 PROGRAMME CLASS (share of programme money)
     development               2,569.3   84.7%  (34 programme-year rows)
     standing_function           293.2    9.7%  (5 programme-year rows)
@@ -169,7 +174,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brunei 14/16 PASS (A11 10 dangle, A16 20 untraceable)
+AUDIT CHECKS: brunei 15/17 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A1   Stored programme sums              3 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             3 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             34 row(s) / 0 duplicate key(s)
@@ -198,13 +203,14 @@ AUDIT CHECKS: brunei 14/16 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      83 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   46 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             41 programme(s) / 0 unreadable (0%), carrying 0% of the money
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 4 high, 2 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brunei    D11      Strategy named after the budget line funding it
   HIGH  brunei    D12      An output predates the prompt that produced it
   HIGH  brunei    D7       Flag raised while combining the budget years

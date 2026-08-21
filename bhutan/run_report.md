@@ -1,7 +1,7 @@
 # Run report - Bhutan
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:08 by run_pipeline.py
+Generated 2026-08-21 08:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -85,6 +85,10 @@ COMBINED BUDGET LAYER  -  years:   (4 file(s))
 RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: PASS - all years reconcile
+
+NATIONAL TOTAL (the denominator every share is computed against)
+
+READABILITY  0 of 0 programme name(s) unreadable (0%), 0 of 0 head(s) (0%), 0% of the money
 
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/bhutan/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 0 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)

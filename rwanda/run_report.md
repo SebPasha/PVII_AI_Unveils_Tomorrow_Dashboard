@@ -1,7 +1,7 @@
 # Run report - Rwanda
 
 **🟡 Overall: NOT READY**  
-Generated 2026-08-20 14:09 by run_pipeline.py
+Generated 2026-08-21 08:57 by run_pipeline.py
 
 The pipeline did not run: no budget year files are configured.
 

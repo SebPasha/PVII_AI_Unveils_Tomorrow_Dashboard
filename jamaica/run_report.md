@@ -1,7 +1,7 @@
 # Run report - Jamaica
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:09 by run_pipeline.py
+Generated 2026-08-21 08:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:09 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=135 (4 unfunded) | edges=572 |
-| audit_checks | FAILED | QA FAIL - 15/16 PASS (A4 17 over ceiling) [advisory] |
+| audit_checks | ok | 17/17 PASS [advisory] |
 | data_issues | FAILED | 6 detected across 1 country(ies): 3 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -198,6 +198,15 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2019  heads 278,267,320.0  programmes 239,480,965.0  gap  13.9%  -> PROGRAMMES
+    FY2022  heads 302,576,866.0  programmes 404,258,046.0  gap  25.1%  -> PROGRAMMES
+    FY2024  heads 458,257,529.0  programmes 639,705,043.0  gap  28.4%  -> PROGRAMMES
+    The head totals under-report in 3 year(s); the programme rows are the national budget there.
+
+READABILITY  1 of 341 programme name(s) unreadable (0%), 0 of 79 head(s) (0%), 0% of the money
+    e.g. '25'
+
 PROGRAMME CLASS (share of programme money)
     development         182,852,879.0   14.2%  (89 programme-year rows)
     standing_function   727,880,271.0   56.7%  (136 programme-year rows)
@@ -210,12 +219,17 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica
   sheet 'budget_all_years' : 420 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 222 programs x 3 year(s) (funding-over-time)
   sheet 'reconciliation'   : 79 rows (audit)
-  sheet 'data_quality'     : 279 flagged items (see summary below)
+  sheet 'data_quality'     : 282 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 74   MEDIUM: 200   LOW: 2   INFO: 3
+  HIGH: 77   MEDIUM: 200   LOW: 2   INFO: 3
+
+  [HIGH] national_basis_programmes  (3)
+      - FY2019: head totals sum to 278,267,320.0 but the programmes beneath them sum to 239,480,965.0 (14% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2019 is computed against 239,480,965.0.
+      - FY2022: head totals sum to 302,576,866.0 but the programmes beneath them sum to 404,258,046.0 (25% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2022 is computed against 404,258,046.0.
+      - FY2024: head totals sum to 458,257,529.0 but the programmes beneath them sum to 639,705,043.0 (28% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2024 is computed against 639,705,043.0.
 
   [HIGH] reconciliation_mismatch  (74)
       - FY2019 strat 01000: programs sum to 83,000.0 but strategy_total is 290,111.0 (gap 207,111.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -281,17 +295,11 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: jamaica 15/16 PASS (A4 17 over ceiling)
+AUDIT CHECKS: jamaica 17/17 PASS
   ok   A1   Stored programme sums              79 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             79 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             177 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      79 strategy-year(s) / 17 over ceiling
-            FY2019 strategy 15020: matched 583,057.0 of 10,480.0
-            FY2019 strategy 28000: matched 2,823,196.0 of 2,061,385.0
-            FY2019 strategy 50038: matched 483,604.0 of 14,019.0
-            FY2022 strategy 15020: matched 823,245.0 of 659,370.0
-            FY2022 strategy 19000: matched 29,765,294.0 of 8,927,891.0
-            FY2022 strategy 19047: matched 2,076,926.0 of 858,517.0
+  ok   A4   Ceiling holds                      79 strategy-year(s) / 0 over ceiling, 43 head(s) capped on their programme sum
   ok   A6   Panel money matches its edges      405 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         572 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                135 strategyclean row(s) / 135 panel row(s)
@@ -304,13 +312,15 @@ AUDIT CHECKS: jamaica 15/16 PASS (A4 17 over ceiling)
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      135 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   129 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             341 programme(s) / 1 unreadable (0%), carrying 0% of the money
+            FY2022 41000.1.22.24: '25'
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   6 detected across 1 country(ies): 3 high, 2 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  jamaica   D12      An output predates the prompt that produced it
   HIGH  jamaica   D7       Flag raised while combining the budget years
   HIGH  jamaica   D8       A strategy total its own programmes do not add up to

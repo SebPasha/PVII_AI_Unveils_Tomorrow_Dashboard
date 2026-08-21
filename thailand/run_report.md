@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-20 14:10 by run_pipeline.py
+Generated 2026-08-21 08:58 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,7 @@ Generated 2026-08-20 14:10 by run_pipeline.py
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=99 (3 unfunded) | edges=732 |
-| audit_checks | FAILED | QA FAIL - 15/16 PASS (A16 1 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 16/17 PASS (A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 4 detected across 1 country(ies): 1 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -237,6 +237,14 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: PASS - all years reconcile
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2023  heads 3,185,000.0  programmes 3,185,000.0  gap   0.0%  -> HEADS
+    FY2024  heads 3,480,000.0  programmes 3,480,000.0  gap   0.0%  -> HEADS
+    FY2025  heads 3,752,700.0  programmes 3,752,700.0  gap   0.0%  -> HEADS
+    FY2026  heads 3,780,600.0  programmes 3,780,600.0  gap   0.0%  -> HEADS
+
+READABILITY  0 of 273 programme name(s) unreadable (0%), 0 of 28 head(s) (0%), 0% of the money
+
 PROGRAMME CLASS (share of programme money)
     development           8,405,114.3   59.2%  (224 programme-year rows)
     standing_function       579,196.4    4.1%  (8 programme-year rows)
@@ -313,7 +321,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: thailand 15/16 PASS (A16 1 untraceable)
+AUDIT CHECKS: thailand 16/17 PASS (A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             153 row(s) / 0 duplicate key(s)
@@ -331,12 +339,13 @@ AUDIT CHECKS: thailand 15/16 PASS (A16 1 untraceable)
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      99 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   82 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             273 programme(s) / 0 unreadable (0%), carrying 0% of the money
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   4 detected across 1 country(ies): 1 high, 2 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  thailand  D12      An output predates the prompt that produced it
 ```

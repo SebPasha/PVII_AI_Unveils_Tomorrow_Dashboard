@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:09 by run_pipeline.py
+Generated 2026-08-21 08:57 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:09 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=382 (44 unfunded) | edges=2895 |
-| audit_checks | FAILED | QA FAIL - 13/16 PASS (A4 38 over ceiling, A11 9 dangle, A16 1 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/17 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -356,6 +356,18 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+PROGRAMME HIERARCHY: the programme list is NESTED (15 head-year(s) where the top level and the level below it sum to the same money, 175 where they do not). Only the top level is counted, because summing every row counts the budget twice.
+
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2022  heads 171,388,197,600.0  programmes 207,930,952,400.0  gap  17.6%  -> PROGRAMMES
+    FY2023  heads 172,422,614,400.0  programmes 400,992,145,500.0  gap  57.0%  -> PROGRAMMES
+    FY2024  heads 240,919,693,600.0  programmes 383,800,740,100.0  gap  37.2%  -> PROGRAMMES
+    FY2025  heads 162,973,371,700.0  programmes 332,910,058,300.0  gap  51.0%  -> PROGRAMMES
+    FY2026  heads 218,690,309,800.0  programmes 366,392,668,000.0  gap  40.3%  -> PROGRAMMES
+    The head totals under-report in 5 year(s); the programme rows are the national budget there.
+
+READABILITY  0 of 2815 programme name(s) unreadable (0%), 0 of 200 head(s) (0%), 0% of the money
+
 PROGRAMME CLASS (share of programme money)
     development        97,184,789,500.0    5.3%  (660 programme-year rows)
     standing_function  878,259,138,400.0   47.5%  (1262 programme-year rows)
@@ -368,12 +380,18 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysi
   sheet 'budget_all_years' : 3015 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 1207 programs x 5 year(s) (funding-over-time)
   sheet 'reconciliation'   : 200 rows (audit)
-  sheet 'data_quality'     : 4144 flagged items (see summary below)
+  sheet 'data_quality'     : 4185 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 138   MEDIUM: 3929   LOW: 72   INFO: 5
+  HIGH: 143   MEDIUM: 3965   LOW: 72   INFO: 5
+
+  [HIGH] national_basis_programmes  (5)
+      - FY2022: head totals sum to 171,388,197,600.0 but the programmes beneath them sum to 207,930,952,400.0 (18% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2022 is computed against 207,930,952,400.0.
+      - FY2023: head totals sum to 172,422,614,400.0 but the programmes beneath them sum to 400,992,145,500.0 (57% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2023 is computed against 400,992,145,500.0.
+      - FY2024: head totals sum to 240,919,693,600.0 but the programmes beneath them sum to 383,800,740,100.0 (37% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2024 is computed against 383,800,740,100.0.
+      ... and 2 more (see 'data_quality' sheet)
 
   [HIGH] reconciliation_mismatch  (138)
       - FY2022 strat 1: programs sum to 19,215,800.0 but strategy_total is 13,533,000.0 (gap -5,682,800.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -392,6 +410,12 @@ DATA-QUALITY SUMMARY
       - FY2026 strat 10 10.010000: program '10.010000' (PENGURUSAN KAKITANGAN) exists in ['2022', '2023', '2024', '2025'] but is absent in ['2026'] - check whether it was dropped during extraction or genuinely did not exist that year.
       - FY2022,2023 strat 10 10.010100: program '10.010100' (General Administration and Finance) exists in ['2024', '2025', '2026'] but is absent in ['2022', '2023'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 1111 more (see 'data_quality' sheet)
+
+  [MEDIUM] zero_amount_programme  (36)
+      - FY2022 strat 28 28.030600: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2022 strat 28 28.031000: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2022 strat 28 28.031200: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      ... and 33 more (see 'data_quality' sheet)
 
   [LOW] large_yoy_swing  (72)
       - FY2022->2023 strat 1 1.030000: program '1.030000' changed +476% (3,000,000.0 -> 17,271,900.0) - verify this is real and not an extraction error.
@@ -447,17 +471,11 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: malaysia 13/16 PASS (A4 38 over ceiling, A11 9 dangle, A16 1 untraceable)
+AUDIT CHECKS: malaysia 15/17 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A1   Stored programme sums              200 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             200 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             872 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      200 strategy-year(s) / 38 over ceiling
-            FY2022 strategy 43: matched 1,793,313,900.0 of 1,776,018,800.0
-            FY2022 strategy 6: matched 1,098,130,400.0 of 504,000.0
-            FY2022 strategy 63: matched 40,495,896,900.0 of 4,013,756,600.0
-            FY2022 strategy 7: matched 139,085,000.0 of 2,465,300.0
-            FY2023 strategy 5: matched 20,238,300.0 of 564,000.0
-            FY2023 strategy 6: matched 3,301,632,500.0 of 504,000.0
+  ok   A4   Ceiling holds                      200 strategy-year(s) / 0 over ceiling, 113 head(s) capped on their programme sum
   ok   A6   Panel money matches its edges      1910 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         2895 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                382 strategyclean row(s) / 382 panel row(s)
@@ -477,13 +495,14 @@ AUDIT CHECKS: malaysia 13/16 PASS (A4 38 over ceiling, A11 9 dangle, A16 1 untra
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      382 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   336 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             2815 programme(s) / 0 unreadable (0%), carrying 0% of the money
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to

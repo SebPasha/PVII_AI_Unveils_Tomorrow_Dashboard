@@ -1,7 +1,7 @@
 # Run report - Maldives
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:09 by run_pipeline.py
+Generated 2026-08-21 08:57 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:09 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=261 (251 unfunded) | edges=20 |
-| audit_checks | FAILED | QA FAIL - 13/16 PASS (A2 8 disagree, A4 1 over ceiling, A16 2 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 14/17 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -221,6 +221,15 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2017  heads 23,007,352,858.0  programmes 30,206,084,611.0  gap  23.8%  -> PROGRAMMES
+    FY2018  heads 21,753,879,903.0  programmes 1,899,491,365.0  gap  91.3%  -> PROGRAMMES
+    FY2019  heads 121,034,448.3  programmes 26,257.5  gap 100.0%  -> PROGRAMMES
+    The head totals under-report in 3 year(s); the programme rows are the national budget there.
+
+READABILITY  395 of 852 programme name(s) unreadable (46%), 35 of 101 head(s) (35%), 31% of the money
+    e.g. '-27' | '2 25' | '2225254 º'
+
 PROGRAMME CLASS (share of programme money)
     development         939,353,088.0    2.9%  (8 programme-year rows)
     standing_function  2,158,845,140.5    6.7%  (495 programme-year rows)
@@ -233,18 +242,26 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/maldive
   sheet 'budget_all_years' : 953 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 680 programs x 3 year(s) (funding-over-time)
   sheet 'reconciliation'   : 101 rows (audit)
-  sheet 'data_quality'     : 1019 flagged items (see summary below)
+  sheet 'data_quality'     : 1133 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 52   MEDIUM: 962   LOW: 2   INFO: 3
+  HIGH: 56   MEDIUM: 1072   LOW: 2   INFO: 3
+
+  [HIGH] national_basis_programmes  (3)
+      - FY2017: head totals sum to 23,007,352,858.0 but the programmes beneath them sum to 30,206,084,611.0 (24% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2017 is computed against 30,206,084,611.0.
+      - FY2018: head totals sum to 21,753,879,903.0 but the programmes beneath them sum to 1,899,491,365.0 (91% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2018 is computed against 1,899,491,365.0.
+      - FY2019: head totals sum to 121,034,448.3 but the programmes beneath them sum to 26,257.5 (100% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2019 is computed against 26,257.5.
 
   [HIGH] reconciliation_mismatch  (52)
       - FY2017 strat 1: programs sum to 371,971,798.0 but strategy_total is 101,334,724.0 (gap -270,637,074.0) - a program line is likely missing or mis-extracted for this strategy-year.
       - FY2017 strat 2: programs sum to 1,780,849,664.0 but strategy_total is 208,402,975.0 (gap -1,572,446,689.0) - a program line is likely missing or mis-extracted for this strategy-year.
       - FY2017 strat 3: programs sum to 291,704,544.0 but strategy_total is 10,854,474.0 (gap -280,850,070.0) - a program line is likely missing or mis-extracted for this strategy-year.
       ... and 49 more (see 'data_quality' sheet)
+
+  [HIGH] unreadable_extraction  (1)
+      - 46% of programme names and 35% of head names are unreadable, carrying 31% of the money (e.g. '-27', '2 25'). The document did not parse; no prompt can fix this and every figure below is computed over nonsense.
 
   [MEDIUM] blank_amount  (106)
       - FY2017 strat 1 1.5: amount is blank/unparseable.
@@ -263,6 +280,12 @@ DATA-QUALITY SUMMARY
       - FY2019 strat 1 1.002: program '1.002' (Se Hará) exists in ['2017', '2018'] but is absent in ['2019'] - check whether it was dropped during extraction or genuinely did not exist that year.
       - FY2019 strat 1 1.003: program '1.003' (Sp 322 9892) exists in ['2017', '2018'] but is absent in ['2019'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 677 more (see 'data_quality' sheet)
+
+  [MEDIUM] zero_amount_programme  (110)
+      - FY2017 strat 1 1.5: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2017 strat 20 20.003: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2017 strat 26 26.009: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      ... and 107 more (see 'data_quality' sheet)
 
   [LOW] large_yoy_swing  (2)
       - FY2017->2018 strat 19 19.001: program '19.001' changed +726% (182,168,767.0 -> 1,504,471,755.0) - verify this is real and not an extraction error.
@@ -307,7 +330,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: maldives 13/16 PASS (A2 8 disagree, A4 1 over ceiling, A16 2 untraceable)
+AUDIT CHECKS: maldives 14/17 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money)
   ok   A1   Stored programme sums              101 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             101 strategy-year(s) / 8 disagree
             FY2017 strategy 37: stored 0.0, layer -
@@ -317,8 +340,7 @@ AUDIT CHECKS: maldives 13/16 PASS (A2 8 disagree, A4 1 over ceiling, A16 2 untra
             FY2018 strategy 15: stored 0.0, layer -
             FY2018 strategy 16: stored 0.0, layer -
   ok   A3   Programme counted once             16 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      101 strategy-year(s) / 1 over ceiling
-            FY2017 strategy 5: matched 431,283,126.0 of 35,615,361.0
+  ok   A4   Ceiling holds                      101 strategy-year(s) / 0 over ceiling, 11 head(s) capped on their programme sum
   ok   A6   Panel money matches its edges      783 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         20 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                261 strategyclean row(s) / 261 panel row(s)
@@ -333,13 +355,20 @@ AUDIT CHECKS: maldives 13/16 PASS (A2 8 disagree, A4 1 over ceiling, A16 2 untra
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      261 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   12 distinct (salience, funding) group(s) / 0 split across priorities
+  FAIL A20  The budget is readable             852 programme(s) / 395 unreadable (46%), carrying 31% of the money
+            FY2017 1.1: '-27'
+            FY2017 1.2: '2 25'
+            FY2017 1.4: '2225254 º'
+            FY2017 10.1: '23:35'
+            FY2017 19.001: 'se DA 299, 9 48?'
+            FY2017 19.006: 'أَمْدٍ مَرْ مصدرْ'
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  maldives  D12      An output predates the prompt that produced it
   HIGH  maldives  D7       Flag raised while combining the budget years
   HIGH  maldives  D8       A strategy total its own programmes do not add up to

@@ -1,7 +1,7 @@
 # Run report - Fiji
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:08 by run_pipeline.py
+Generated 2026-08-21 08:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:08 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=220 (23 unfunded) | edges=750 |
-| audit_checks | FAILED | QA FAIL - 14/16 PASS (A4 3 over ceiling, A16 3 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/17 PASS (A4 3 over ceiling, 3 head(s) capped on their programme sum, A16 3 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -224,6 +224,14 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2017  heads 4,171,380.4  programmes 4,154,697.5  gap   0.4%  -> HEADS
+    FY2018  heads 4,529,133.6  programmes 3,944,011.0  gap  12.9%  -> PROGRAMMES
+    FY2019  heads 3,268,563.2  programmes 3,413,014.2  gap   4.2%  -> HEADS
+    The head totals under-report in 1 year(s); the programme rows are the national budget there.
+
+READABILITY  0 of 258 programme name(s) unreadable (0%), 0 of 108 head(s) (0%), 0% of the money
+
 PROGRAMME CLASS (share of programme money)
     development           1,960,624.5   17.0%  (40 programme-year rows)
     standing_function     6,142,113.2   53.4%  (126 programme-year rows)
@@ -235,12 +243,15 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/fiji/bu
   sheet 'budget_all_years' : 366 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 98 programs x 3 year(s) (funding-over-time)
   sheet 'reconciliation'   : 108 rows (audit)
-  sheet 'data_quality'     : 54 flagged items (see summary below)
+  sheet 'data_quality'     : 56 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 28   MEDIUM: 20   LOW: 3   INFO: 3
+  HIGH: 29   MEDIUM: 21   LOW: 3   INFO: 3
+
+  [HIGH] national_basis_programmes  (1)
+      - FY2018: head totals sum to 4,529,133.6 but the programmes beneath them sum to 3,944,011.0 (13% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2018 is computed against 3,944,011.0.
 
   [HIGH] reconciliation_mismatch  (28)
       - FY2017 strat 22: programs sum to 321,245.4 but strategy_total is 321,245.6 (gap 0.2) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -253,6 +264,9 @@ DATA-QUALITY SUMMARY
       - FY2018,2019 strat 18 18.4: program '18.4' (Rehabilitation and Rural Housing) exists in ['2017'] but is absent in ['2018', '2019'] - check whether it was dropped during extraction or genuinely did not exist that year.
       - FY2017 strat 23 23.2: program '23.2' (Housing) exists in ['2018', '2019'] but is absent in ['2017'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 17 more (see 'data_quality' sheet)
+
+  [MEDIUM] zero_amount_programme  (1)
+      - FY2017 strat 30 30.5: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
 
   [LOW] large_yoy_swing  (3)
       - FY2018->2019 strat 34 34.1: program '34.1' changed +846% (1,828.0 -> 17,291.2) - verify this is real and not an extraction error.
@@ -307,11 +321,11 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: fiji 14/16 PASS (A4 3 over ceiling, A16 3 untraceable)
+AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, 3 head(s) capped on their programme sum, A16 3 untraceable)
   ok   A1   Stored programme sums              108 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             108 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             167 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      108 strategy-year(s) / 3 over ceiling
+  FAIL A4   Ceiling holds                      108 strategy-year(s) / 3 over ceiling, 3 head(s) capped on their programme sum
             FY2017 strategy 52: matched 364,701.0 of 354,607.9
             FY2018 strategy 52: matched 400,474.3 of 391,274.3
             FY2019 strategy 52: matched 363,562.9 of 354,362.9
@@ -330,13 +344,14 @@ AUDIT CHECKS: fiji 14/16 PASS (A4 3 over ceiling, A16 3 untraceable)
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      220 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   155 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             258 programme(s) / 0 unreadable (0%), carrying 0% of the money
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  fiji      D12      An output predates the prompt that produced it
   HIGH  fiji      D7       Flag raised while combining the budget years
   HIGH  fiji      D8       A strategy total its own programmes do not add up to

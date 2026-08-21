@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-20 14:09 by run_pipeline.py
+Generated 2026-08-21 08:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-20 14:09 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=281 (42 unfunded) | edges=827 |
-| audit_checks | FAILED | QA FAIL - 13/16 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
 | data_issues | FAILED | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
@@ -495,6 +495,12 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 
 RECONCILIATION: FAIL - see MISMATCH rows
 
+NATIONAL TOTAL (the denominator every share is computed against)
+    FY2020  heads 1,847,095,440,273.0  programmes 1,856,845,062,630.0  gap   0.5%  -> HEADS
+    FY2025  heads 4,728,874,072,135.0  programmes 4,736,222,360,272.0  gap   0.2%  -> HEADS
+
+READABILITY  0 of 985 programme name(s) unreadable (0%), 0 of 393 head(s) (0%), 0% of the money
+
 PROGRAMME CLASS (share of programme money)
     development        1,482,912,956,814.0   22.5%  (348 programme-year rows)
     standing_function  4,267,771,564,414.0   64.7%  (374 programme-year rows)
@@ -507,12 +513,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/b
   sheet 'budget_all_years' : 1378 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 716 programs x 2 year(s) (funding-over-time)
   sheet 'reconciliation'   : 393 rows (audit)
-  sheet 'data_quality'     : 502 flagged items (see summary below)
+  sheet 'data_quality'     : 521 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 8   MEDIUM: 470   LOW: 22   INFO: 2
+  HIGH: 8   MEDIUM: 489   LOW: 22   INFO: 2
 
   [HIGH] reconciliation_mismatch  (8)
       - FY2020 strat 0106000: programs sum to 349,247,063.0 but strategy_total is 276,081,719.0 (gap -73,165,344.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -531,6 +537,12 @@ DATA-QUALITY SUMMARY
       - FY2025 strat 0116000 0119010: program '0119010' (General Administration, Planning and Support Services) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
       - FY2025 strat 0116000 0119020: program '0119020' (Land Administration and Management) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
       ... and 444 more (see 'data_quality' sheet)
+
+  [MEDIUM] zero_amount_programme  (19)
+      - FY2020 strat 0105000 0105060: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2020 strat 0120000 0120040: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      - FY2020 strat 0620000 0620020: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
+      ... and 16 more (see 'data_quality' sheet)
 
   [LOW] large_yoy_swing  (22)
       - FY2020->2025 strat 0101000 0101050: program '0101050' changed +413% (819,947,827.0 -> 4,207,574,665.0) - verify this is real and not an extraction error.
@@ -586,7 +598,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 13/16 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
+AUDIT CHECKS: kenya 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
@@ -594,7 +606,7 @@ AUDIT CHECKS: kenya 13/16 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
             FY2020 strategy 1008000: stored 0.0, layer -
             FY2020 strategy 1014000: stored 0.0, layer -
   ok   A3   Programme counted once             344 row(s) / 0 duplicate key(s)
-  ok   A4   Ceiling holds                      393 strategy-year(s) / 0 over ceiling
+  ok   A4   Ceiling holds                      393 strategy-year(s) / 0 over ceiling, 5 head(s) capped on their programme sum
   ok   A6   Panel money matches its edges      562 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         828 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                281 strategyclean row(s) / 281 panel row(s)
@@ -617,13 +629,14 @@ AUDIT CHECKS: kenya 13/16 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A17  No workbook open in Excel          0 expected / 0 found
   ok   A18  Strategies come from the plan      281 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   234 distinct (salience, funding) group(s) / 0 split across priorities
+  ok   A20  The budget is readable             985 programme(s) / 0 unreadable (0%), carrying 0% of the money
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  31 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D12      An output predates the prompt that produced it
   HIGH  kenya     D7       Flag raised while combining the budget years
