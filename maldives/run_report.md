@@ -1,7 +1,7 @@
 # Run report - Maldives
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 08:57 by run_pipeline.py
+Generated 2026-08-21 09:28 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|

@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 08:57 by run_pipeline.py
+Generated 2026-08-21 09:28 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -373,6 +373,8 @@ PROGRAMME CLASS (share of programme money)
     standing_function  878,259,138,400.0   47.5%  (1262 programme-year rows)
     overhead           846,164,137,100.0   45.8%  (846 programme-year rows)
     mixed              26,304,272,700.0    1.4%  (47 programme-year rows)
+
+COUNTABLE: 397 programme row(s) are nested detail and are NOT summed; their money is already in the parent programme.
 
 HEAD NAMES: 1482 row(s) renamed so a head reads the same in every year
 

@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-21 08:56 by run_pipeline.py
+Generated 2026-08-21 09:27 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -122,6 +122,8 @@ PROGRAMME CLASS (share of programme money)
     development             213,216.3    4.0%  (109 programme-year rows)
     standing_function     1,798,434.9   33.8%  (43 programme-year rows)
     overhead              3,312,161.0   62.2%  (30 programme-year rows)
+
+COUNTABLE: 1 programme row(s) are nested detail and are NOT summed; their money is already in the parent programme.
 
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brazil/budget_layer_all_years.xlsx
   sheet 'budget_all_years' : 210 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
