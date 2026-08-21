@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 09:27 by run_pipeline.py
+Generated 2026-08-21 13:36 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -210,7 +210,7 @@ AUDIT CHECKS: brunei 15/17 PASS (A11 10 dangle, A16 20 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 4 high, 2 medium, 1 low
-  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brunei    D11      Strategy named after the budget line funding it
   HIGH  brunei    D12      An output predates the prompt that produced it
   HIGH  brunei    D7       Flag raised while combining the budget years

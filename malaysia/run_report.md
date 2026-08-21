@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 09:28 by run_pipeline.py
+Generated 2026-08-21 13:36 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -10,7 +10,7 @@ Generated 2026-08-21 09:28 by run_pipeline.py
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
 | validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (malaysia references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
+| build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=382 (44 unfunded) | edges=2895 |
 | audit_checks | FAILED | QA FAIL - 15/17 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
@@ -451,15 +451,15 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysi
   unfunded_strategies : 44 (strategies with no budget any year)
   funding_by_program  : 872 (per programme x year, amount once - SAFE TO SUM)
   unmapped_programs   : 1943 budget programmes with no matched strategy
-  risk_panel          : 10 risks | ceiling: FAIL - see 'ceiling' sheet
+  risk_panel          : 10 risks | ceiling: PASS
   enrichment          : strategyclean=yes risk_summary=yes
   maturity            : mean=0.758 | financing-weighted=0.845 | {'operational_programme': 209, 'partial_operation': 102, 'operational_funded': 27, 'aspirational': 12, 'planned': 32}
   basket/reverse-pass : 516 shared programmes | reverse-pass edges=558 rows -> 2 new matches
   recall_review       : 66 large programmes matched to only 1 strategy (candidate baskets)
 MATURITY: mean=0.758 financing_weighted=0.845
-CEILING TEST: FAIL - see ceiling sheet
+CEILING TEST: PASS - no strategy over-counted in any year
 UNMATCHED CODES: 0
-QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
+QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 ```
 
 ### build_analytics_html
@@ -477,7 +477,7 @@ AUDIT CHECKS: malaysia 15/17 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A1   Stored programme sums              200 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             200 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             872 row(s) / 0 duplicate key(s)
-  ok   A4   Ceiling holds                      200 strategy-year(s) / 0 over ceiling, 113 head(s) capped on their programme sum
+  ok   A4   Ceiling holds                      200 strategy-year(s) / 0 over ceiling, 15 head(s) capped on their programme sum
   ok   A6   Panel money matches its edges      1910 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         2895 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                382 strategyclean row(s) / 382 panel row(s)
@@ -504,7 +504,7 @@ AUDIT CHECKS: malaysia 15/17 PASS (A11 9 dangle, A16 1 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to

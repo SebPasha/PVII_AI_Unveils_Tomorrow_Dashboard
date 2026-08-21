@@ -1,7 +1,7 @@
 # Run report - Fiji
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 09:27 by run_pipeline.py
+Generated 2026-08-21 13:36 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 09:27 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=220 (23 unfunded) | edges=750 |
-| audit_checks | FAILED | QA FAIL - 15/17 PASS (A4 3 over ceiling, 3 head(s) capped on their programme sum, A16 3 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/17 PASS (A4 3 over ceiling, A16 3 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -321,11 +321,11 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, 3 head(s) capped on their programme sum, A16 3 untraceable)
+AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, A16 3 untraceable)
   ok   A1   Stored programme sums              108 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             108 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             167 row(s) / 0 duplicate key(s)
-  FAIL A4   Ceiling holds                      108 strategy-year(s) / 3 over ceiling, 3 head(s) capped on their programme sum
+  FAIL A4   Ceiling holds                      108 strategy-year(s) / 3 over ceiling
             FY2017 strategy 52: matched 364,701.0 of 354,607.9
             FY2018 strategy 52: matched 400,474.3 of 391,274.3
             FY2019 strategy 52: matched 363,562.9 of 354,362.9
@@ -351,7 +351,7 @@ AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, 3 head(s) capped on their prog
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  fiji      D12      An output predates the prompt that produced it
   HIGH  fiji      D7       Flag raised while combining the budget years
   HIGH  fiji      D8       A strategy total its own programmes do not add up to

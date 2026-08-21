@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 09:27 by run_pipeline.py
+Generated 2026-08-21 13:36 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -10,7 +10,7 @@ Generated 2026-08-21 09:27 by run_pipeline.py
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
 | validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
+| build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=281 (42 unfunded) | edges=827 |
 | audit_checks | FAILED | QA FAIL - 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
 | data_issues | FAILED | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
@@ -576,15 +576,15 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/F
   unfunded_strategies : 42 (strategies with no budget any year)
   funding_by_program  : 344 (per programme x year, amount once - SAFE TO SUM)
   unmapped_programs   : 641 budget programmes with no matched strategy
-  risk_panel          : 9 risks | ceiling: FAIL - see 'ceiling' sheet
+  risk_panel          : 9 risks | ceiling: PASS
   enrichment          : strategyclean=yes risk_summary=yes
   maturity            : mean=0.779 | financing-weighted=0.852 | {'operational_programme': 229, 'operational_funded': 10, 'aspirational': 5, 'planned': 34, 'planned_specific': 3}
   basket/reverse-pass : 189 shared programmes | reverse-pass edges=308 rows -> 0 new matches
   recall_review       : 33 large programmes matched to only 1 strategy (candidate baskets)
 MATURITY: mean=0.779 financing_weighted=0.852
-CEILING TEST: FAIL - see ceiling sheet
+CEILING TEST: PASS - no strategy over-counted in any year
 UNMATCHED CODES: 0
-QA: FAIL - 0 unmatched code(s), ceiling FAIL, 0 year warning(s)
+QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 ```
 
 ### build_analytics_html
@@ -606,7 +606,7 @@ AUDIT CHECKS: kenya 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
             FY2020 strategy 1008000: stored 0.0, layer -
             FY2020 strategy 1014000: stored 0.0, layer -
   ok   A3   Programme counted once             344 row(s) / 0 duplicate key(s)
-  ok   A4   Ceiling holds                      393 strategy-year(s) / 0 over ceiling, 5 head(s) capped on their programme sum
+  ok   A4   Ceiling holds                      393 strategy-year(s) / 0 over ceiling
   ok   A6   Panel money matches its edges      562 strategy-year figure(s) / 0 disagree
   ok   A8   Edges cite real programmes         828 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                281 strategyclean row(s) / 281 panel row(s)
@@ -636,7 +636,7 @@ AUDIT CHECKS: kenya 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  36 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D12      An output predates the prompt that produced it
   HIGH  kenya     D7       Flag raised while combining the budget years
