@@ -1,11 +1,11 @@
 # Run report - Thailand
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 10:22 by run_pipeline.py
+Generated 2026-08-22 11:57 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | QA FAIL - FAIL 4/14 (thailand_budget_2023.xlsx, thailand_budget_2024.xlsx, thailand_budget_2025.xlsx) |
+| validate_stage_schema (L2) | ok | PASS 14/14 |
 | validate_source_fidelity (L4) | ok | QA FAIL - FAIL 4/4 (thailand_budget_2023.xlsx, thailand_budget_2024.xlsx, thailand_budget_2025.xlsx) |
 | validate_recall (L4) | ok | PASS 4/4 |
 | validate_totals (L4) | ok | PASS 1/1 |
@@ -31,26 +31,22 @@ Generated 2026-08-22 10:22 by run_pipeline.py
 --- thailand_budget_2023.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2023.xlsx
 
-  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
 
 --- thailand_budget_2024.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2024.xlsx
 
-  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
 
 --- thailand_budget_2025.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2025.xlsx
 
-  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
 
 --- thailand_budget_2026.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2026.xlsx
 
-  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
-  The stage output is not accepted; re-run the stage or fix the prompt.
+  RESULT: PASS - 1 file(s) match the schema their prompt promised.
 
 --- thailand_coverage_2023.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2023.xlsx
@@ -374,7 +370,7 @@ AUDIT CHECKS: thailand 18/19 PASS (A16 1 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   5 detected across 1 country(ies): 2 high, 2 medium, 1 low
-  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  thailand  D12      An output predates the prompt that produced it
   HIGH  thailand  D7       Flag raised while combining the budget years
 ```

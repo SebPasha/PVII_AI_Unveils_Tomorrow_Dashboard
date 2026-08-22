@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 10:21 by run_pipeline.py
+Generated 2026-08-22 11:56 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -512,13 +512,14 @@ AUDIT CHECKS: malaysia 17/19 PASS (A11 9 dangle, A16 1 untraceable)
             1372
             2738
             2743
+  --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to

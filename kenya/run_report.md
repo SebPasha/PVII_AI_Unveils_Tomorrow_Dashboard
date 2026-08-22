@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 10:20 by run_pipeline.py
+Generated 2026-08-22 11:55 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -642,13 +642,14 @@ AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
             995
             1182
             1183
+  --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D12      An output predates the prompt that produced it
   HIGH  kenya     D7       Flag raised while combining the budget years

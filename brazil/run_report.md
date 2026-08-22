@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-22 10:20 by run_pipeline.py
+Generated 2026-08-22 11:55 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -228,13 +228,14 @@ AUDIT CHECKS: brazil 19/19 PASS
             377
             399
             1017
+  --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   8 detected across 1 country(ies): 2 high, 4 medium, 2 low
-  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brazil    D1       A programme code is not unique within a year
   HIGH  brazil    D12      An output predates the prompt that produced it
 ```
