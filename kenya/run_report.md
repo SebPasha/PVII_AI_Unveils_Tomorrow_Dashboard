@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 16:37 by run_pipeline.py
+Generated 2026-08-22 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 16:37 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=281 (42 unfunded) | edges=827 |
-| audit_checks | FAILED | QA FAIL - 15/18 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
 | data_issues | FAILED | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
@@ -513,12 +513,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/kenya/b
   sheet 'budget_all_years' : 1378 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 716 programs x 2 year(s) (funding-over-time)
   sheet 'reconciliation'   : 393 rows (audit)
-  sheet 'data_quality'     : 521 flagged items (see summary below)
+  sheet 'data_quality'     : 523 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 8   MEDIUM: 489   LOW: 22   INFO: 2
+  HIGH: 8   MEDIUM: 491   LOW: 22   INFO: 2
 
   [HIGH] reconciliation_mismatch  (8)
       - FY2020 strat 0106000: programs sum to 349,247,063.0 but strategy_total is 276,081,719.0 (gap -73,165,344.0) - a program line is likely missing or mis-extracted for this strategy-year.
@@ -531,6 +531,10 @@ DATA-QUALITY SUMMARY
       - FY2020 strat 0120000 0120040: amount is blank/unparseable.
       - FY2020 strat 0620000 0620020: amount is blank/unparseable.
       ... and 20 more (see 'data_quality' sheet)
+
+  [MEDIUM] no_grand_total  (2)
+      - FY2020: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2020 rests on the heads being all of them.
+      - FY2025: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2025 rests on the heads being all of them.
 
   [MEDIUM] program_missing_in_year  (447)
       - FY2025 strat 0105000 0105060: program '0105060' (NAMATA) exists in ['2020'] but is absent in ['2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
@@ -598,7 +602,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 15/18 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
+AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
@@ -631,13 +635,20 @@ AUDIT CHECKS: kenya 15/18 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A19  Funding priority is reproducible   234 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             985 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    7 repeated code(s) / 0 edge(s) do not name a head
+  FAIL A22  Consolidation keeps every intervention 1378 intervention(s) extracted / 509 dropped (36.9%)
+            452
+            662
+            962
+            995
+            1182
+            1183
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D12      An output predates the prompt that produced it
   HIGH  kenya     D7       Flag raised while combining the budget years

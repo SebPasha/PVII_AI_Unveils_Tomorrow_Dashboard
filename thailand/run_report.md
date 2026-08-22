@@ -1,20 +1,20 @@
 # Run report - Thailand
 
-**🟢 Overall: PASS**  
-Generated 2026-08-21 16:38 by run_pipeline.py
+**🔴 Overall: REVIEW NEEDED**  
+Generated 2026-08-22 10:22 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | PASS 14/14 |
-| validate_source_fidelity (L4) | ok | PASS 4/4 |
+| validate_stage_schema (L2) | ok | QA FAIL - FAIL 4/14 (thailand_budget_2023.xlsx, thailand_budget_2024.xlsx, thailand_budget_2025.xlsx) |
+| validate_source_fidelity (L4) | ok | QA FAIL - FAIL 4/4 (thailand_budget_2023.xlsx, thailand_budget_2024.xlsx, thailand_budget_2025.xlsx) |
 | validate_recall (L4) | ok | PASS 4/4 |
 | validate_totals (L4) | ok | PASS 1/1 |
 | validate_refs (L3) | ok | PASS 1/1 |
-| combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
+| combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=99 (3 unfunded) | edges=732 |
-| audit_checks | FAILED | QA FAIL - 17/18 PASS (A16 1 untraceable) [advisory] |
-| data_issues | FAILED | 4 detected across 1 country(ies): 1 high, 2 medium, 1 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 18/19 PASS (A16 1 untraceable) [advisory] |
+| data_issues | FAILED | 5 detected across 1 country(ies): 2 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -31,22 +31,26 @@ Generated 2026-08-21 16:38 by run_pipeline.py
 --- thailand_budget_2023.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2023.xlsx
 
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
 
 --- thailand_budget_2024.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2024.xlsx
 
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
 
 --- thailand_budget_2025.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2025.xlsx
 
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
 
 --- thailand_budget_2026.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_budget_2026.xlsx
 
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
+  RESULT: FAIL - 1 contract violation(s) across 1 file(s).
+  The stage output is not accepted; re-run the stage or fix the prompt.
 
 --- thailand_coverage_2023.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/schema_thailand_coverage_2023.xlsx
@@ -106,56 +110,60 @@ Generated 2026-08-21 16:38 by run_pipeline.py
 SOURCE FIDELITY  -  thailand_budget_2023.xlsx
   verified against: 20220726_gov_tha_budget_in_brief_fy_2023.pdf (independent text extraction, 242,997 chars)
 ==============================================================================
-  rows                 73
-  amounts traced       73/73
-  codes traced         73/73
-  names matched        73/73
+  rows                 99
+  amounts traced       99/99
+  codes traced         99/99
+  names matched        98/99
 
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2023.xlsx
 
-  RESULT: PASS - every figure traces back to the source document.
+  RESULT: FAIL - 1 item(s) could not be traced to the source.
+  Treat this extraction as unverified until each one is explained.
 
 --- thailand_budget_2024.xlsx
 ==============================================================================
 SOURCE FIDELITY  -  thailand_budget_2024.xlsx
   verified against: Book-2.pdf (independent text extraction, 247,242 chars)
 ==============================================================================
-  rows                 75
-  amounts traced       75/75
-  codes traced         75/75
-  names matched        75/75
+  rows                 128
+  amounts traced       128/128
+  codes traced         120/128
+  names matched        127/128
 
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2024.xlsx
 
-  RESULT: PASS - every figure traces back to the source document.
+  RESULT: FAIL - 9 item(s) could not be traced to the source.
+  Treat this extraction as unverified until each one is explained.
 
 --- thailand_budget_2025.xlsx
 ==============================================================================
 SOURCE FIDELITY  -  thailand_budget_2025.xlsx
   verified against: Book.pdf (independent text extraction, 228,220 chars)
 ==============================================================================
-  rows                 76
-  amounts traced       76/76
-  codes traced         76/76
-  names matched        76/76
+  rows                 127
+  amounts traced       127/127
+  codes traced         120/127
+  names matched        126/127
 
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2025.xlsx
 
-  RESULT: PASS - every figure traces back to the source document.
+  RESULT: FAIL - 8 item(s) could not be traced to the source.
+  Treat this extraction as unverified until each one is explained.
 
 --- thailand_budget_2026.xlsx
 ==============================================================================
 SOURCE FIDELITY  -  thailand_budget_2026.xlsx
   verified against: Thailand Budget 2026.pdf (independent text extraction, 228,831 chars)
 ==============================================================================
-  rows                 77
-  amounts traced       77/77
-  codes traced         77/77
-  names matched        77/77
+  rows                 104
+  amounts traced       104/104
+  codes traced         104/104
+  names matched        103/104
 
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/validation/fidelity_thailand_budget_2026.xlsx
 
-  RESULT: PASS - every figure traces back to the source document.
+  RESULT: FAIL - 1 item(s) could not be traced to the source.
+  Treat this extraction as unverified until each one is explained.
 ```
 
 ### validate_recall (L4)
@@ -165,11 +173,11 @@ RESULT: PASS - 66 programme code(s) extracted, none missed
 report -> Files/outputs/thailand/validation/recall_thailand_budget_2023.xlsx
 
 --- thailand_budget_2024.xlsx
-RESULT: PASS - 68 programme code(s) extracted, none missed
+RESULT: PASS - 94 programme code(s) extracted, none missed
 report -> Files/outputs/thailand/validation/recall_thailand_budget_2024.xlsx
 
 --- thailand_budget_2025.xlsx
-RESULT: PASS - 69 programme code(s) extracted, none missed
+RESULT: PASS - 94 programme code(s) extracted, none missed
 report -> Files/outputs/thailand/validation/recall_thailand_budget_2025.xlsx
 
 --- thailand_budget_2026.xlsx
@@ -238,28 +246,39 @@ RECONCILIATION (per year: sum of program rows vs strategy_total)
 RECONCILIATION: PASS - all years reconcile
 
 NATIONAL TOTAL (the denominator every share is computed against)
-    FY2023  heads 3,185,000.0  programmes 3,185,000.0  gap   0.0%  -> HEADS
-    FY2024  heads 3,480,000.0  programmes 3,480,000.0  gap   0.0%  -> HEADS
-    FY2025  heads 3,752,700.0  programmes 3,752,700.0  gap   0.0%  -> HEADS
-    FY2026  heads 3,780,600.0  programmes 3,780,600.0  gap   0.0%  -> HEADS
+    FY2023  heads 3,185,000.0  programmes 3,185,000.0  gap   0.0%  -> GRAND_TOTAL
+    FY2024  heads 3,480,000.0  programmes 3,480,000.0  gap   0.0%  -> GRAND_TOTAL
+    FY2025  heads 3,752,700.0  programmes 3,752,700.0  gap   0.0%  -> GRAND_TOTAL
+    FY2026  heads 3,780,600.0  programmes 3,780,600.0  gap   0.0%  -> GRAND_TOTAL
+    FY2023  extracted 100.0% of the document's own grand total 3,185,000.0
+    FY2024  extracted 100.0% of the document's own grand total 3,480,000.0
+    FY2025  extracted 100.0% of the document's own grand total 3,752,700.0
+    FY2026  extracted 100.0% of the document's own grand total 3,780,600.0
 
 READABILITY  0 of 273 programme name(s) unreadable (0%), 0 of 28 head(s) (0%), 0% of the money
 
 PROGRAMME CLASS (share of programme money)
-    development           8,405,114.3   59.2%  (224 programme-year rows)
+    development           8,395,002.4   59.1%  (223 programme-year rows)
     standing_function       579,196.4    4.1%  (8 programme-year rows)
     overhead              5,213,989.3   36.7%  (41 programme-year rows)
+    (unclassified)           10,111.9    0.1%  (0 programme-year rows)
 
 Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/thailand/budget_layer_all_years.xlsx
-  sheet 'budget_all_years' : 301 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
+  sheet 'budget_all_years' : 305 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 71 programs x 4 year(s) (funding-over-time)
   sheet 'reconciliation'   : 28 rows (audit)
-  sheet 'data_quality'     : 24 flagged items (see summary below)
+  sheet 'data_quality'     : 28 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 0   MEDIUM: 6   LOW: 14   INFO: 4
+  HIGH: 4   MEDIUM: 6   LOW: 14   INFO: 4
+
+  [HIGH] mixed_budget_views  (4)
+      - FY2023: rows came from 2 different tables and together made 5,227,014.9 against a printed grand total of 3,185,000.0, so the same money was present twice. Kept 'Table I-4 Budget Allocation Strategy and Program FY 2023' (3,185,000.0, the closest to the grand total) and dropped 25 row(s) from the others.
+      - FY2024: rows came from 2 different tables and together made 5,748,909.0 against a printed grand total of 3,480,000.0, so the same money was present twice. Kept 'Table I-4 Budget Allocation Strategy and Program FY 2024' (3,480,000.0, the closest to the grand total) and dropped 52 row(s) from the others.
+      - FY2025: rows came from 2 different tables and together made 5,996,079.1 against a printed grand total of 3,752,700.0, so the same money was present twice. Kept 'Table I-4 Budget Allocation Strategy and Program FY 2025' (3,752,700.0, the closest to the grand total) and dropped 50 row(s) from the others.
+      ... and 1 more (see 'data_quality' sheet)
 
   [MEDIUM] program_missing_in_year  (6)
       - FY2024,2025 strat 1 1.14: program '1.14' (Program on Public Sector Personnel) exists in ['2023', '2026'] but is absent in ['2024', '2025'] - check whether it was dropped during extraction or genuinely did not exist that year.
@@ -273,7 +292,7 @@ DATA-QUALITY SUMMARY
       - FY2024->2025 strat 2 2.10: program '2.10' changed +966% (446.3 -> 4,758.7) - verify this is real and not an extraction error.
       ... and 11 more (see 'data_quality' sheet)
 ==============================================================================
-DATA QUALITY: OK with minor flags - review MEDIUM/LOW as needed
+DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years
 ==============================================================================
 ```
 
@@ -321,7 +340,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: thailand 17/18 PASS (A16 1 untraceable)
+AUDIT CHECKS: thailand 18/19 PASS (A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             153 row(s) / 0 duplicate key(s)
@@ -341,12 +360,21 @@ AUDIT CHECKS: thailand 17/18 PASS (A16 1 untraceable)
   ok   A19  Funding priority is reproducible   82 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             273 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
+  ok   A22  Consolidation keeps every intervention 533 intervention(s) extracted / 8 dropped (1.5%)
+            202
+            369
+            383
+            452
+            472
+            497
+  --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  4 detected across 1 country(ies): 1 high, 2 medium, 1 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  5 detected across 1 country(ies): 2 high, 2 medium, 1 low
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  thailand  D12      An output predates the prompt that produced it
+  HIGH  thailand  D7       Flag raised while combining the budget years
 ```

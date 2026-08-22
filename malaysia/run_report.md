@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 16:37 by run_pipeline.py
+Generated 2026-08-22 10:21 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 16:37 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=382 (44 unfunded) | edges=2895 |
-| audit_checks | FAILED | QA FAIL - 16/18 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 17/19 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -382,12 +382,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/malaysi
   sheet 'budget_all_years' : 3015 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 1207 programs x 5 year(s) (funding-over-time)
   sheet 'reconciliation'   : 200 rows (audit)
-  sheet 'data_quality'     : 4185 flagged items (see summary below)
+  sheet 'data_quality'     : 4190 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 143   MEDIUM: 3965   LOW: 72   INFO: 5
+  HIGH: 143   MEDIUM: 3970   LOW: 72   INFO: 5
 
   [HIGH] national_basis_programmes  (5)
       - FY2022: head totals sum to 171,388,197,600.0 but the programmes beneath them sum to 207,930,952,400.0 (18% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2022 is computed against 207,930,952,400.0.
@@ -406,6 +406,12 @@ DATA-QUALITY SUMMARY
       - FY2022 strat 1 1.020000: program_code '020000' looked malformed and was normalized to '1.020000' - verify against source; fix the year file to avoid this.
       - FY2022 strat 1 1.030000: program_code '030000' looked malformed and was normalized to '1.030000' - verify against source; fix the year file to avoid this.
       ... and 2812 more (see 'data_quality' sheet)
+
+  [MEDIUM] no_grand_total  (5)
+      - FY2022: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2022 rests on the heads being all of them.
+      - FY2023: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2023 rests on the heads being all of them.
+      - FY2024: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2024 rests on the heads being all of them.
+      ... and 2 more (see 'data_quality' sheet)
 
   [MEDIUM] program_missing_in_year  (1114)
       - FY2022,2023,2024 strat 1 1.040000: program '1.040000' ("ONE-OFF") exists in ['2025', '2026'] but is absent in ['2022', '2023', '2024'] - check whether it was dropped during extraction or genuinely did not exist that year.
@@ -473,7 +479,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: malaysia 16/18 PASS (A11 9 dangle, A16 1 untraceable)
+AUDIT CHECKS: malaysia 17/19 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A1   Stored programme sums              200 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             200 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             872 row(s) / 0 duplicate key(s)
@@ -499,13 +505,20 @@ AUDIT CHECKS: malaysia 16/18 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A19  Funding priority is reproducible   336 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             2815 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
+  ok   A22  Consolidation keeps every intervention 1451 intervention(s) extracted / 13 dropped (0.9%)
+            388
+            683
+            1371
+            1372
+            2738
+            2743
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to

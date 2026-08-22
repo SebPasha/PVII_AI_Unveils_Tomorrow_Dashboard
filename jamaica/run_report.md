@@ -1,7 +1,7 @@
 # Run report - Jamaica
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 16:37 by run_pipeline.py
+Generated 2026-08-22 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 16:37 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=135 (4 unfunded) | edges=572 |
-| audit_checks | ok | 18/18 PASS [advisory] |
+| audit_checks | ok | 19/19 PASS [advisory] |
 | data_issues | FAILED | 6 detected across 1 country(ies): 3 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -219,12 +219,12 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/jamaica
   sheet 'budget_all_years' : 420 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 222 programs x 3 year(s) (funding-over-time)
   sheet 'reconciliation'   : 79 rows (audit)
-  sheet 'data_quality'     : 282 flagged items (see summary below)
+  sheet 'data_quality'     : 285 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 77   MEDIUM: 200   LOW: 2   INFO: 3
+  HIGH: 77   MEDIUM: 203   LOW: 2   INFO: 3
 
   [HIGH] national_basis_programmes  (3)
       - FY2019: head totals sum to 278,267,320.0 but the programmes beneath them sum to 239,480,965.0 (14% apart), so the national total for this year is taken from the PROGRAMME rows. Every share for FY2019 is computed against 239,480,965.0.
@@ -236,6 +236,11 @@ DATA-QUALITY SUMMARY
       - FY2019 strat 08000: programs sum to 642,858.0 but strategy_total is 469,975.0 (gap -172,883.0) - a program line is likely missing or mis-extracted for this strategy-year.
       - FY2019 strat 09000: programs sum to 712,147.0 but strategy_total is 833,920.0 (gap 121,773.0) - a program line is likely missing or mis-extracted for this strategy-year.
       ... and 71 more (see 'data_quality' sheet)
+
+  [MEDIUM] no_grand_total  (3)
+      - FY2019: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2019 rests on the heads being all of them.
+      - FY2022: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2022 rests on the heads being all of them.
+      - FY2024: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2024 rests on the heads being all of them.
 
   [MEDIUM] program_missing_in_year  (200)
       - FY2024 strat 02000 02000.1.01.001: program '02000.1.01.001' (Executive Direction and Administration) exists in ['2019', '2022'] but is absent in ['2024'] - check whether it was dropped during extraction or genuinely did not exist that year.
@@ -295,7 +300,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: jamaica 18/18 PASS
+AUDIT CHECKS: jamaica 19/19 PASS
   ok   A1   Stored programme sums              79 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             79 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             177 row(s) / 0 duplicate key(s)
@@ -315,13 +320,18 @@ AUDIT CHECKS: jamaica 18/18 PASS
   ok   A20  The budget is readable             341 programme(s) / 1 unreadable (0%), carrying 0% of the money
             FY2022 41000.1.22.24: '25'
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
+  ok   A22  Consolidation keeps every intervention 997 intervention(s) extracted / 4 dropped (0.4%)
+            500
+            1183
+            2655
+            3738
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   6 detected across 1 country(ies): 3 high, 2 medium, 1 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  jamaica   D12      An output predates the prompt that produced it
   HIGH  jamaica   D7       Flag raised while combining the budget years
   HIGH  jamaica   D8       A strategy total its own programmes do not add up to

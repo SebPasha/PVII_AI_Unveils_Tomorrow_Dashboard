@@ -1,19 +1,19 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 16:37 by run_pipeline.py
+Generated 2026-08-22 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
-| validate_stage_schema (L2) | ok | PASS 8/8 |
+| validate_stage_schema (L2) | ok | PASS 5/5 |
 | validate_source_fidelity (L4) | ok | NOT CONFIGURED |
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
 | validate_refs (L3) | ok | QA FAIL - FAIL 1/1 (brunei references) |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=83 (37 unfunded) | edges=83 |
-| audit_checks | FAILED | QA FAIL - 16/18 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
-| data_issues | FAILED | 7 detected across 1 country(ies): 4 high, 2 medium, 1 low [advisory] |
+| audit_checks | FAILED | QA FAIL - 17/19 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
+| data_issues | FAILED | 8 detected across 1 country(ies): 4 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
 
@@ -27,23 +27,8 @@ Generated 2026-08-21 16:37 by run_pipeline.py
 
 ### validate_stage_schema (L2)
 ```
---- brunei_budget_2021.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/validation/schema_brunei_budget_2021.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- brunei_budget_2022.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/validation/schema_brunei_budget_2022.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
 --- brunei_budget_2025.xlsx
   report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/validation/schema_brunei_budget_2025.xlsx
-
-  RESULT: PASS - 1 file(s) match the schema their prompt promised.
-
---- brunei_budget_2026.xlsx
-  report -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/validation/schema_brunei_budget_2026.xlsx
 
   RESULT: PASS - 1 file(s) match the schema their prompt promised.
 
@@ -88,7 +73,7 @@ report -> Files/outputs/brunei/validation/refs_brunei_references.xlsx
 ### combine_budget_years
 ```
 ==============================================================================
-COMBINED BUDGET LAYER  -  years: 2025  (4 file(s))
+COMBINED BUDGET LAYER  -  years: 2025  (1 file(s))
 ==============================================================================
 
 RECONCILIATION (per year: sum of program rows vs strategy_total)
@@ -115,16 +100,19 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brunei/
   sheet 'budget_all_years' : 44 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 41 programs x 1 year(s) (funding-over-time)
   sheet 'reconciliation'   : 3 rows (audit)
-  sheet 'data_quality'     : 3 flagged items (see summary below)
+  sheet 'data_quality'     : 4 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 2   MEDIUM: 0   LOW: 0   INFO: 1
+  HIGH: 2   MEDIUM: 1   LOW: 0   INFO: 1
 
   [HIGH] reconciliation_mismatch  (2)
       - FY2025 strat 1: programs sum to 1,912.5 but strategy_total is 1,949.8 (gap 37.3) - a program line is likely missing or mis-extracted for this strategy-year.
       - FY2025 strat 3: programs sum to 626.7 but strategy_total is 624.9 (gap -1.8) - a program line is likely missing or mis-extracted for this strategy-year.
+
+  [MEDIUM] no_grand_total  (1)
+      - FY2025: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2025 rests on the heads being all of them.
 ==============================================================================
 DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years
 ==============================================================================
@@ -174,7 +162,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brunei 16/18 PASS (A11 10 dangle, A16 20 untraceable)
+AUDIT CHECKS: brunei 17/19 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A1   Stored programme sums              3 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             3 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             34 row(s) / 0 duplicate key(s)
@@ -205,13 +193,20 @@ AUDIT CHECKS: brunei 16/18 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A19  Funding priority is reproducible   46 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             41 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
+  ok   A22  Consolidation keeps every intervention 581 intervention(s) extracted / 18 dropped (3.1%)
+            147
+            341
+            365
+            370
+            426
+            475
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
-  7 detected across 1 country(ies): 4 high, 2 medium, 1 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  8 detected across 1 country(ies): 4 high, 3 medium, 1 low
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brunei    D11      Strategy named after the budget line funding it
   HIGH  brunei    D12      An output predates the prompt that produced it
   HIGH  brunei    D7       Flag raised while combining the budget years

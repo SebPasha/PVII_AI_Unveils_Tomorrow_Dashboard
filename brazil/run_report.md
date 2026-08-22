@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-21 16:37 by run_pipeline.py
+Generated 2026-08-22 10:20 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,7 @@ Generated 2026-08-21 16:37 by run_pipeline.py
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | translate_panel | ok | 1548 cell(s) |
 | build_analytics_html | ok | strategies=127 (37 unfunded) | edges=189 |
-| audit_checks | ok | 18/18 PASS [advisory] |
+| audit_checks | ok | 19/19 PASS [advisory] |
 | data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
@@ -129,12 +129,15 @@ Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/brazil/
   sheet 'budget_all_years' : 210 rows  (feeds Prompt 6 / build_final_panel - each intervention matches against EVERY year's programs)
   sheet 'programs_wide'    : 182 programs x 1 year(s) (funding-over-time)
   sheet 'reconciliation'   : 28 rows (audit)
-  sheet 'data_quality'     : 5 flagged items (see summary below)
+  sheet 'data_quality'     : 6 flagged items (see summary below)
 
 ==============================================================================
 DATA-QUALITY SUMMARY
 ==============================================================================
-  HIGH: 0   MEDIUM: 4   LOW: 0   INFO: 1
+  HIGH: 0   MEDIUM: 5   LOW: 0   INFO: 1
+
+  [MEDIUM] no_grand_total  (1)
+      - FY2024: the document printed no grand total that stage 5 could find, so there is nothing to check the extraction's completeness against. Every share for FY2024 rests on the heads being all of them.
 
   [MEDIUM] zero_amount_programme  (4)
       - FY2024 strat 02 0033: programme carries no money; a strategy matched only to lines like this reads as funded while receiving nothing
@@ -199,7 +202,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brazil 18/18 PASS
+AUDIT CHECKS: brazil 19/19 PASS
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             92 row(s) / 0 duplicate key(s)
@@ -218,13 +221,20 @@ AUDIT CHECKS: brazil 18/18 PASS
   ok   A19  Funding priority is reproducible   91 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             182 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    28 repeated code(s) / 0 edge(s) do not name a head
+  ok   A22  Consolidation keeps every intervention 687 intervention(s) extracted / 11 dropped (1.6%)
+            36
+            208
+            220
+            377
+            399
+            1017
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   8 detected across 1 country(ies): 2 high, 4 medium, 2 low
-  37 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  38 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brazil    D1       A programme code is not unique within a year
   HIGH  brazil    D12      An output predates the prompt that produced it
 ```
