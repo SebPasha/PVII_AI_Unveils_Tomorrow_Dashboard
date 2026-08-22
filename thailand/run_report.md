@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🟢 Overall: PASS**  
-Generated 2026-08-21 13:37 by run_pipeline.py
+Generated 2026-08-21 16:38 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,7 @@ Generated 2026-08-21 13:37 by run_pipeline.py
 | combine_budget_years | ok | reconcile=PASS - all years reconcile | data_quality=OK with minor flags - review MEDIUM/LOW as needed |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=99 (3 unfunded) | edges=732 |
-| audit_checks | FAILED | QA FAIL - 16/17 PASS (A16 1 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 17/18 PASS (A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 4 detected across 1 country(ies): 1 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -321,7 +321,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: thailand 16/17 PASS (A16 1 untraceable)
+AUDIT CHECKS: thailand 17/18 PASS (A16 1 untraceable)
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             153 row(s) / 0 duplicate key(s)
@@ -340,6 +340,7 @@ AUDIT CHECKS: thailand 16/17 PASS (A16 1 untraceable)
   ok   A18  Strategies come from the plan      99 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   82 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             273 programme(s) / 0 unreadable (0%), carrying 0% of the money
+  ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues

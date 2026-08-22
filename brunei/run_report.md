@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 13:36 by run_pipeline.py
+Generated 2026-08-21 16:37 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 13:36 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=83 (37 unfunded) | edges=83 |
-| audit_checks | FAILED | QA FAIL - 15/17 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 16/18 PASS (A11 10 dangle, A16 20 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 4 high, 2 medium, 1 low [advisory] |
 
 ## Outputs
@@ -174,7 +174,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brunei 15/17 PASS (A11 10 dangle, A16 20 untraceable)
+AUDIT CHECKS: brunei 16/18 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A1   Stored programme sums              3 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             3 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             34 row(s) / 0 duplicate key(s)
@@ -204,6 +204,7 @@ AUDIT CHECKS: brunei 15/17 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A18  Strategies come from the plan      83 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   46 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             41 programme(s) / 0 unreadable (0%), carrying 0% of the money
+  ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues

@@ -1,7 +1,7 @@
 # Run report - Maldives
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 13:36 by run_pipeline.py
+Generated 2026-08-21 16:37 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 13:36 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=261 (251 unfunded) | edges=20 |
-| audit_checks | FAILED | QA FAIL - 14/17 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/18 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -330,7 +330,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: maldives 14/17 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money)
+AUDIT CHECKS: maldives 15/18 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unreadable (46%), carrying 31% of the money)
   ok   A1   Stored programme sums              101 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             101 strategy-year(s) / 8 disagree
             FY2017 strategy 37: stored 0.0, layer -
@@ -362,6 +362,7 @@ AUDIT CHECKS: maldives 14/17 PASS (A2 8 disagree, A16 2 untraceable, A20 395 unr
             FY2017 10.1: '23:35'
             FY2017 19.001: 'se DA 299, 9 48?'
             FY2017 19.006: 'أَمْدٍ مَرْ مصدرْ'
+  ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues

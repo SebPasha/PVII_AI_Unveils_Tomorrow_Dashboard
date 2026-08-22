@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-21 13:36 by run_pipeline.py
+Generated 2026-08-21 16:37 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -13,7 +13,7 @@ Generated 2026-08-21 13:36 by run_pipeline.py
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | translate_panel | ok | 1548 cell(s) |
 | build_analytics_html | ok | strategies=127 (37 unfunded) | edges=189 |
-| audit_checks | ok | 17/17 PASS [advisory] |
+| audit_checks | ok | 18/18 PASS [advisory] |
 | data_issues | FAILED | 8 detected across 1 country(ies): 2 high, 4 medium, 2 low [advisory] |
 
 ## Outputs
@@ -199,7 +199,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: brazil 17/17 PASS
+AUDIT CHECKS: brazil 18/18 PASS
   ok   A1   Stored programme sums              28 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             28 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             92 row(s) / 0 duplicate key(s)
@@ -217,6 +217,7 @@ AUDIT CHECKS: brazil 17/17 PASS
   ok   A18  Strategies come from the plan      127 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   91 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             182 programme(s) / 0 unreadable (0%), carrying 0% of the money
+  ok   A21  Ambiguous codes name their head    28 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues

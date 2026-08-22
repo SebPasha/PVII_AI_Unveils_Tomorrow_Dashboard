@@ -1,7 +1,7 @@
 # Run report - Fiji
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 13:36 by run_pipeline.py
+Generated 2026-08-21 16:37 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 13:36 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | QA FAIL - ceiling=FAIL - see ceiling sheet | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=220 (23 unfunded) | edges=750 |
-| audit_checks | FAILED | QA FAIL - 15/17 PASS (A4 3 over ceiling, A16 3 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 16/18 PASS (A4 3 over ceiling, A16 3 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -321,7 +321,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, A16 3 untraceable)
+AUDIT CHECKS: fiji 16/18 PASS (A4 3 over ceiling, A16 3 untraceable)
   ok   A1   Stored programme sums              108 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             108 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             167 row(s) / 0 duplicate key(s)
@@ -345,6 +345,7 @@ AUDIT CHECKS: fiji 15/17 PASS (A4 3 over ceiling, A16 3 untraceable)
   ok   A18  Strategies come from the plan      220 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   155 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             258 programme(s) / 0 unreadable (0%), carrying 0% of the money
+  ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues

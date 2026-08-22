@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-21 13:36 by run_pipeline.py
+Generated 2026-08-21 16:37 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-21 13:36 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=281 (42 unfunded) | edges=827 |
-| audit_checks | FAILED | QA FAIL - 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 15/18 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
 | data_issues | FAILED | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
@@ -598,7 +598,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
+AUDIT CHECKS: kenya 15/18 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
@@ -630,6 +630,7 @@ AUDIT CHECKS: kenya 14/17 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A18  Strategies come from the plan      281 strategy(ies) / 0 with no component
   ok   A19  Funding priority is reproducible   234 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             985 programme(s) / 0 unreadable (0%), carrying 0% of the money
+  ok   A21  Ambiguous codes name their head    7 repeated code(s) / 0 edge(s) do not name a head
 ```
 
 ### data_issues
