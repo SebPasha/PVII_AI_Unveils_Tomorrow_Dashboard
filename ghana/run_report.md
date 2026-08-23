@@ -1,7 +1,7 @@
 # Run report - Ghana
 
 **🟡 Overall: NOT READY**  
-Generated 2026-08-22 11:55 by run_pipeline.py
+Generated 2026-08-22 21:33 by run_pipeline.py
 
 The pipeline did not run: no budget year files are configured.
 

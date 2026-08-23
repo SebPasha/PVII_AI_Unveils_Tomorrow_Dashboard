@@ -1,7 +1,7 @@
 # Run report - Brunei
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 11:55 by run_pipeline.py
+Generated 2026-08-22 21:33 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -275,21 +275,21 @@ AUDIT CHECKS: brunei 18/20 PASS (A11 10 dangle, A16 20 untraceable)
   ok   A19  Funding priority is reproducible   75 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             164 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
-  ok   A22  Consolidation keeps every intervention 581 intervention(s) extracted / 18 dropped (3.1%)
+  ok   A22  Every intervention is traceable to a strategy 581 intervention(s) extracted / 18 uncited (3.1%)
             147
             341
             365
             370
             426
             475
-  ok   A23  The sector layer stayed out of the panel 198 sector intervention(s) not in the plan / 0 of them present in the panel
+  ok   A23  The sector layer stayed out of the panel 316 sector intervention(s) not in the plan / 0 of them present in the panel
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 4 high, 2 medium, 1 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brunei    D11      Strategy named after the budget line funding it
   HIGH  brunei    D12      An output predates the prompt that produced it
   HIGH  brunei    D7       Flag raised while combining the budget years

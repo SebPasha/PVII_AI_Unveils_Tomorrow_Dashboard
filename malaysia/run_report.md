@@ -1,7 +1,7 @@
 # Run report - Malaysia
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 11:56 by run_pipeline.py
+Generated 2026-08-22 21:34 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-22 11:56 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=382 (44 unfunded) | edges=2895 |
-| audit_checks | FAILED | QA FAIL - 17/19 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 18/20 PASS (A11 9 dangle, A16 1 untraceable) [advisory] |
 | data_issues | FAILED | 7 detected across 1 country(ies): 3 high, 3 medium, 1 low [advisory] |
 
 ## Outputs
@@ -479,7 +479,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: malaysia 17/19 PASS (A11 9 dangle, A16 1 untraceable)
+AUDIT CHECKS: malaysia 18/20 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A1   Stored programme sums              200 strategy-year(s) / 0 disagree
   ok   A2   Stored strategy totals             200 strategy-year(s) / 0 disagree
   ok   A3   Programme counted once             872 row(s) / 0 duplicate key(s)
@@ -505,21 +505,21 @@ AUDIT CHECKS: malaysia 17/19 PASS (A11 9 dangle, A16 1 untraceable)
   ok   A19  Funding priority is reproducible   336 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             2815 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
-  ok   A22  Consolidation keeps every intervention 1451 intervention(s) extracted / 13 dropped (0.9%)
+  ok   A22  Every intervention is traceable to a strategy 1451 intervention(s) extracted / 13 uncited (0.9%)
             388
             683
             1371
             1372
             2738
             2743
-  --   A23  The sector layer stayed out of the panel no sector run for this country
+  ok   A23  The sector layer stayed out of the panel 699 sector intervention(s) not in the plan / 0 of them present in the panel
 ```
 
 ### data_issues
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   7 detected across 1 country(ies): 3 high, 3 medium, 1 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  malaysia  D12      An output predates the prompt that produced it
   HIGH  malaysia  D7       Flag raised while combining the budget years
   HIGH  malaysia  D8       A strategy total its own programmes do not add up to

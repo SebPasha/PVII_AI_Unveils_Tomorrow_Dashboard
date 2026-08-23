@@ -1,7 +1,7 @@
 # Run report - Kenya
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 11:55 by run_pipeline.py
+Generated 2026-08-22 21:33 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -12,7 +12,7 @@ Generated 2026-08-22 11:55 by run_pipeline.py
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
 | build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
 | build_analytics_html | ok | strategies=281 (42 unfunded) | edges=827 |
-| audit_checks | FAILED | QA FAIL - 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
+| audit_checks | FAILED | QA FAIL - 16/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable) [advisory] |
 | data_issues | FAILED | 9 detected across 1 country(ies): 4 high, 3 medium, 2 low [advisory] |
 
 ## Outputs
@@ -84,7 +84,7 @@ no inputs configured for this check
 ### validate_refs (L3)
 ```
 --- kenya references
-RESULT: PASS - every one of 1861 reference(s) resolves
+RESULT: PASS - every one of 2367 reference(s) resolves
 report -> Files/outputs/kenya/validation/refs_kenya_references.xlsx
 ```
 
@@ -602,7 +602,7 @@ dashboard -> /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/
 
 ### audit_checks
 ```
-AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
+AUDIT CHECKS: kenya 16/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A1   Stored programme sums              393 strategy-year(s) / 0 disagree
   FAIL A2   Stored strategy totals             393 strategy-year(s) / 4 disagree
             FY2020 strategy 0703000: stored 0.0, layer -
@@ -615,7 +615,7 @@ AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A8   Edges cite real programmes         828 accepted edge(s) / 0 dangle
   ok   A9   No strategy dropped                281 strategyclean row(s) / 281 panel row(s)
   ok   A10  Unfunded list is complete          42 zero-funded / 42 listed
-  FAIL A11  Evidence chain resolves            873 distinct id(s) / 4 dangle
+  FAIL A11  Evidence chain resolves            1379 distinct id(s) / 4 dangle
             chunk id 309010 has no stage-3 row
             chunk id 318020 has no stage-3 row
             chunk id 318030 has no stage-3 row
@@ -635,13 +635,10 @@ AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
   ok   A19  Funding priority is reproducible   234 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             985 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    7 repeated code(s) / 0 edge(s) do not name a head
-  FAIL A22  Consolidation keeps every intervention 1378 intervention(s) extracted / 509 dropped (36.9%)
-            452
-            662
-            962
-            995
+  ok   A22  Every intervention is traceable to a strategy 1378 intervention(s) extracted / 3 uncited (0.2%)
             1182
-            1183
+            1480
+            1495
   --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
@@ -649,7 +646,7 @@ AUDIT CHECKS: kenya 15/19 PASS (A2 4 disagree, A11 4 dangle, A16 22 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   9 detected across 1 country(ies): 4 high, 3 medium, 2 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  kenya     D1       A programme code is not unique within a year
   HIGH  kenya     D12      An output predates the prompt that produced it
   HIGH  kenya     D7       Flag raised while combining the budget years

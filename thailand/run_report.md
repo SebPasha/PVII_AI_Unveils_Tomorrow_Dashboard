@@ -1,7 +1,7 @@
 # Run report - Thailand
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 11:57 by run_pipeline.py
+Generated 2026-08-22 21:35 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -356,7 +356,7 @@ AUDIT CHECKS: thailand 18/19 PASS (A16 1 untraceable)
   ok   A19  Funding priority is reproducible   82 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             273 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
-  ok   A22  Consolidation keeps every intervention 533 intervention(s) extracted / 8 dropped (1.5%)
+  ok   A22  Every intervention is traceable to a strategy 533 intervention(s) extracted / 8 uncited (1.5%)
             202
             369
             383
@@ -370,7 +370,7 @@ AUDIT CHECKS: thailand 18/19 PASS (A16 1 untraceable)
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   5 detected across 1 country(ies): 2 high, 2 medium, 1 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  thailand  D12      An output predates the prompt that produced it
   HIGH  thailand  D7       Flag raised while combining the budget years
 ```

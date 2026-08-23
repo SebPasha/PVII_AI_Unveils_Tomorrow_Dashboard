@@ -1,7 +1,7 @@
 # Run report - Brazil
 
 **🟢 Overall: PASS**  
-Generated 2026-08-22 11:55 by run_pipeline.py
+Generated 2026-08-22 21:33 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -221,7 +221,7 @@ AUDIT CHECKS: brazil 19/19 PASS
   ok   A19  Funding priority is reproducible   91 distinct (salience, funding) group(s) / 0 split across priorities
   ok   A20  The budget is readable             182 programme(s) / 0 unreadable (0%), carrying 0% of the money
   ok   A21  Ambiguous codes name their head    28 repeated code(s) / 0 edge(s) do not name a head
-  ok   A22  Consolidation keeps every intervention 687 intervention(s) extracted / 11 dropped (1.6%)
+  ok   A22  Every intervention is traceable to a strategy 687 intervention(s) extracted / 11 uncited (1.6%)
             36
             208
             220
@@ -235,7 +235,7 @@ AUDIT CHECKS: brazil 19/19 PASS
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   8 detected across 1 country(ies): 2 high, 4 medium, 2 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  brazil    D1       A programme code is not unique within a year
   HIGH  brazil    D12      An output predates the prompt that produced it
 ```

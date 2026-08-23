@@ -1,7 +1,7 @@
 # Run report - Jamaica
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-22 11:55 by run_pipeline.py
+Generated 2026-08-22 21:33 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
@@ -320,7 +320,7 @@ AUDIT CHECKS: jamaica 19/19 PASS
   ok   A20  The budget is readable             341 programme(s) / 1 unreadable (0%), carrying 0% of the money
             FY2022 41000.1.22.24: '25'
   ok   A21  Ambiguous codes name their head    0 repeated code(s) / 0 edge(s) do not name a head
-  ok   A22  Consolidation keeps every intervention 997 intervention(s) extracted / 4 dropped (0.4%)
+  ok   A22  Every intervention is traceable to a strategy 997 intervention(s) extracted / 4 uncited (0.4%)
             500
             1183
             2655
@@ -332,7 +332,7 @@ AUDIT CHECKS: jamaica 19/19 PASS
 ```
 data issues  Files/outputs/DATA_ISSUES.xlsx
   6 detected across 1 country(ies): 3 high, 2 medium, 1 low
-  51 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  54 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
   HIGH  jamaica   D12      An output predates the prompt that produced it
   HIGH  jamaica   D7       Flag raised while combining the budget years
   HIGH  jamaica   D8       A strategy total its own programmes do not add up to
