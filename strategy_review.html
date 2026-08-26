@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Strategy grouping review</title>
+<style>
+:root{color-scheme:light dark;
+ --bg:#faf9f5;--surface:#fff;--sunk:#f4f3ee;--text:#26251f;--text2:#52514e;--muted:#77766f;
+ --line:#e3e2dd;--good:#0ca30c;--bad:#d03b3b;--warn:#fab219;--accent:#2a78d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191813;--surface:#211f1a;--sunk:#1c1b16;--text:#f2f1ea;--text2:#c9c7bd;--muted:#8f8e86;
+ --line:#33322c;--good:#4ec44e;--bad:#e0625f;--warn:#f5c451;--accent:#4e93e6}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font:15px/1.55 ui-serif,Georgia,"Times New Roman",serif}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 108px}
+h1{font-size:19px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:76ch}
+.bar{height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin:10px 0 6px}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+.counts{display:flex;gap:15px;font-size:12.5px;color:var(--text2);
+ font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+ padding:18px 20px;margin:14px 0}
+.card.done{border-color:var(--good)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:12px}
+.tag{border:1px solid var(--line);border-radius:11px;padding:1px 9px;white-space:nowrap}
+.tag.hi{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,var(--line))}
+.sides{display:grid;gap:12px;align-items:start}
+.side{background:var(--sunk);border-radius:9px;padding:11px 13px}
+.side .lab{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.side .val{font-size:15.5px;font-weight:600;line-height:1.35;margin-top:3px}
+.side .sub2{font-size:12.5px;color:var(--text2);margin-top:4px;font-variant-numeric:tabular-nums}
+table.facts{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px}
+table.facts th{text-align:left;font-weight:500;color:var(--muted);padding:3px 12px 3px 0;
+ white-space:nowrap;vertical-align:top;width:1%}
+table.facts td{padding:3px 0;color:var(--text2);vertical-align:top}
+.prose{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);
+ color:var(--text2);font-size:13.5px}
+.prose b{color:var(--text);font-weight:600}
+.btns{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-size:14.5px;padding:8px 17px;border-radius:9px;cursor:pointer;
+ border:1px solid var(--line);background:var(--surface);color:var(--text)}
+button.y{border-color:var(--good);color:var(--good)}
+button.n{border-color:var(--bad);color:var(--bad)}
+button.u{border-color:var(--warn);color:var(--warn)}
+button:hover{background:color-mix(in srgb,currentColor 9%,transparent)}
+button[disabled]{opacity:.45;cursor:default}
+kbd{font:12px ui-monospace,monospace;border:1px solid var(--line);border-radius:4px;
+ padding:0 5px;color:var(--muted);margin-left:6px}
+textarea{width:100%;margin-top:11px;min-height:52px;padding:9px 11px;border-radius:9px;
+ border:1px solid var(--line);background:var(--sunk);color:var(--text);font:inherit;
+ font-size:13.5px;resize:vertical}
+textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent);
+ outline-offset:1px}
+.opts{margin-top:13px;display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;background:var(--sunk);
+ border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer}
+.opt:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.opt.on{border-color:var(--good);background:color-mix(in srgb,var(--good) 8%,var(--sunk))}
+.opt input{margin:3px 0 0;width:16px;height:16px;accent-color:var(--good);flex:none}
+.opt .on1{font-weight:600;font-size:14.5px;line-height:1.35}
+.opt .why{font-size:12.5px;color:var(--text2);margin-top:3px;border:0;padding:0}
+.opt .num{font-size:11px;color:var(--muted);margin-right:6px;font-variant-numeric:tabular-nums}
+.clab{font-size:11.5px;color:var(--muted);margin-top:12px}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+ font-size:13px;color:var(--muted)}
+.mark{font-size:12.5px}
+.mark.y{color:var(--good)} .mark.n{color:var(--bad)} .mark.u{color:var(--warn)}
+.seeded{color:var(--warn);font-size:12.5px;margin-top:9px}
+.foot{position:fixed;left:0;right:0;bottom:0;background:var(--surface);
+ border-top:1px solid var(--line);padding:9px 20px}
+.foot .in{max-width:900px;margin:0 auto;display:flex;gap:12px;align-items:center;
+ justify-content:space-between;flex-wrap:wrap;font-size:13px;color:var(--text2)}
+.note{color:var(--muted);font-size:12.5px;margin-top:15px;max-width:80ch}
+</style></head><body><div class="wrap">
+<h1>Strategy grouping review</h1>
+<p class="sub">Are these the same strategy, and should they be folded into one? 18 cluster(s) of similar strategy names across 6 countries, found by name overlap. Select every name that belongs to the SAME strategy.</p>
+<div class="bar"><i id="bar"></i></div>
+<div class="counts" id="counts"></div>
+<div class="card" id="card"></div>
+<div class="nav">
+  <span><button id="prev">Back<kbd>&larr;</kbd></button>
+        <button id="next">Skip<kbd>&rarr;</kbd></button></span>
+  <span id="where"></span>
+</div>
+<p class="note">Select the names that are one strategy and save. <b>None of these</b> means they are all genuinely distinct and the cluster is a false alarm, which is a useful answer and costs one keystroke. The strategy count is the denominator of every share-mapped figure, so folding two into one moves numbers a reader sees.</p>
+</div>
+<div class="foot"><div class="in">
+  <span id="status"></span>
+  <span><button id="save">Save strategy_review.csv</button>
+        <button id="reset">Clear all</button></span>
+</div></div>
+<script>
+const ROWS = [{"_id": "brazil|Science, technology and innovation system strengthening|Strengthen defence science, technology, and innovation", "country": "brazil", "n": 2, "sectors": "Defence, Industry", "hdi": "Fostering the Spirit of Change", "shared": "innovation, science, technology", "options": [{"id": "Science, technology and innovation system strengthening", "label": "Science, technology and innovation system strengthening", "why": "sector Industry · funds Consolidation of the National System of Science, Technology  · codes 2308 · maturity operational_programme", "row": {"strategy": "Science, technology and innovation system strengthening", "sector": "Industry", "budget_item": "Consolidation of the National System of Science, Technology and Innovation", "maturity_subtype": "operational_programme"}}, {"id": "Strengthen defence science, technology, and innovation", "label": "Strengthen defence science, technology, and innovation", "why": "sector Defence · funds Defense cooperation for national development · codes 6111 · maturity operational_programme", "row": {"strategy": "Strengthen defence science, technology, and innovation", "sector": "Defence", "budget_item": "Defense cooperation for national development", "maturity_subtype": "operational_programme"}}]}, {"_id": "fiji|Green and sustainable construction transition|Sustainable consumption and green transport transition", "country": "fiji", "n": 2, "sectors": "Environment", "hdi": "Fostering the Spirit of Change, Strategic Planning (Anticipation)", "shared": "green, sustainable, transition", "options": [{"id": "Green and sustainable construction transition", "label": "Green and sustainable construction transition", "why": "sector Environment · funds Additional bio-diesel plants; Advocacy of the green growth f · codes 1.64, 2.20, 2.24, 2.25, 2.26, 2.27, 2.28, 2.9 · maturity operational_programme", "row": {"strategy": "Green and sustainable construction transition", "sector": "Environment", "budget_item": "Additional bio-diesel plants; Advocacy of the green growth framework; Construction, upgrade and maintenance of schools; Development of bio-gas projects; Renewable Energy Development Project; Rural electrification; Somosomo Hydro Power project; Testing equipment for bio-fuel", "maturity_subtype": "operational_programme"}}, {"id": "Sustainable consumption and green transport transition", "label": "Sustainable consumption and green transport transition", "why": "sector Environment · funds Installation of solar home systems in rural homes and school · codes 2.15, 2.19, 2.20 · maturity partial_operation", "row": {"strategy": "Sustainable consumption and green transport transition", "sector": "Environment", "budget_item": "Installation of solar home systems in rural homes and schools; Renewable Energy Development Project; Rural electrification programme", "maturity_subtype": "partial_operation"}}]}, {"_id": "fiji|Promote iTaukei economic empowerment and business participation|Strengthen iTaukei economic empowerment, land participation, and community enterprise development", "country": "fiji", "n": 2, "sectors": "Indigenous Development, Industry", "hdi": "Growth through Inclusion", "shared": "economic, empowerment, itaukei, participation", "options": [{"id": "Promote iTaukei economic empowerment and business participation", "label": "Promote iTaukei economic empowerment and business participation", "why": "sector Indigenous Development · funds Buy Fijian and Fijian Made campaigns; Committee for the Bett · codes 1.104, 1.13, 1.14, 1.16, 1.2, 1.28, 1.29, 1.30, 1.56, 1.68, 1.69, 2.100, 21.9, 6.2 · maturity operational_programme", "row": {"strategy": "Promote iTaukei economic empowerment and business participation", "sector": "Indigenous Development", "budget_item": "Buy Fijian and Fijian Made campaigns; Committee for the Better Utilisation of Land; Committee on Better Utilisation of Land initiative; Development of iTaukei land; Fiji Development Bank support to businesses; Grant to the iTaukei Affairs Board; Heritage and Arts; Land clearing support; Mechanisation and equipment support; Northern Development Program and Integrated Human Resource Development Program; Promote export of Fijian produce; Self-help projects; Small business financing mechanism; Technology for Ministry of Finance and FRCA compliance systems", "maturity_subtype": "operational_programme"}}, {"id": "Strengthen iTaukei economic empowerment, land participation, and community enterprise development", "label": "Strengthen iTaukei economic empowerment, land participation, and community enterprise development", "why": "sector Industry · funds Buy Fijian and Fijian Made campaigns; Committee for the Bett · codes 1.104, 1.28, 1.29, 1.30, 1.55, 1.57, 1.58, 1.68, 1.69, 2.100, 5.1 · maturity operational_programme", "row": {"strategy": "Strengthen iTaukei economic empowerment, land participation, and community enterprise development", "sector": "Industry", "budget_item": "Buy Fijian and Fijian Made campaigns; Committee for the Better Utilisation of Land; Committee on Better Utilisation of Land initiative; Credit Guarantee Scheme; Development of iTaukei land; Fiji Development Bank support to businesses; Interest subsidy on small business loans through the Fiji Development Bank; National Center for Small and Micro Enterprises Development operations; Self-help projects; Small business financing mechanism; Survey costs for regularising leases on iTaukei land", "maturity_subtype": "operational_programme"}}]}, {"_id": "jamaica|Provide social protection and insurance for athletes|Strengthen social insurance and pension protection", "country": "jamaica", "n": 2, "sectors": "Social Protection", "hdi": "Tackling Structural Exclusion", "shared": "insurance, protection, social", "options": [{"id": "Provide social protection and insurance for athletes", "label": "Provide social protection and insurance for athletes", "why": "sector Social Protection · maturity planned", "row": {"strategy": "Provide social protection and insurance for athletes", "sector": "Social Protection", "budget_item": "", "maturity_subtype": "planned"}}, {"id": "Strengthen social insurance and pension protection", "label": "Strengthen social insurance and pension protection", "why": "sector Social Protection · funds Pensions and Retirement Benefits · codes 20019.1.99.136 · maturity operational_programme", "row": {"strategy": "Strengthen social insurance and pension protection", "sector": "Social Protection", "budget_item": "Pensions and Retirement Benefits", "maturity_subtype": "operational_programme"}}]}, {"_id": "kenya|Green energy generation and power expansion|Power generation diversification and expansion", "country": "kenya", "n": 2, "sectors": "Energy", "hdi": "Industry, Innovation and Infrastructure, Joined-up Thinking", "shared": "expansion, generation, power", "options": [{"id": "Green energy generation and power expansion", "label": "Green energy generation and power expansion", "why": "sector Energy · funds Alternative Energy Technologies; Coal Exploration and Mining · codes 0212000, 0212010, 0212020, 0212030, 0213000, 0213020, 0214000 · maturity operational_programme", "row": {"strategy": "Green energy generation and power expansion", "sector": "Energy", "budget_item": "Alternative Energy Technologies; Coal Exploration and Mining; Development of Nuclear Energy; Geothermal generation; Power Generation; Power Transmission and Distribution; Rural Electrification", "maturity_subtype": "operational_programme"}}, {"id": "Power generation diversification and expansion", "label": "Power generation diversification and expansion", "why": "sector Energy · funds Alternative Energy Technologies; Coal Exploration and Mining · codes 0212000, 0212010, 0212020, 0212030, 0214000 · maturity operational_programme", "row": {"strategy": "Power generation diversification and expansion", "sector": "Energy", "budget_item": "Alternative Energy Technologies; Coal Exploration and Mining; Development of Nuclear Energy; Geothermal generation; Power Generation", "maturity_subtype": "operational_programme"}}]}, {"_id": "kenya|Tourism marketing, product diversification and tourism digitization|Tourism product diversification and destination development", "country": "kenya", "n": 2, "sectors": "Industry, Tourism", "hdi": "Export-led", "shared": "diversification, product, tourism", "options": [{"id": "Tourism marketing, product diversification and tourism digitization", "label": "Tourism marketing, product diversification and tourism digitization", "why": "sector Industry · funds Brand Kenya Initiative; E-Government Services; Tourism Produ · codes 0208020, 0217000, 0217010, 0313000, 0314000 · maturity operational_programme", "row": {"strategy": "Tourism marketing, product diversification and tourism digitization", "sector": "Industry", "budget_item": "Brand Kenya Initiative; E-Government Services; Tourism Product Development and Diversification; Tourism Promotion and Marketing", "maturity_subtype": "operational_programme"}}, {"id": "Tourism product diversification and destination development", "label": "Tourism product diversification and destination development", "why": "sector Tourism · funds Development and Management of Sports Facilities; Tourism Pro · codes 0313000, 0314000, 0901020 · maturity operational_programme", "row": {"strategy": "Tourism product diversification and destination development", "sector": "Tourism", "budget_item": "Development and Management of Sports Facilities; Tourism Product Development and Diversification; Tourism Promotion and Marketing", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Advance digital learning, remote education and school connectivity|Digital Education and Remote Learning Infrastructure", "country": "malaysia", "n": 2, "sectors": "Digital, Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "shared": "digital, education, learning, remote", "options": [{"id": "Advance digital learning, remote education and school connectivity", "label": "Advance digital learning, remote education and school connectivity", "why": "sector Education · funds Inisiatif Pelan Pembangunan Pendidikan Malaysia (PPPM); PENG · codes 63.010500, 63.040000, 63.040300, 63.062300 · maturity operational_programme", "row": {"strategy": "Advance digital learning, remote education and school connectivity", "sector": "Education", "budget_item": "Inisiatif Pelan Pembangunan Pendidikan Malaysia (PPPM); PENGUKUHAN OPERASI PENDIDIKAN; Pembangunan Kurikulum; Teknologi Maklumat", "maturity_subtype": "operational_programme"}}, {"id": "Digital Education and Remote Learning Infrastructure", "label": "Digital Education and Remote Learning Infrastructure", "why": "sector Digital · funds Infrastructure and Applications; Inisiatif Pelan Pembangunan · codes 47.030100, 47.060400, 63.010500, 63.040300, 63.062300 · maturity operational_programme", "row": {"strategy": "Digital Education and Remote Learning Infrastructure", "sector": "Digital", "budget_item": "Infrastructure and Applications; Inisiatif Pelan Pembangunan Pendidikan Malaysia (PPPM); National Broadcasting Digitalisation Project; Pembangunan Kurikulum; Teknologi Maklumat", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Affordable Housing Supply, Access and Financing for Target Groups|Affordable housing supply and access", "country": "malaysia", "n": 2, "sectors": "Housing", "hdi": "Growth through Inclusion", "shared": "access, affordable, housing, supply", "options": [{"id": "Affordable housing supply and access", "label": "Affordable housing supply and access", "why": "sector Housing · funds KOMUNITI BANDAR MAMPAN; KUMPULAN WANG AMANAH PINJAMAN PERUMA · codes 12.110000, 43.030000, 43.030200 · maturity operational_programme", "row": {"strategy": "Affordable housing supply and access", "sector": "Housing", "budget_item": "KOMUNITI BANDAR MAMPAN; KUMPULAN WANG AMANAH PINJAMAN PERUMAHAN UNTUK GOLONGAN BERPENDAPATAN RENDAH SABAH/SARAWAK; National Housing", "maturity_subtype": "operational_programme"}}, {"id": "Affordable Housing Supply, Access and Financing for Target Groups", "label": "Affordable Housing Supply, Access and Financing for Target Groups", "why": "sector Housing · funds Community Well-being; Contribution to Assist Rates (SMK); DA · codes 11.021200, 11.021300, 11.022500, 12.110000, 43.020000, 43.030000, 43.030200, 43.030500, 43.030600, 43.040300, 43.050000 · maturity operational_programme", "row": {"strategy": "Affordable Housing Supply, Access and Financing for Target Groups", "sector": "Housing", "budget_item": "Community Well-being; Contribution to Assist Rates (SMK); DASAR BARU; Felcra Berhad Funding Gap Financing; Housing Planning; KOMUNITI BANDAR MAMPAN; KUMPULAN WANG AMANAH PINJAMAN PERUMAHAN UNTUK GOLONGAN BERPENDAPATAN RENDAH SABAH/SARAWAK; National Housing; PERSEKITARAN BANDAR MAMPAN; Small Basic Facilities Grant; Special Project Facilities Grant", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Bumiputera and Indigenous Socioeconomic Empowerment|Bumiputera socioeconomic empowerment and institutional reform", "country": "malaysia", "n": 2, "sectors": "Governance, Social Protection", "hdi": "Joined-up Thinking, Tackling Structural Exclusion", "shared": "bumiputera, empowerment, socioeconomic", "options": [{"id": "Bumiputera and Indigenous Socioeconomic Empowerment", "label": "Bumiputera and Indigenous Socioeconomic Empowerment", "why": "sector Social Protection · funds RURAL ECONOMIC EMPOWERMENT · codes 22.030000 · maturity partial_operation", "row": {"strategy": "Bumiputera and Indigenous Socioeconomic Empowerment", "sector": "Social Protection", "budget_item": "RURAL ECONOMIC EMPOWERMENT", "maturity_subtype": "partial_operation"}}, {"id": "Bumiputera socioeconomic empowerment and institutional reform", "label": "Bumiputera socioeconomic empowerment and institutional reform", "why": "sector Governance · funds Majlis Amanah Rakyat (MARA); Pihak Berkuasa Kemajuan Pekebun · codes 22.030400, 22.030500 · maturity partial_operation", "row": {"strategy": "Bumiputera socioeconomic empowerment and institutional reform", "sector": "Governance", "budget_item": "Majlis Amanah Rakyat (MARA); Pihak Berkuasa Kemajuan Pekebun Kecil Perusahaan Getah (RISDA)", "maturity_subtype": "partial_operation"}}]}, {"_id": "malaysia|Cross-Border Connectivity and Border Town Development with Kalimantan|Cross-border and subregional connectivity development", "country": "malaysia", "n": 2, "sectors": "Transport", "hdi": "Joined-up Thinking", "shared": "border, connectivity, cross", "options": [{"id": "Cross-border and subregional connectivity development", "label": "Cross-border and subregional connectivity development", "why": "sector Transport · funds ICT Network and System Security Monitoring Programme; JPJ En · codes 28.020100, 28.020200, 28.020300, 28.020600, 28.030300, 28.040200, 28.040300 · maturity operational_programme", "row": {"strategy": "Cross-border and subregional connectivity development", "sector": "Transport", "budget_item": "ICT Network and System Security Monitoring Programme; JPJ Enforcement Modernisation; Land Public Transport Agency (APAD); Maritime Institute of Malaysia (MIMA); Pengangkutan Laut; Pihak Berkuasa Penerbangan Awam Malaysia (CAAM); Road Transport", "maturity_subtype": "operational_programme"}}, {"id": "Cross-Border Connectivity and Border Town Development with Kalimantan", "label": "Cross-Border Connectivity and Border Town Development with Kalimantan", "why": "sector Transport · funds Development; High Level Asean Transport Meeting · codes 28.010900, 28.040300 · maturity partial_operation", "row": {"strategy": "Cross-Border Connectivity and Border Town Development with Kalimantan", "sector": "Transport", "budget_item": "Development; High Level Asean Transport Meeting", "maturity_subtype": "partial_operation"}}]}, {"_id": "malaysia|Digital connectivity and broadband infrastructure expansion|Sabah and Sarawak Broadband and Digital Connectivity Expansion", "country": "malaysia", "n": 2, "sectors": "Digital", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "shared": "broadband, connectivity, digital, expansion", "options": [{"id": "Digital connectivity and broadband infrastructure expansion", "label": "Digital connectivity and broadband infrastructure expansion", "why": "sector Digital · funds Communication Technology; DIGITAL DEVELOPMENT; INFRASTRUKTUR · codes 47.030000, 47.030100, 47.030300, 50.020000 · maturity operational_programme", "row": {"strategy": "Digital connectivity and broadband infrastructure expansion", "sector": "Digital", "budget_item": "Communication Technology; DIGITAL DEVELOPMENT; INFRASTRUKTUR DAN TELEKOMUNIKASI; Infrastructure and Applications", "maturity_subtype": "operational_programme"}}, {"id": "Sabah and Sarawak Broadband and Digital Connectivity Expansion", "label": "Sabah and Sarawak Broadband and Digital Connectivity Expansion", "why": "sector Digital · funds Communication Technology; INFRASTRUKTUR TELEKOMUNIKASI DAN E · codes 47.030000, 47.030100, 47.030300 · maturity operational_programme", "row": {"strategy": "Sabah and Sarawak Broadband and Digital Connectivity Expansion", "sector": "Digital", "budget_item": "Communication Technology; INFRASTRUKTUR TELEKOMUNIKASI DAN EKONOMI DIGITAL; Infrastruktur", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Industrial governance, investment facilitation and regulatory reform|Investment Climate, Regulatory Reform and Business Facilitation", "country": "malaysia", "n": 2, "sectors": "Governance, Industry", "hdi": "Efficient Action (Agility), Joined-up Thinking", "shared": "facilitation, investment, reform, regulatory", "options": [{"id": "Industrial governance, investment facilitation and regulatory reform", "label": "Industrial governance, investment facilitation and regulatory reform", "why": "sector Governance · funds Hal Ehwal Kos Sara Hidup dan Penyelidikan; NEW POLICY; PEMBA · codes 24.020000, 24.030000, 24.040000, 24.060000, 25.020000, 25.020300, 25.020400, 25.020600 · maturity operational_funded", "row": {"strategy": "Industrial governance, investment facilitation and regulatory reform", "sector": "Governance", "budget_item": "Hal Ehwal Kos Sara Hidup dan Penyelidikan; NEW POLICY; PEMBANGUNAN INDUSTRI DAN DAYA SAING; PEMBANGUNAN PERDAGANGAN DALAM NEGERI; Penguatkuasaan; STRENGTHENING INTERNATIONAL TRADE; STRENGTHENING QUALITY INVESTMENT; Suruhanjaya Persaingan Malaysia (MyCC)", "maturity_subtype": "operational_funded"}}, {"id": "Investment Climate, Regulatory Reform and Business Facilitation", "label": "Investment Climate, Regulatory Reform and Business Facilitation", "why": "sector Industry · funds PEMBANGUNAN INDUSTRI DAN DAYA SAING; PENGUKUHAN PELABURAN BE · codes 24.020000, 24.030000, 24.040000, 24.050300 · maturity partial_operation", "row": {"strategy": "Investment Climate, Regulatory Reform and Business Facilitation", "sector": "Industry", "budget_item": "PEMBANGUNAN INDUSTRI DAN DAYA SAING; PENGUKUHAN PELABURAN BERKUALITI; PENGUKUHAN PERDAGANGAN ANTARABANGSA; Promotion of Investment and Trade Promotion", "maturity_subtype": "partial_operation"}}]}, {"_id": "malaysia|National unity, social cohesion and diversity promotion|National unity, social cohesion and sports participation promotion", "country": "malaysia", "n": 2, "sectors": "Governance, Social Protection", "hdi": "Civic Engagement", "shared": "cohesion, promotion, social, unity", "options": [{"id": "National unity, social cohesion and diversity promotion", "label": "National unity, social cohesion and diversity promotion", "why": "sector Governance · funds PARLIMEN · codes 6.010000 · maturity partial_operation", "row": {"strategy": "National unity, social cohesion and diversity promotion", "sector": "Governance", "budget_item": "PARLIMEN", "maturity_subtype": "partial_operation"}}, {"id": "National unity, social cohesion and sports participation promotion", "label": "National unity, social cohesion and sports participation promotion", "why": "sector Social Protection · funds PEMBANGUNAN BELIA DAN SUKAN · codes 45.020000 · maturity partial_operation", "row": {"strategy": "National unity, social cohesion and sports participation promotion", "sector": "Social Protection", "budget_item": "PEMBANGUNAN BELIA DAN SUKAN", "maturity_subtype": "partial_operation"}}]}, {"_id": "malaysia|Regional connectivity and basic infrastructure development|Regional industrial diversification and connectivity infrastructure", "country": "malaysia", "n": 2, "sectors": "Infrastructure, Transport", "hdi": "Domestic Integration, Joined-up Thinking", "shared": "connectivity, infrastructure, regional", "options": [{"id": "Regional connectivity and basic infrastructure development", "label": "Regional connectivity and basic infrastructure development", "why": "sector Infrastructure · funds Agensi Pengangkutan Awam Darat (APAD); BUILDING INFRASTRUCTU · codes 22.020000, 22.030000, 27.020000, 27.020100, 27.030000, 28.020000, 28.020100, 28.020200, 28.020300, 28.030300, 28.040200 · maturity operational_programme", "row": {"strategy": "Regional connectivity and basic infrastructure development", "sector": "Infrastructure", "budget_item": "Agensi Pengangkutan Awam Darat (APAD); BUILDING INFRASTRUCTURE DEVELOPMENT; JPJ Enforcement Modernisation; PEMBANGUNAN INFRASTRUKTUR DAN KEMUDAHAN ASAS; PEMBANGUNAN INFRASTRUKTUR JALAN DAN PEMBANGUNAN INDUSTRI; PENGUPAYAAN EKONOMI LUAR BANDAR; Pengangkutan Jalan; Pengangkutan Laut; Policy and Development; Rural Air Services Subsidy; TRANSPORT SERVICES", "maturity_subtype": "operational_programme"}}, {"id": "Regional industrial diversification and connectivity infrastructure", "label": "Regional industrial diversification and connectivity infrastructure", "why": "sector Transport · funds Agensi Pengangkutan Awam Darat (APAD); Development; ICT Netw · codes 27.020000, 28.010900, 28.020000, 28.020100, 28.020200, 28.020300, 28.020600, 28.030300, 28.030400, 28.030700, 28.030800, 28.031100, 28.031300, 28.040200, 28.040300 · maturity operational_programme", "row": {"strategy": "Regional industrial diversification and connectivity infrastructure", "sector": "Transport", "budget_item": "Agensi Pengangkutan Awam Darat (APAD); Development; ICT Network and System Security Monitoring Programme; JPJ Enforcement Modernisation; PEMBANGUNAN INFRASTRUKTUR JALAN DAN PEMBANGUNAN INDUSTRI PEMBINAAN; Pas Mutiara; Pengangkutan Jalan; Pengangkutan Laut; Pihak Berkuasa Penerbangan Awam Malaysia (CAAM); Public Level Crossings (KTMB); Rural Air Services Subsidy (RAS); Subsidy for Rural Air Services (RAS); Subsidy for Uneconomic Train Operations (KTMB); TRANSPORT SERVICES; Unlimited Monthly Pass Incentive (My50)", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Research commercialisation and innovation financing|Strengthen university research, commercialisation and innovation collaboration", "country": "malaysia", "n": 2, "sectors": "Industry", "hdi": "Fostering the Spirit of Change, Joined-up Thinking", "shared": "commercialisation, innovation, research", "options": [{"id": "Research commercialisation and innovation financing", "label": "Research commercialisation and innovation financing", "why": "sector Industry · funds Environment, Social and Governance in Industry (iESG); Indus · codes 24.020200, 24.020500, 24.020700, 24.020800, 24.040100, 24.040300, 24.050300, 24.050500, 24.050600, 30.030000 · maturity operational_programme", "row": {"strategy": "Research commercialisation and innovation financing", "sector": "Industry", "budget_item": "Environment, Social and Governance in Industry (iESG); Industrial Development; Investment Policy and Trade Facilitation; Investment and Trade Promotion; Malaysia Productivity Corporation (MPC); Malaysian Investment Development Authority (MIDA); National Aerospace Industry Corporation Malaysia (NAICO); PEMBANGUNAN TEKNOLOGI, PENGKOMERSIALAN DAN PERKHIDMATAN STI; SIRIM Berhad; Standards Malaysia", "maturity_subtype": "operational_programme"}}, {"id": "Strengthen university research, commercialisation and innovation collaboration", "label": "Strengthen university research, commercialisation and innovation collaboration", "why": "sector Industry · funds TECHNICAL AND VOCATIONAL EDUCATION AND TRAINING (TVET) · codes 64.040000 · maturity partial_operation", "row": {"strategy": "Strengthen university research, commercialisation and innovation collaboration", "sector": "Industry", "budget_item": "TECHNICAL AND VOCATIONAL EDUCATION AND TRAINING (TVET)", "maturity_subtype": "partial_operation"}}]}, {"_id": "malaysia|Rural Mobility and Public Transport Connectivity|Rural and regional public transport connectivity", "country": "malaysia", "n": 2, "sectors": "Transport", "hdi": "Domestic Integration", "shared": "connectivity, public, rural, transport", "options": [{"id": "Rural and regional public transport connectivity", "label": "Rural and regional public transport connectivity", "why": "sector Transport · funds Free Travel Pass for School Students and Persons with Disabi · codes 28.010400, 28.020000, 28.020100, 28.020200, 28.020300, 28.030300, 28.030400, 28.030600, 28.030700, 28.030800, 28.030900, 28.031000, 28.031100, 28.031400, 28.031700 · maturity operational_programme", "row": {"strategy": "Rural and regional public transport connectivity", "sector": "Transport", "budget_item": "Free Travel Pass for School Students and Persons with Disabilities; Land; Land Public Transport Agency (APAD); Non-Economic Train Operation Subsidy (KTMB); Pas Mutiara; Pas Perjalanan Percuma Pelajar Sekolah dan OKU; Road Transport; Sea Transport; Subsidi Operasi Tren Tidak Ekonomik (KTMB); Subsidi Perkhidmatan Udara Luar Bandar (RAS); Subsidy for Rural Air Services (RAS); TRANSPORT SERVICES; Unlimited Monthly Pass Incentive (My100/My50); Unlimited Monthly Pass Incentive (My50)", "maturity_subtype": "operational_programme"}}, {"id": "Rural Mobility and Public Transport Connectivity", "label": "Rural Mobility and Public Transport Connectivity", "why": "sector Transport · funds Agensi Pengangkutan Awam Darat (APAD); Insentif Pas Bulanan  · codes 28.020000, 28.020100, 28.020200, 28.020300, 28.030300, 28.030400, 28.030800, 28.030900, 28.031100, 28.031400, 28.031500, 28.031700 · maturity operational_programme", "row": {"strategy": "Rural Mobility and Public Transport Connectivity", "sector": "Transport", "budget_item": "Agensi Pengangkutan Awam Darat (APAD); Insentif Pas Bulanan Tanpa Had (My50); Pas Mutiara; Pas Perjalanan Percuma Pelajar Sekolah dan OKU; Pengangkutan Jalan; Pengangkutan Laut; Subsidi Operasi Tren Tidak Ekonomik (KTMB); Subsidi Perkhidmatan Udara Luar Bandar (RAS); Subsidy for Skypark Link Train Operating Services; TRANSPORT SERVICES; Unlimited Monthly Pass Incentive (My100/My50)", "maturity_subtype": "operational_programme"}}]}, {"_id": "malaysia|Strengthen cooperative and agropreneur enterprise development|Village Enterprise and Cooperative Development", "country": "malaysia", "n": 2, "sectors": "Agriculture, Rural Development", "hdi": "Growth through Inclusion", "shared": "cooperative, enterprise", "options": [{"id": "Strengthen cooperative and agropreneur enterprise development", "label": "Strengthen cooperative and agropreneur enterprise development", "why": "sector Agriculture · funds COOPERATIVE DEVELOPMENT; ENTREPRENEUR DEVELOPMENT; INDUSTRI  · codes 21.030000, 26.020000, 26.020200, 26.030000 · maturity operational_programme", "row": {"strategy": "Strengthen cooperative and agropreneur enterprise development", "sector": "Agriculture", "budget_item": "COOPERATIVE DEVELOPMENT; ENTREPRENEUR DEVELOPMENT; INDUSTRI AGROMAKANAN DAN KEUSAHAWANAN TANI; Pembangunan Ekosistem Keusahawanan", "maturity_subtype": "operational_programme"}}, {"id": "Village Enterprise and Cooperative Development", "label": "Village Enterprise and Cooperative Development", "why": "sector Rural Development · funds COOPERATIVE DEVELOPMENT; ENTREPRENEUR DEVELOPMENT; PEMBANGUN · codes 22.030000, 22.040000, 26.020000, 26.030000 · maturity operational_programme", "row": {"strategy": "Village Enterprise and Cooperative Development", "sector": "Rural Development", "budget_item": "COOPERATIVE DEVELOPMENT; ENTREPRENEUR DEVELOPMENT; PEMBANGUNAN MODAL INSAN DAN PENDIDIKAN; PENGUPAYAAN EKONOMI LUAR BANDAR", "maturity_subtype": "operational_programme"}}]}, {"_id": "thailand|Medical and wellness hub development|Medical and wellness workforce development", "country": "thailand", "n": 2, "sectors": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health, Export-led", "shared": "medical, wellness", "options": [{"id": "Medical and wellness hub development", "label": "Medical and wellness hub development", "why": "sector Health · funds Strategic Program on Good Public Health Promotion · codes 3.4 · maturity operational_programme", "row": {"strategy": "Medical and wellness hub development", "sector": "Health", "budget_item": "Strategic Program on Good Public Health Promotion", "maturity_subtype": "operational_programme"}}, {"id": "Medical and wellness workforce development", "label": "Medical and wellness workforce development", "why": "sector Health · funds Strategic Program on Development of Education and Learning Q · codes 3.2, 3.3, 3.4 · maturity operational_programme", "row": {"strategy": "Medical and wellness workforce development", "sector": "Health", "budget_item": "Strategic Program on Development of Education and Learning Quality; Strategic Program on Development of Human Potentials on a Life-Long Basis; Strategic Program on Good Public Health Promotion", "maturity_subtype": "operational_programme"}}]}], SPEC = {"title": "Strategy grouping review", "question": "Are these the same strategy, and should they be folded into one? 18 cluster(s) of similar strategy names across 6 countries, found by name overlap. Select every name that belongs to the SAME strategy.", "id": ["_id"], "storeKey": "pv2.strategy.v1", "optionsField": "options", "exportCols": ["country", "strategy", "sector", "budget_item", "maturity_subtype"], "exportName": "strategy_review.csv", "target": 0, "tags": [["country", ""], ["sectors", "sector "], ["n", "of "]], "hiTags": [], "sides": [], "facts": [["Strategies in this cluster", "n"], ["Sectors they sit in", "sectors"], ["HDI categories", "hdi"], ["Words they share", "shared"]], "prose": [], "commentHint": "What the right single name would be, or why they are distinct.", "note": "Select the names that are one strategy and save. <b>None of these</b> means they are all genuinely distinct and the cluster is a false alarm, which is a useful answer and costs one keystroke. The strategy count is the denominator of every share-mapped figure, so folding two into one moves numbers a reader sees."}, SEEDS = {};
+const KEY = SPEC.storeKey;
+let store = {};
+try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { store = {}; }
+let i = 0;
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
+  ">":"&gt;",'"':"&quot;"}[c]));
+const idOf = r => SPEC.id.map(f=>String(r[f]==null?"":r[f])).join("|");
+
+// A seeded verdict is a standing decision about a whole class of rows. It applies where the
+// reviewer has not answered, and is overwritten the moment they do.
+ROWS.forEach(r=>{
+  const id = idOf(r), s = SEEDS[id];
+  if(s && !store[id]) store[id] = {v:s[0], c:s[1]||"", seeded:true};
+});
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+function get(id){ const g = store[id] || {v:"", c:"", seeded:false};
+  if(!g.sel) g.sel = []; return g; }
+
+function firstUnanswered(){
+  for(let k=0;k<ROWS.length;k++){ const g=get(idOf(ROWS[k])); if(!g.v || g.seeded) return k; }
+  return 0;
+}
+function fmt(v){
+  if(v==null || v==="") return "";
+  if(Array.isArray(v)) return v.join(", ");
+  const n = Number(v);
+  return (typeof v!=="boolean" && v!=="" && isFinite(n) && String(v).match(/^-?[\d.]+$/))
+    ? n.toLocaleString(undefined,{maximumFractionDigits:1}) : String(v);
+}
+
+function draw(){
+  const r = ROWS[i], id = idOf(r), g = get(id);
+  const label = {y:"Yes",n:"No","?":"Unsure"}[g.v] || "";
+  let h = '<div class="meta">' + (SPEC.tags||[]).map(([f,pre])=>{
+      const v = fmt(r[f]); if(!v) return "";
+      return '<span class="tag'+((SPEC.hiTags||[]).includes(String(r[f]))?" hi":"")+'">'+
+             esc((pre||"")+v)+'</span>';
+    }).join("") + '</div>';
+
+  const sides = (SPEC.sides||[]).filter(([_l,f])=>fmt(r[f])!=="");
+  if(sides.length){
+    h += '<div class="sides" style="grid-template-columns:repeat('+
+         Math.min(sides.length,2)+',minmax(0,1fr))">' +
+      sides.map(([lab,f,sub])=>'<div class="side"><div class="lab">'+esc(lab)+'</div>'+
+        '<div class="val">'+esc(fmt(r[f]))+'</div>'+
+        (sub&&fmt(r[sub])?('<div class="sub2">'+esc(fmt(r[sub]))+'</div>'):'')+'</div>').join("")+
+      '</div>';
+  }
+
+  const facts = (SPEC.facts||[]).filter(([_l,f])=>fmt(r[f])!=="");
+  if(facts.length){
+    h += '<table class="facts">'+facts.map(([lab,f])=>
+      '<tr><th>'+esc(lab)+'</th><td>'+esc(fmt(r[f]))+'</td></tr>').join("")+'</table>';
+  }
+  (SPEC.prose||[]).forEach(([lab,f])=>{
+    if(fmt(r[f])) h += '<div class="prose"><b>'+esc(lab)+'</b> '+esc(fmt(r[f]))+'</div>';
+  });
+
+  if(g.seeded) h += '<div class="seeded">Pre-set to '+esc(label)+
+    (SPEC.seedWhy?(': '+esc(SPEC.seedWhy)):'')+' Answer to override.</div>';
+
+  const opts = r[SPEC.optionsField||"__none__"] || [];
+  const many = opts.length > 1;
+  if(many){
+    // One budget line, several candidate strategies. Asking yes or no about each in turn
+    // hides the only question worth asking, which is which of them this line actually
+    // funds - and the answer is often several, or none.
+    const sel = new Set(g.sel||[]);
+    h += '<div class="opts">' + opts.map((o,k)=>
+      '<label class="opt'+(sel.has(o.id)?" on":"")+'" data-o="'+esc(o.id)+'">'+
+      '<input type="checkbox"'+(sel.has(o.id)?" checked":"")+'>'+
+      '<span><span class="on1"><span class="num">'+(k+1)+'</span>'+esc(o.label)+'</span>'+
+      (o.why?('<span class="why">'+esc(o.why)+'</span>'):'')+'</span></label>').join("")+'</div>';
+    h += '<div class="btns">'+
+      '<button class="y" data-v="save">Save selection<kbd>Enter</kbd></button>'+
+      '<button class="n" data-v="n">None of these<kbd>N</kbd></button>'+
+      '<button class="u" data-v="?">Unsure<kbd>U</kbd></button>'+
+      (g.v&&!g.seeded?('<span class="mark '+(g.v==="n"?"n":g.v==="?"?"u":"y")+'">'+
+        (g.v==="n"?"marked none":g.v==="?"?"marked unsure":((g.sel||[]).length+" selected"))+
+        '</span>'):'')+'</div>'+
+      '<div class="clab">Number keys toggle an option. Several may be right, and none is a '+
+      'real answer.</div>';
+  } else {
+    h += '<div class="btns">'+
+       '<button class="y" data-v="y">Yes<kbd>Y</kbd></button>'+
+       '<button class="n" data-v="n">No<kbd>N</kbd></button>'+
+       '<button class="u" data-v="?">Unsure<kbd>U</kbd></button>'+
+       (g.v&&!g.seeded?('<span class="mark '+(g.v==="y"?"y":g.v==="n"?"n":"u")+'">marked '+
+         esc(label)+'</span>'):'')+'</div>';
+  }
+  h +=
+       '<div class="clab">Comment, saved as its own column. Optional.'+
+       '<kbd>Tab</kbd> to reach it, <kbd>Esc</kbd> to leave.</div>'+
+       '<textarea id="cmt" placeholder="'+esc(SPEC.commentHint||"Anything the verdict alone does not carry.")+
+       '">'+esc(g.c)+'</textarea>';
+
+  $("#card").className = "card" + ((g.v && !g.seeded) ? " done" : "");
+  $("#card").innerHTML = h;
+  $("#card").querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>mark(b.dataset.v));
+  $("#card").querySelectorAll("[data-o]").forEach(el=>el.onclick=e=>{
+    e.preventDefault(); toggle(el.dataset.o); });
+  const t = $("#cmt");
+  t.oninput = ()=>{ const cur=get(id); store[id]={v:cur.v,c:t.value,seeded:cur.seeded}; save(); };
+  t.onkeydown = e=>{ if(e.key==="Escape") t.blur(); e.stopPropagation(); };
+  $("#where").textContent = (i+1)+" of "+ROWS.length;
+  $("#prev").disabled = i===0;
+  $("#next").disabled = i>=ROWS.length-1;
+  tally();
+}
+
+function tally(){
+  // Counted in EDGES, because that is the unit precision is reported in.
+  let y=0,n=0,u=0,seeded=0,cmts=0,total=0,cards=0;
+  ROWS.forEach(r=>{ const g=get(idOf(r));
+    const opts = r[SPEC.optionsField||"__none__"] || [];
+    total += opts.length;
+    if(g.c) cmts++;
+    if(!g.v) return;
+    cards++;
+    if(g.seeded) seeded += opts.length;
+    const sel = new Set(g.sel||[]);
+    opts.forEach(o=>{ if(g.v==="?") u++; else if(sel.has(o.id)) y++; else n++; });
+  });
+  const firm=y+n, all=y+n+u;
+  $("#bar").style.width = (100*cards/ROWS.length).toFixed(1)+"%";
+  $("#counts").innerHTML =
+    '<span><b>'+cards+'</b> of '+ROWS.length+' lines, <b>'+all+'</b> of '+total+' edges</span>'+
+    '<span style="color:var(--good)">'+y+' yes</span>'+
+    '<span style="color:var(--bad)">'+n+' no</span>'+
+    '<span style="color:var(--warn)">'+u+' unsure'+(seeded?(' ('+seeded+' pre-set)'):'')+'</span>'+
+    '<span><b>'+firm+'</b> firm'+(firm?(', '+(100*y/firm).toFixed(0)+'% yes'):'')+'</span>'+
+    (cmts?('<span>'+cmts+' comment'+(cmts===1?'':'s')+'</span>'):'');
+  const target = SPEC.target||0;
+  $("#status").textContent = !target ? (all+" of "+ROWS.length+" answered")
+    : (firm>=target ? ("Enough to report: "+firm+" firm answers.")
+                    : (Math.max(0,target-firm)+" more firm answers to reach about "+target+"."));
+  $("#save").disabled = all===0 && !cmts;
+}
+
+function toggle(optId){
+  const id = idOf(ROWS[i]), g = get(id), t = $("#cmt");
+  const sel = new Set(g.sel||[]);
+  sel.has(optId) ? sel.delete(optId) : sel.add(optId);
+  store[id] = {v:"y", c:(t?t.value:g.c), sel:[...sel], seeded:false};
+  save(); draw();
+}
+
+function mark(v){
+  const id = idOf(ROWS[i]), g = get(id), t = $("#cmt");
+  const opts = ROWS[i][SPEC.optionsField||"__none__"] || [];
+  let sel = g.sel || [];
+  if(v==="save"){ v = "y"; }
+  else if(v==="y" && opts.length===1){ sel = [opts[0].id]; }
+  else if(v==="n" || v==="?"){ sel = []; }
+  store[id] = {v:v, c:(t?t.value:g.c), sel:sel, seeded:false};
+  save();
+  if(i < ROWS.length-1) i++;
+  draw();
+}
+
+$("#prev").onclick = ()=>{ if(i>0){i--;draw();} };
+$("#next").onclick = ()=>{ if(i<ROWS.length-1){i++;draw();} };
+document.addEventListener("keydown", e=>{
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(document.activeElement && document.activeElement.tagName==="TEXTAREA") return;
+  const k = e.key.toLowerCase();
+  const opts = ROWS[i][SPEC.optionsField||"__none__"] || [];
+  const many = opts.length > 1;
+  if(many && /^[1-9]$/.test(k)){
+    const o = opts[Number(k)-1]; if(o){ toggle(o.id); e.preventDefault(); } return;
+  }
+  if(many && e.key==="Enter"){ mark("save"); e.preventDefault(); return; }
+  if(k==="y"||(k==="1"&&!many)){ mark("y"); e.preventDefault(); }
+  else if(k==="n"||(k==="2"&&!many)){ mark("n"); e.preventDefault(); }
+  else if(k==="u"||k==="?"||(k==="3"&&!many)){ mark("?"); e.preventDefault(); }
+  else if(e.key==="ArrowLeft"){ if(i>0){i--;draw();} }
+  else if(e.key==="ArrowRight"){ if(i<ROWS.length-1){i++;draw();} }
+});
+
+$("#save").onclick = ()=>{
+  // One row per EDGE, not per card: a card can carry several candidate strategies and the
+  // file precision_labels.py reads is keyed on the edge.
+  const cols = SPEC.exportCols.concat(["mark","comment"]);
+  const q = s => '"'+String(s==null?"":s).replace(/"/g,'""')+'"';
+  const out = [];
+  ROWS.forEach(r=>{
+    const g = get(idOf(r));
+    const opts = r[SPEC.optionsField||"__none__"] || [];
+    const sel = new Set(g.sel||[]);
+    opts.forEach(o=>{
+      const m = !g.v ? "" : g.v==="?" ? "?" : (sel.has(o.id) ? "y" : "n");
+      const row = Object.assign({}, r, o.row||{});
+      out.push(cols.map(c => c==="mark" ? q(m) : c==="comment" ? q(g.c||"") : q(row[c])).join(","));
+    });
+  });
+  const lines = [cols.join(",")].concat(out);
+  const blob = new Blob(["\ufeff"+lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = SPEC.exportName;
+  document.body.appendChild(a); a.click(); a.remove();
+};
+$("#reset").onclick = ()=>{
+  if(!confirm("Clear every verdict and comment on this machine?")) return;
+  store = {}; ROWS.forEach(r=>{ const id=idOf(r), s=SEEDS[id];
+    if(s) store[id]={v:s[0],c:s[1]||"",seeded:true}; });
+  save(); i=0; draw();
+};
+
+i = firstUnanswered();
+draw();
+</script></body></html>

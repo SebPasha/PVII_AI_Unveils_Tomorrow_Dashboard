@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>China - budget against strategy</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface-0:#f4f4f2; --surface-1:#fcfcfb; --surface-2:#efefec;
+  --line:#dcdcd6; --line-strong:#c6c6be;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#78776f;
+  --series-1:#2a78d6; --series-2:#eb6834;
+  --seq-1:#86b6ef; --seq-2:#5598e7; --seq-3:#2a78d6; --seq-4:#1c5cab; --seq-5:#0d366b;
+  --good:#1b7f4b; --warn:#a86400; --crit:#b3261e;
+  --focus:#2a78d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0:#111110; --surface-1:#1a1a19; --surface-2:#232322;
+    --line:#33332f; --line-strong:#4a4a45;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#98978c;
+    --series-1:#3987e5; --series-2:#d95926;
+    --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5; --seq-5:#184f95;
+    --good:#4bb87c; --warn:#d9a441; --crit:#e66767;
+    --focus:#3987e5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0:#111110; --surface-1:#1a1a19; --surface-2:#232322;
+  --line:#33332f; --line-strong:#4a4a45;
+  --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#98978c;
+  --series-1:#3987e5; --series-2:#d95926;
+  --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5; --seq-5:#184f95;
+  --good:#4bb87c; --warn:#d9a441; --crit:#e66767;
+  --focus:#3987e5;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--surface-0); color:var(--text-primary);
+  font:15px/1.5 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+.wrap { max-width:1240px; margin:0 auto; padding:28px 20px 72px; }
+header { display:flex; flex-wrap:wrap; gap:12px; align-items:baseline;
+  justify-content:space-between; margin-bottom:6px; }
+h1 { font-size:22px; font-weight:650; margin:0; letter-spacing:-0.01em; }
+.sub { color:var(--text-secondary); font-size:13px; margin:0 0 20px; }
+.note { color:var(--text-muted); font-size:12.5px; margin:8px 0 0; }
+
+/* filters: one row, above everything, scoping every chart below */
+.filters { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;
+  background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:12px 14px; margin-bottom:18px; position:sticky; top:0; z-index:20; }
+.f { display:flex; flex-direction:column; gap:4px; }
+.f label { font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-muted); font-weight:600; }
+.f select, .f input { background:var(--surface-2); color:var(--text-primary);
+  border:1px solid var(--line-strong); border-radius:7px; padding:6px 9px; font:inherit;
+  font-size:13px; min-width:150px; }
+.f input { min-width:210px; }
+.f select:focus-visible, .f input:focus-visible, button:focus-visible {
+  outline:2px solid var(--focus); outline-offset:1px; }
+button { background:var(--surface-2); color:var(--text-primary); font:inherit; font-size:13px;
+  border:1px solid var(--line-strong); border-radius:7px; padding:6px 11px; cursor:pointer; }
+button:hover { border-color:var(--text-muted); }
+.spacer { flex:1 1 auto; }
+.count { font-size:12.5px; color:var(--text-secondary); padding-bottom:7px; }
+
+/* tiles */
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:12px; margin-bottom:20px; }
+.tile { background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; }
+.tile .k { font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+  color:var(--text-muted); font-weight:600; }
+.tile .v { font-size:26px; font-weight:640; letter-spacing:-0.02em; margin-top:3px;
+  font-variant-numeric:tabular-nums; }
+.tile .u { font-size:12px; color:var(--text-secondary); }
+
+/* cards */
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(430px,1fr)); gap:16px; }
+.card { background:var(--surface-1); border:1px solid var(--line); border-radius:10px;
+  padding:16px 18px 14px; min-width:0; }
+.card h2 { font-size:15px; font-weight:620; margin:0 0 2px; }
+.card .cap { font-size:12.5px; color:var(--text-secondary); margin:0 0 12px; }
+.card.wide { grid-column:1 / -1; }
+.legend { display:flex; flex-wrap:wrap; gap:14px; margin:0 0 10px; font-size:12.5px;
+  color:var(--text-secondary); }
+.legend i { display:inline-block; width:14px; height:3px; border-radius:2px;
+  vertical-align:middle; margin-right:6px; }
+.legend i.sq { height:11px; width:11px; border-radius:3px; }
+svg { display:block; width:100%; height:auto; overflow:visible; }
+.axis text { fill:var(--text-muted); font-size:11px; }
+.axis line, .axis path { stroke:var(--line); }
+.grid-line { stroke:var(--line); stroke-width:1; }
+.lbl { fill:var(--text-secondary); font-size:11.5px; }
+.val { fill:var(--text-primary); font-size:11.5px; font-variant-numeric:tabular-nums; }
+.mark { transition:opacity .12s; }
+.mark:hover, .mark:focus-visible { opacity:.82; outline:none; }
+.empty { color:var(--text-muted); font-size:13px; padding:26px 0; text-align:center; }
+
+/* table view */
+details.tv { margin-top:10px; }
+details.tv summary { cursor:pointer; font-size:12.5px; color:var(--text-secondary); }
+table { border-collapse:collapse; width:100%; font-size:12.5px; margin-top:8px; }
+th, td { text-align:left; padding:5px 8px; border-bottom:1px solid var(--line); }
+th { color:var(--text-muted); font-weight:600; font-size:11px; text-transform:uppercase;
+  letter-spacing:.04em; position:sticky; top:0; background:var(--surface-1); }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+.scroll { max-height:420px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+
+#tip { position:fixed; pointer-events:none; opacity:0; transition:opacity .1s;
+  background:var(--surface-1); border:1px solid var(--line-strong); border-radius:8px;
+  padding:8px 10px; font-size:12.5px; box-shadow:0 6px 20px rgba(0,0,0,.18); z-index:60;
+  max-width:320px; }
+#tip .tv1 { font-weight:650; font-variant-numeric:tabular-nums; }
+#tip .tl { color:var(--text-secondary); }
+#tip .key { display:inline-block; width:12px; height:3px; border-radius:2px; margin-right:6px;
+  vertical-align:middle; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>China - budget against strategy</h1>
+    <p class="sub">1 fiscal year(s): FY2026 · amounts in yuan · 81 strategy-programme edges</p>
+  </div>
+  <button id="theme" type="button">Toggle theme</button>
+</header>
+
+<div class="filters" role="group" aria-label="Filters">
+  <div class="f"><label for="f-year">Fiscal year</label><select id="f-year"></select></div>
+  <div class="f"><label for="f-risk">Risk</label><select id="f-risk"></select></div>
+  <div class="f"><label for="f-sector">Sector</label><select id="f-sector"></select></div>
+  <div class="f"><label for="f-sal">Risk salience</label><select id="f-sal"></select></div>
+  <div class="f"><label for="f-q">Search strategy</label><input id="f-q" type="search"
+       placeholder="name contains…" autocomplete="off"></div>
+  <div class="spacer"></div>
+  <div class="count" id="count"></div>
+  <button id="reset" type="button">Reset</button>
+</div>
+
+<div class="tiles" id="tiles"></div>
+<div class="grid" id="grid"></div>
+</div>
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script id="data" type="application/json">{"years": ["2026"], "currency": "yuan", "national": {"2026": 30010000000000.0}, "edges": [{"s": "Employment and income growth promotion", "p": "4.1", "y": "2026", "pn": "We will follow through on the employment-first strategy.", "a": 66700000000.0, "sec": "Labour", "hdi": "Growth through Inclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "proactive"}, {"s": "Employment support and income improvement for key groups", "p": "4.1", "y": "2026", "pn": "We will follow through on the employment-first strategy.", "a": 66700000000.0, "sec": "Employment", "hdi": "Growth through Inclusion", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Disaster prevention, mitigation, and emergency response capacity building", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Disaster Risk Management", "hdi": "Political Will", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Public health preparedness and infectious disease control", "p": "4.3", "y": "2026", "pn": "We will enhance our medical and healthcare service capacity and medical security.", "a": 724.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Pandemics"], "sal": "medium", "ori": "proactive"}, {"s": "Medical service capacity expansion and strengthening", "p": "4.3", "y": "2026", "pn": "We will enhance our medical and healthcare service capacity and medical security.", "a": 724.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Coordinated regional development and interregional connectivity", "p": "6.2", "y": "2026", "pn": "We will promote more coordinated regional development.", "a": 202200000000.0, "sec": "Regional Development", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Education expansion and skills upgrading for the working-age population", "p": "4.2", "y": "2026", "pn": "We will improve the fairness and quality of education.", "a": 192500000000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Demographic Shifts"], "sal": "high", "ori": "proactive"}, {"s": "Expansion of elderly care and childcare services", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Growth through Inclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "proactive"}, {"s": "Social security system strengthening and equal basic public services", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "National security, risk prevention, and public safety governance", "p": "8.3", "y": "2026", "pn": "public security", "a": 258269000000.0, "sec": "Public Security", "hdi": "Political Will", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Manufacturing upgrading and industrial quality improvement", "p": "2.1", "y": "2026", "pn": "We will facilitate industrial transformation and upgrading.", "a": 200000000000.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Advanced materials and core components development", "p": "2.1", "y": "2026", "pn": "We will facilitate industrial transformation and upgrading.", "a": 200000000000.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Semiconductor and integrated circuit capability upgrading", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Digital", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Artificial intelligence and embodied intelligence industrial development", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Digital", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Advanced battery industry development", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Energy", "hdi": "Fostering the Spirit of Change", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Commercial aerospace and aircraft development", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Industry", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Hydrogen energy technology and infrastructure development", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Energy", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "High-end medical devices innovation", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Health", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Clean energy substitution and low-carbon power expansion", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Energy", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution"], "sal": "high", "ori": "transformative"}, {"s": "National innovation system and strategic technology breakthroughs", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Science and Technology", "hdi": "Strategic Planning (Anticipation)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Frontier science and strategic research programmes", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Science and Technology", "hdi": "Strategic Planning (Anticipation)", "rk": ["Technological Change", "Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Basic research funding and strategic research capacity building", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Science and Technology", "hdi": "Strategic Planning (Anticipation)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "International science and technology cooperation", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Science and Technology", "hdi": "Collaborative Leadership", "rk": ["Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Enterprise-led innovation and commercialization ecosystem", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Industry", "hdi": "Joined-up Thinking", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "transformative"}, {"s": "Strategic talent development and higher education strengthening", "p": "4.2", "y": "2026", "pn": "We will improve the fairness and quality of education.", "a": 192500000000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Digital economy industrialization and intelligent manufacturing", "p": "2.1", "y": "2026", "pn": "We will facilitate industrial transformation and upgrading.", "a": 200000000000.0, "sec": "Digital", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "AI-driven scientific research infrastructure and methods", "p": "3.1", "y": "2026", "pn": "We will guarantee investments in scientific and technological innovation.", "a": 426400000000.0, "sec": "Science and Technology", "hdi": "Strategic Planning (Anticipation)", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Social assistance and livelihood protection strengthening", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Unified national market and business environment reform", "p": "1.1", "y": "2026", "pn": "We will roll out a package of coordinated fiscal and financial policies to boost domestic demand.", "a": 100000000000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Unified national market and business environment reform", "p": "2.1", "y": "2026", "pn": "We will facilitate industrial transformation and upgrading.", "a": 200000000000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Multilateral diplomacy and global governance participation", "p": "8.1", "y": "2026", "pn": "diplomatic endeavors", "a": 70975000000.0, "sec": "Governance", "hdi": "Collaborative Leadership", "rk": ["Pandemics", "Climate Change", "Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Integrated urban-rural development and rural revitalization", "p": "5.2", "y": "2026", "pn": "We will back regular targeted assistance initiatives.", "a": 177000000000.0, "sec": "Rural Development", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "proactive"}, {"s": "Agricultural pollution control and ecological farming", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Agriculture", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "transformative"}, {"s": "Rural industry development and agricultural value chain upgrading", "p": "5.2", "y": "2026", "pn": "We will back regular targeted assistance initiatives.", "a": 177000000000.0, "sec": "Agriculture", "hdi": "Domestic Integration", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Rural governance and civic participation strengthening", "p": "5.2", "y": "2026", "pn": "We will back regular targeted assistance initiatives.", "a": 177000000000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Agriculture and rural institutional reform and investment support", "p": "5.2", "y": "2026", "pn": "We will back regular targeted assistance initiatives.", "a": 177000000000.0, "sec": "Agriculture", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Targeted assistance and poverty prevention for rural revitalization", "p": "5.2", "y": "2026", "pn": "We will back regular targeted assistance initiatives.", "a": 177000000000.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Targeted development support for border and special areas", "p": "6.2", "y": "2026", "pn": "We will promote more coordinated regional development.", "a": 202200000000.0, "sec": "Regional Development", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Territorial space planning and functional zoning reform", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution", "Biodiversity Loss", "Resource and Energy Pressures"], "sal": "medium", "ori": "transformative"}, {"s": "People-centered new urbanization and migrant integration", "p": "6.1", "y": "2026", "pn": "We will advance people-centered new urbanization.", "a": 42000000000.0, "sec": "Urban Development", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Urban renewal, resilient infrastructure, and affordable housing improvement", "p": "6.1", "y": "2026", "pn": "We will advance people-centered new urbanization.", "a": 42000000000.0, "sec": "Urban Development", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Urban renewal, resilient infrastructure, and affordable housing improvement", "p": "6.2", "y": "2026", "pn": "We will promote more coordinated regional development.", "a": 202200000000.0, "sec": "Urban Development", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Higher education expansion, digitalization, and research capacity building", "p": "4.2", "y": "2026", "pn": "We will improve the fairness and quality of education.", "a": 192500000000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Modern vocational education and industry-education integration", "p": "4.2", "y": "2026", "pn": "We will improve the fairness and quality of education.", "a": 192500000000.0, "sec": "Education", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Healthcare financing, pricing, and hospital governance reform", "p": "4.3", "y": "2026", "pn": "We will enhance our medical and healthcare service capacity and medical security.", "a": 724.0, "sec": "Health", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Population ageing response and elderly-friendly social adaptation", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Future Generations", "rk": ["Demographic Shifts", "Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Elderly care services, long-term care insurance, and integrated medical care", "p": "4.3", "y": "2026", "pn": "We will enhance our medical and healthcare service capacity and medical security.", "a": 724.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts"], "sal": "high", "ori": "proactive"}, {"s": "Elderly care services, long-term care insurance, and integrated medical care", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Demographic Shifts"], "sal": "high", "ori": "proactive"}, {"s": "Entrepreneurship promotion and adaptive employment response", "p": "4.1", "y": "2026", "pn": "We will follow through on the employment-first strategy.", "a": 66700000000.0, "sec": "Employment", "hdi": "Fostering the Spirit of Change", "rk": ["Technological Change", "Shifts in Globalisation"], "sal": "high", "ori": "proactive"}, {"s": "Vocational skills training and high-skilled talent development", "p": "4.1", "y": "2026", "pn": "We will follow through on the employment-first strategy.", "a": 66700000000.0, "sec": "Employment", "hdi": "Enhancing Capabilities in Education, Skills, Digital, Health", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Income distribution reform and household income growth", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Growth through Inclusion", "rk": [], "sal": "", "ori": "transformative"}, {"s": "Disaster relief and emergency poverty assistance", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Human Security", "rk": ["Climate Change"], "sal": "high", "ori": "reactive"}, {"s": "Tiered social assistance and basic livelihood support", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Social Protection", "hdi": "Tackling Structural Exclusion", "rk": [], "sal": "", "ori": "inactive"}, {"s": "Equalization of basic public services across regions and residents", "p": "4.1", "y": "2026", "pn": "We will follow through on the employment-first strategy.", "a": 66700000000.0, "sec": "Public Administration", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Equalization of basic public services across regions and residents", "p": "4.2", "y": "2026", "pn": "We will improve the fairness and quality of education.", "a": 192500000000.0, "sec": "Public Administration", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Equalization of basic public services across regions and residents", "p": "4.3", "y": "2026", "pn": "We will enhance our medical and healthcare service capacity and medical security.", "a": 724.0, "sec": "Public Administration", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Equalization of basic public services across regions and residents", "p": "4.4", "y": "2026", "pn": "We will refine the social security system.", "a": 1250000000000.0, "sec": "Public Administration", "hdi": "Tackling Structural Exclusion", "rk": ["Demographic Shifts"], "sal": "high", "ori": "transformative"}, {"s": "Carbon peaking governance and emissions management system", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Low-carbon energy, industry, buildings, and transport transition", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Energy", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Climate adaptation, risk assessment, and international climate cooperation", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Climate adaptation, risk assessment, and international climate cooperation", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change"], "sal": "high", "ori": "proactive"}, {"s": "Circular economy and waste recycling development", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "medium", "ori": "transformative"}, {"s": "Pollution prevention and multi-pollutant control", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Environmental governance, inspection, and permitting reform", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution"], "sal": "medium", "ori": "transformative"}, {"s": "Industrial and transport pollution retrofit programmes", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Industry", "hdi": "Efficient Action (Agility)", "rk": ["Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "reactive"}, {"s": "Industrial and transport pollution retrofit programmes", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Industry", "hdi": "Efficient Action (Agility)", "rk": ["Environmental Degradation and Pollution", "Climate Change"], "sal": "high", "ori": "reactive"}, {"s": "Integrated ecosystem restoration and ecological security barrier building", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Biodiversity Loss", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Integrated ecosystem restoration and ecological security barrier building", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Environment", "hdi": "Joined-up Thinking", "rk": ["Environmental Degradation and Pollution", "Biodiversity Loss", "Climate Change"], "sal": "high", "ori": "transformative"}, {"s": "Forest, grassland, wetland, and water resource conservation", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Future Generations", "rk": ["Biodiversity Loss", "Climate Change", "Resource and Energy Pressures"], "sal": "high", "ori": "proactive"}, {"s": "Ecological compensation and ecological product value realization reform", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Strategic Planning (Anticipation)", "rk": ["Environmental Degradation and Pollution", "Biodiversity Loss"], "sal": "medium", "ori": "transformative"}, {"s": "Green fiscal, financial, tax, and standards policy framework", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Finance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution"], "sal": "high", "ori": "transformative"}, {"s": "Green fiscal, financial, tax, and standards policy framework", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Finance", "hdi": "Strategic Planning (Anticipation)", "rk": ["Climate Change", "Resource and Energy Pressures", "Environmental Degradation and Pollution"], "sal": "high", "ori": "transformative"}, {"s": "Green consumption, procurement, and low-carbon lifestyle promotion", "p": "7.1", "y": "2026", "pn": "We will step up comprehensive efforts to improve the environment.", "a": 122900000000.0, "sec": "Environment", "hdi": "Fostering the Spirit of Change", "rk": ["Climate Change", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "Green consumption, procurement, and low-carbon lifestyle promotion", "p": "7.2", "y": "2026", "pn": "We will actively and prudently work toward peaking carbon emissions and achieving carbon neutrality.", "a": 62000000000.0, "sec": "Environment", "hdi": "Fostering the Spirit of Change", "rk": ["Climate Change", "Environmental Degradation and Pollution", "Resource and Energy Pressures"], "sal": "high", "ori": "transformative"}, {"s": "National security architecture and coordination strengthening", "p": "8.3", "y": "2026", "pn": "public security", "a": 258269000000.0, "sec": "Security", "hdi": "Political Will", "rk": ["Shifts in Globalisation", "Technological Change", "Democratic Backsliding"], "sal": "high", "ori": "proactive"}, {"s": "Public safety, food and drug regulation, and workplace safety governance", "p": "8.3", "y": "2026", "pn": "public security", "a": 258269000000.0, "sec": "Public Safety", "hdi": "Human Security", "rk": ["Environmental Degradation and Pollution", "Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Dispute resolution, petitions, and community security control", "p": "8.3", "y": "2026", "pn": "public security", "a": 258269000000.0, "sec": "Justice", "hdi": "Human Security", "rk": [], "sal": "", "ori": "reactive"}, {"s": "Military modernization and combat capability enhancement", "p": "8.2", "y": "2026", "pn": "national defense", "a": 1909561000000.0, "sec": "Defense", "hdi": "Political Will", "rk": ["Technological Change"], "sal": "high", "ori": "proactive"}, {"s": "Military-civilian integration and defense mobilization strengthening", "p": "8.2", "y": "2026", "pn": "national defense", "a": 1909561000000.0, "sec": "Defense", "hdi": "Joined-up Thinking", "rk": ["Technological Change"], "sal": "high", "ori": "transformative"}, {"s": "Modernize national defense readiness and military support systems", "p": "8.2", "y": "2026", "pn": "national defense", "a": 1909561000000.0, "sec": "national defense", "hdi": "Human Security", "rk": [], "sal": "", "ori": "proactive"}, {"s": "Advance rule-of-law governance and legal oversight reform", "p": "8.3", "y": "2026", "pn": "public security", "a": 258269000000.0, "sec": "Governance", "hdi": "Joined-up Thinking", "rk": [], "sal": "", "ori": "transformative"}], "n_strategies": 168, "n_unfunded": 98}</script>
+<script>
+"use strict";
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const CUR = DATA.currency;
+const $ = (s) => document.querySelector(s);
+
+// ---------------------------------------------------------------- formatting
+const fmt = (v) => {
+  const a = Math.abs(v);
+  if (a >= 1e6) return (v / 1e6).toFixed(2) + "M";
+  if (a >= 1e3) return (v / 1e3).toFixed(1) + "k";
+  if (a >= 100) return v.toFixed(0);
+  return v.toFixed(1);
+};
+const full = (v) => v.toLocaleString(undefined, { maximumFractionDigits: 1 });
+const pct = (v) => (100 * v).toFixed(1) + "%";
+
+// ------------------------------------------------------------------- filters
+const state = { year: "all", risk: "all", sector: "all", sal: "all", q: "" };
+
+function options(sel, values, allLabel) {
+  sel.textContent = "";
+  const mk = (v, t) => { const o = document.createElement("option");
+    o.value = v; o.textContent = t; sel.appendChild(o); };
+  mk("all", allLabel);
+  values.forEach(v => mk(v, v));
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  return DATA.edges.filter(e =>
+    (state.year === "all" || e.y === state.year) &&
+    (state.risk === "all" || e.rk.indexOf(state.risk) !== -1) &&
+    (state.sector === "all" || e.sec === state.sector) &&
+    (state.sal === "all" || e.sal === state.sal) &&
+    (!q || e.s.toLowerCase().indexOf(q) !== -1));
+}
+
+// A programme's money counts ONCE per year however many strategies it funds.
+function moneyByYear(edges) {
+  const seen = new Set(), out = {};
+  for (const e of edges) {
+    const k = e.p + "|" + e.y;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out[e.y] = (out[e.y] || 0) + e.a;
+  }
+  return out;
+}
+
+// Exposure: sum over DISTINCT programmes carrying the key. Not additive across keys.
+function exposure(edges, keyOf) {
+  const seen = new Set(), out = new Map();
+  for (const e of edges) {
+    for (const k of keyOf(e)) {
+      if (!k) continue;
+      const dedupe = k + "|" + e.p + "|" + e.y;
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+      const cur = out.get(k) || { total: 0, byYear: {}, progs: new Set(), strats: new Set() };
+      cur.total += e.a;
+      cur.byYear[e.y] = (cur.byYear[e.y] || 0) + e.a;
+      cur.progs.add(e.p);
+      out.set(k, cur);
+    }
+    for (const k of keyOf(e)) {
+      if (k) out.get(k).strats.add(e.s);
+    }
+  }
+  return [...out.entries()].map(([k, v]) => ({ key: k, ...v })).sort((a, b) => b.total - a.total);
+}
+
+// -------------------------------------------------------------------- tooltip
+const tip = $("#tip");
+function showTip(ev, rows, title) {
+  tip.textContent = "";
+  if (title) { const h = document.createElement("div");
+    h.className = "tl"; h.textContent = title; tip.appendChild(h); }
+  for (const r of rows) {
+    const d = document.createElement("div");
+    if (r.color) { const k = document.createElement("span");
+      k.className = "key"; k.style.background = r.color; d.appendChild(k); }
+    const v = document.createElement("span");
+    v.className = "tv1"; v.textContent = r.value;      // untrusted data -> textContent
+    d.appendChild(v);
+    if (r.label) { const l = document.createElement("span");
+      l.className = "tl"; l.textContent = "  " + r.label; d.appendChild(l); }
+    tip.appendChild(d);
+  }
+  tip.style.opacity = "1";
+  const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - pad;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - pad;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.opacity = "0"; };
+addEventListener("scroll", hideTip, { passive: true });
+
+// ------------------------------------------------------------------- drawing
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a = {}) => { const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+function card(id, title, caption) {
+  const c = document.createElement("section");
+  c.className = "card" + (id === "table" || id === "heat" ? " wide" : "");
+  const h = document.createElement("h2"); h.textContent = title; c.appendChild(h);
+  if (caption) { const p = document.createElement("p");
+    p.className = "cap"; p.textContent = caption; c.appendChild(p); }
+  const body = document.createElement("div"); body.id = "c-" + id; c.appendChild(body);
+  return { card: c, body };
+}
+
+/* Ranked horizontal bars. ONE measure -> one hue, never a cycled set.
+   4px rounded data-end, anchored to the baseline; 2px surface gap between bars. */
+function rankedBars(host, rows, opts) {
+  const { unit, color = "var(--series-1)", limit = 12 } = opts || {};
+  opts = opts || {};
+  const data = rows.slice(0, limit);
+  if (!data.length) { host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const max = Math.max(...data.map(d => d.value)) || 1;
+  const rowH = 30, padL = 210, padR = 78, top = 6;
+  const H = data.length * rowH + top + 4, W = 720;
+  const bw = W - padL - padR;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  data.forEach((d, i) => {
+    const y = top + i * rowH;
+    const w = Math.max(2, (d.value / max) * bw);
+    const lab = el("text", { x: padL - 10, y: y + 15, "text-anchor": "end", class: "lbl" });
+    lab.textContent = d.key.length > 34 ? d.key.slice(0, 33) + "…" : d.key;
+    svg.appendChild(lab);
+    const g = el("g", { class: "mark", tabindex: "0", role: "listitem" });
+    const r = el("rect", { x: padL, y: y + 4, width: w, height: rowH - 12,
+                           rx: 4, fill: color });
+    g.appendChild(r);
+    const v = el("text", { x: padL + w + 8, y: y + 15, class: "val" });
+    v.textContent = fmt(d.value);
+    g.appendChild(v);
+    const share = opts && opts.total ? d.value / opts.total : 0;
+    const rows_ = [{ value: full(d.value) + " " + unit, label: "", color },
+                   { value: share ? pct(share) : "-", label: "of financing mapped" },
+                   { value: d.count + "", label: d.countLabel || "programmes" }];
+    g.addEventListener("pointermove", (e) => showTip(e, rows_, d.key));
+    g.addEventListener("pointerleave", hideTip);
+    g.addEventListener("focus", (e) => showTip(
+      { clientX: padL + w, clientY: y + 40 }, rows_, d.key));
+    g.addEventListener("blur", hideTip);
+    svg.appendChild(g);
+  });
+  host.textContent = "";
+  host.appendChild(svg);
+  host.appendChild(tableView(["Category", "Amount (" + unit + ")", "Programmes"],
+    data.map(d => [d.key, full(d.value), String(d.count)]), [false, true, true]));
+}
+
+/* Grouped bars, one series per year. Two series -> slots 1 and 2, validated. */
+function groupedBars(host, rows, years, opts) {
+  const { unit, limit = 12 } = opts || {};
+  const data = rows.slice(0, limit);
+  if (!data.length) { host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const colors = ["var(--series-1)", "var(--series-2)"];
+  const max = Math.max(...data.flatMap(d => years.map(y => d.byYear[y] || 0))) || 1;
+  const barH = 11, gap = 2, rowH = years.length * (barH + gap) + 16;
+  const padL = 210, padR = 78, top = 6;
+  const H = data.length * rowH + top + 4, W = 720, bw = W - padL - padR;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  data.forEach((d, i) => {
+    const y0 = top + i * rowH;
+    const lab = el("text", { x: padL - 10, y: y0 + 14, "text-anchor": "end", class: "lbl" });
+    lab.textContent = d.key.length > 34 ? d.key.slice(0, 33) + "…" : d.key;
+    svg.appendChild(lab);
+    years.forEach((yr, j) => {
+      const v = d.byYear[yr] || 0;
+      const w = Math.max(2, (v / max) * bw);
+      const y = y0 + 4 + j * (barH + gap);
+      const g = el("g", { class: "mark", tabindex: "0" });
+      g.appendChild(el("rect", { x: padL, y, width: w, height: barH, rx: 4,
+                                 fill: colors[j % colors.length] }));
+      if (j === years.length - 1) {
+        const t = el("text", { x: padL + w + 8, y: y + barH - 1, class: "val" });
+        t.textContent = fmt(v);
+        g.appendChild(t);
+      }
+      const rows_ = years.map((yy, k) => ({
+        value: full(d.byYear[yy] || 0) + " " + unit, label: "FY" + yy,
+        color: colors[k % colors.length] }));
+      g.addEventListener("pointermove", (e) => showTip(e, rows_, d.key));
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("focus", () => showTip(
+        { clientX: padL + w, clientY: y + 40 }, rows_, d.key));
+      g.addEventListener("blur", hideTip);
+      svg.appendChild(g);
+    });
+  });
+  const leg = document.createElement("div");
+  leg.className = "legend";
+  years.forEach((yr, j) => {
+    const s = document.createElement("span");
+    const i2 = document.createElement("i");
+    i2.className = "sq"; i2.style.background = colors[j % colors.length];
+    s.appendChild(i2);
+    s.appendChild(document.createTextNode("FY" + yr));
+    leg.appendChild(s);
+  });
+  host.textContent = "";
+  host.appendChild(leg);
+  host.appendChild(svg);
+  host.appendChild(tableView(["Category", ...years.map(y => "FY" + y + " (" + unit + ")")],
+    data.map(d => [d.key, ...years.map(y => full(d.byYear[y] || 0))]),
+    [false, ...years.map(() => true)]));
+}
+
+/* Column labels that all begin the same way ("Ministerio da Previdencia Social",
+   "Ministerio da Economia") truncate to six identical headers. Drop the shared leading
+   words so the distinguishing part is what survives; the full name stays in the tooltip. */
+function dropCommonPrefix(labels) {
+  if (labels.length < 2) return labels.slice();
+  const words = labels.map(l => l.split(/\s+/));
+  let n = 0;
+  while (n < Math.min(...words.map(w => w.length)) - 1) {
+    const w = words[0][n].toLowerCase();
+    if (!words.every(x => x[n].toLowerCase() === w)) break;
+    n++;
+  }
+  if (n === 0) return labels.slice();
+  // The shared run usually ends mid-phrase ("Ministerio" | "da Economia"), so a leading
+  // preposition is left stranded on every label. Drop it.
+  const STOP = /^(da|de|do|das|dos|of|the|for|d')\s+/i;
+  return words.map(w => w.slice(n).join(" ").replace(STOP, ""));
+}
+
+/* Heatmap: magnitude across two categoricals -> ONE hue, light to dark. */
+function heatmap(host, rowKeys, colKeys, get, unit) {
+  if (!rowKeys.length || !colKeys.length) {
+    host.innerHTML = '<p class="empty">No rows match these filters.</p>'; return; }
+  const steps = ["var(--seq-1)", "var(--seq-2)", "var(--seq-3)", "var(--seq-4)", "var(--seq-5)"];
+  const vals = [];
+  rowKeys.forEach(r => colKeys.forEach(c => { const v = get(r, c); if (v > 0) vals.push(v); }));
+  const max = Math.max(...vals, 1);
+  const cw = 108, ch = 30, padL = 230, top = 26;
+  const W = padL + colKeys.length * cw + 12, H = top + rowKeys.length * ch + 8;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+
+  const colLabels = dropCommonPrefix(colKeys);
+  colKeys.forEach((c, j) => {
+    const t = el("text", { x: padL + j * cw + cw / 2, y: 16, "text-anchor": "middle",
+                           class: "lbl" });
+    const lab = colLabels[j];
+    t.textContent = lab.length > 15 ? lab.slice(0, 14) + "…" : lab;
+    const ttl = el("title"); ttl.textContent = c; t.appendChild(ttl);
+    svg.appendChild(t);
+  });
+  rowKeys.forEach((r, i) => {
+    const y = top + i * ch;
+    const t = el("text", { x: padL - 10, y: y + 19, "text-anchor": "end", class: "lbl" });
+    t.textContent = r.length > 36 ? r.slice(0, 35) + "…" : r;
+    svg.appendChild(t);
+    colKeys.forEach((c, j) => {
+      const v = get(r, c);
+      const idx = v <= 0 ? -1 : Math.min(steps.length - 1,
+        Math.floor(Math.sqrt(v / max) * steps.length));
+      const g = el("g", { class: "mark", tabindex: "0" });
+      g.appendChild(el("rect", { x: padL + j * cw + 1, y: y + 1, width: cw - 3, height: ch - 3,
+        rx: 4, fill: idx < 0 ? "var(--surface-2)" : steps[idx] }));
+      if (v > 0) {
+        const lt = el("text", { x: padL + j * cw + cw / 2, y: y + 19, "text-anchor": "middle",
+          class: "val", fill: idx >= 3 ? "#fff" : "var(--text-primary)" });
+        lt.textContent = fmt(v);
+        g.appendChild(lt);
+      }
+      const rows_ = [{ value: v > 0 ? full(v) + " " + unit : "no financing" }];
+      g.addEventListener("pointermove", (e) => showTip(e, rows_, r + "  ·  " + c));
+      g.addEventListener("pointerleave", hideTip);
+      g.addEventListener("blur", hideTip);
+      svg.appendChild(g);
+    });
+  });
+  const scale = document.createElement("div");
+  scale.className = "legend";
+  const lo = document.createElement("span"); lo.textContent = "low";
+  scale.appendChild(lo);
+  steps.forEach(s => { const i2 = document.createElement("i");
+    i2.className = "sq"; i2.style.background = s; scale.appendChild(i2); });
+  const hi = document.createElement("span"); hi.textContent = "high";
+  scale.appendChild(hi);
+  host.textContent = "";
+  host.appendChild(scale);
+  const sc = document.createElement("div"); sc.style.overflowX = "auto";
+  sc.appendChild(svg); host.appendChild(sc);
+  host.appendChild(tableView(["Row", ...colKeys],
+    rowKeys.map(r => [r, ...colKeys.map(c => { const v = get(r, c); return v ? full(v) : "—"; })]),
+    [false, ...colKeys.map(() => true)]));
+}
+
+function tableView(cols, rows, numeric) {
+  const d = document.createElement("details");
+  d.className = "tv";
+  const s = document.createElement("summary");
+  s.textContent = "Table view (" + rows.length + " rows)";
+  d.appendChild(s);
+  const wrap = document.createElement("div"); wrap.className = "scroll";
+  const t = document.createElement("table");
+  const thead = document.createElement("thead"), tr = document.createElement("tr");
+  cols.forEach((c, i) => { const th = document.createElement("th");
+    if (numeric && numeric[i]) th.className = "n";
+    th.textContent = c; tr.appendChild(th); });
+  thead.appendChild(tr); t.appendChild(thead);
+  const tb = document.createElement("tbody");
+  rows.forEach(r => { const trr = document.createElement("tr");
+    r.forEach((v, i) => { const td = document.createElement("td");
+      if (numeric && numeric[i]) td.className = "n";
+      td.textContent = v; trr.appendChild(td); });
+    tb.appendChild(trr); });
+  t.appendChild(tb); wrap.appendChild(t); d.appendChild(wrap);
+  return d;
+}
+
+// --------------------------------------------------------------------- render
+function render() {
+  const edges = filtered();
+  const years = state.year === "all" ? DATA.years : [state.year];
+  const money = moneyByYear(edges);
+  const matched = years.reduce((s, y) => s + (money[y] || 0), 0);
+  const national = years.reduce((s, y) => s + (DATA.national[y] || 0), 0);
+  const strategies = new Set(edges.map(e => e.s)).size;
+  const programmes = new Set(edges.map(e => e.p)).size;
+
+  $("#count").textContent = edges.length + " edge(s) · " + strategies + " strateg" +
+    (strategies === 1 ? "y" : "ies") + " · " + programmes + " programme(s)";
+
+  // ---- tiles
+  const tiles = [
+    ["Financing mapped", fmt(matched), CUR],
+    ["Share of national budget", national ? pct(matched / national) : "—",
+      national ? "of " + fmt(national) + " " + CUR : "national total unavailable"],
+    ["Strategies", String(strategies), DATA.n_unfunded + " unfunded in full panel"],
+    ["Budget programmes", String(programmes), "distinct, counted once per year"],
+  ];
+  const th = $("#tiles"); th.textContent = "";
+  tiles.forEach(([k, v, u]) => {
+    const d = document.createElement("div"); d.className = "tile";
+    const kk = document.createElement("div"); kk.className = "k"; kk.textContent = k;
+    const vv = document.createElement("div"); vv.className = "v"; vv.textContent = v;
+    const uu = document.createElement("div"); uu.className = "u"; uu.textContent = u;
+    d.append(kk, vv, uu); th.appendChild(d);
+  });
+
+  // ---- cards
+  const grid = $("#grid"); grid.textContent = "";
+  const byRisk = exposure(edges, e => e.rk);
+  const bySector = exposure(edges, e => [e.sec]);
+
+  const c1 = card("risk", "Financing by risk addressed",
+    "Portfolio exposure: each risk sums the distinct programmes tagged with it. Risks "
+    + "overlap, so these do not add up to the total. The scale is linear and unclipped, so "
+    + "one very large programme flattens the rest; hover any bar for its share.");
+  grid.appendChild(c1.card);
+  if (years.length > 1) {
+    groupedBars(c1.body, byRisk.map(r => ({ key: r.key, byYear: r.byYear,
+      count: r.progs.size })), years, { unit: CUR });
+  } else {
+    rankedBars(c1.body, byRisk.map(r => ({ key: r.key, value: r.total,
+      count: r.progs.size })), { unit: CUR, total: matched });
+  }
+
+  const c2 = card("sector", "Financing by sector", "One measure, ranked. Top 12 shown.");
+  grid.appendChild(c2.card);
+  rankedBars(c2.body, bySector.map(r => ({ key: r.key || "(not stated)", value: r.total,
+    count: r.progs.size })), { unit: CUR, total: matched });
+
+  const byHdi = exposure(edges, e => [e.hdi]);
+  if (byHdi.length && byHdi.some(h => h.key)) {
+    const cH = card("hdi", "Financing by human development category",
+      "Portfolio exposure by HDI category, on the same counting rule as the risk chart.");
+    grid.appendChild(cH.card);
+    rankedBars(cH.body, byHdi.filter(h => h.key).map(r => ({ key: r.key, value: r.total,
+      count: r.progs.size })), { unit: CUR, total: matched });
+  }
+
+  const c3 = card("heat", "Risk by sector", "Financing where a risk and a sector meet.");
+  grid.appendChild(c3.card);
+  const topSectors = bySector.slice(0, 6).map(s => s.key || "(not stated)");
+  const topRisks = byRisk.slice(0, 11).map(r => r.key);
+  const cell = new Map();
+  {
+    const seen = new Set();
+    for (const e of edges) {
+      const sec = e.sec || "(not stated)";
+      if (topSectors.indexOf(sec) === -1) continue;
+      for (const rk of e.rk) {
+        const k = rk + "|" + sec;
+        const dedupe = k + "|" + e.p + "|" + e.y;
+        if (seen.has(dedupe)) continue;
+        seen.add(dedupe);
+        cell.set(k, (cell.get(k) || 0) + e.a);
+      }
+    }
+  }
+  heatmap(c3.body, topRisks, topSectors, (r, c) => cell.get(r + "|" + c) || 0, CUR);
+
+  // ---- strategy table
+  const c4 = card("table", "Strategies", "Every strategy in the current filter, with the "
+    + "programmes funding it. Financing counts each programme once per year.");
+  grid.appendChild(c4.card);
+  const byStrategy = new Map();
+  {
+    const seen = new Set();
+    for (const e of edges) {
+      const cur = byStrategy.get(e.s) ||
+        { total: 0, byYear: {}, progs: new Set(), risks: new Set(), sec: e.sec };
+      const k = e.s + "|" + e.p + "|" + e.y;
+      if (!seen.has(k)) {
+        seen.add(k);
+        cur.total += e.a;
+        cur.byYear[e.y] = (cur.byYear[e.y] || 0) + e.a;
+      }
+      cur.progs.add(e.p);
+      e.rk.forEach(r => cur.risks.add(r));
+      byStrategy.set(e.s, cur);
+    }
+  }
+  const srows = [...byStrategy.entries()].sort((a, b) => b[1].total - a[1].total)
+    .map(([s, v]) => [s, v.sec || "—", [...v.risks].join(", ") || "—",
+      String(v.progs.size), ...years.map(y => full(v.byYear[y] || 0))]);
+  const tv = tableView(["Strategy", "Sector", "Risks", "Programmes",
+    ...years.map(y => "FY" + y + " (" + CUR + ")")], srows,
+    [false, false, false, true, ...years.map(() => true)]);
+  tv.open = true;
+  c4.body.appendChild(tv);
+}
+
+// ---------------------------------------------------------------------- wire
+(function init() {
+  const risks = [...new Set(DATA.edges.flatMap(e => e.rk))].sort();
+  const sectors = [...new Set(DATA.edges.map(e => e.sec).filter(Boolean))].sort();
+  const sals = [...new Set(DATA.edges.map(e => e.sal).filter(Boolean))].sort();
+  options($("#f-year"), DATA.years, "All years");
+  options($("#f-risk"), risks, "All risks");
+  options($("#f-sector"), sectors, "All sectors");
+  options($("#f-sal"), sals, "Any salience");
+  if (!sals.length) $("#f-sal").parentElement.style.display = "none";
+
+  const bind = (id, key) => $(id).addEventListener("input", (e) => {
+    state[key] = e.target.value; render(); });
+  bind("#f-year", "year"); bind("#f-risk", "risk");
+  bind("#f-sector", "sector"); bind("#f-sal", "sal"); bind("#f-q", "q");
+  $("#reset").addEventListener("click", () => {
+    Object.assign(state, { year: "all", risk: "all", sector: "all", sal: "all", q: "" });
+    ["#f-year", "#f-risk", "#f-sector", "#f-sal"].forEach(s => { $(s).value = "all"; });
+    $("#f-q").value = ""; render();
+  });
+  $("#theme").addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const dark = cur ? cur === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+  render();
+})();
+</script>
+</body>
+</html>
