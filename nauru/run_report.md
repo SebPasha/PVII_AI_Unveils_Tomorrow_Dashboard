@@ -1,19 +1,19 @@
 # Run report - Nauru
 
 **🔴 Overall: REVIEW NEEDED**  
-Generated 2026-08-26 01:17 by run_pipeline.py
+Generated 2026-08-26 14:29 by run_pipeline.py
 
 | Stage | Ran | Key QA |
 |---|---|---|
 | validate_stage_schema (L2) | ok | PASS 3/3 |
 | validate_source_fidelity (L4) | ok | NOT CONFIGURED |
 | validate_recall (L4) | ok | NOT CONFIGURED [advisory] |
-| validate_refs (L3) | ok | INPUT MISSING (1/1 not on this machine) |
+| validate_refs (L3) | ok | PASS 1/1 |
 | combine_budget_years | ok | reconcile=FAIL - see MISMATCH rows | data_quality=REVIEW NEEDED - resolve HIGH items before relying on totals for those strategy-years |
-| build_final_panel | FAILED | QA FAIL - ceiling=? | unmatched_codes=? |
-| build_analytics_html | FAILED | QA FAIL - SKIPPED |
-| audit_checks | FAILED | SKIPPED [advisory] |
-| data_issues | FAILED | SKIPPED [advisory] |
+| build_final_panel | ok | ceiling=PASS - no strategy over-counted in any year | unmatched_codes=0 |
+| build_analytics_html | ok | dashboard built, no summary printed |
+| audit_checks | ok | 11/11 PASS [advisory] |
+| data_issues | FAILED | 4 detected across 1 country(ies): 2 high, 2 medium, 0 low [advisory] |
 
 ## Outputs
 
@@ -56,7 +56,8 @@ no inputs configured for this check
 ### validate_refs (L3)
 ```
 --- nauru references
-SKIPPED: input not on this machine: Files/outputs/nauru/budget_layer_all_years.xlsx
+RESULT: PASS - every one of 60 reference(s) resolves
+report -> Files/outputs/nauru/validation/refs_nauru_references.xlsx
 ```
 
 ### combine_budget_years
@@ -150,21 +151,61 @@ DATA QUALITY: REVIEW NEEDED - resolve HIGH items before relying on totals for th
 
 ### build_final_panel
 ```
-ERROR: no mapping rows. Checked --mapping-dir '/Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/llm/nauru/mappings' and --mapping None.
-       Run Prompt 6 (and optionally 6b) before assembling the panel.
+PLAN ONLY: the budget layer carries 50 strategy total(s) and no programme line, so the mapping stage had nothing to match. The panel carries the plan's 17 strategies with no money against them, which is what the documents held for this country support.
+
+Wrote /Users/sebastianpasha/Developer/Environment_UNDP/PV2/Files/outputs/nauru/FINAL_PANEL.xlsx
+  panel               : 17 strategies x 0 years ()
+  match_review        : 0 matches (BOTH names + rationale)
+  unmatched_codes     : 0 (codes NOT in that year's budget - REVIEW)
+  unfunded_strategies : 17 (strategies with no budget any year)
+  funding_by_program  : 0 (per programme x year, amount once - SAFE TO SUM)
+  unmapped_programs   : 0 budget programmes with no matched strategy
+  risk_panel          : 5 risks | ceiling: PASS
+  enrichment          : strategyclean=yes risk_summary=yes
+  maturity            : mean=0.271 | financing-weighted=0.0 | {'planned': 8, 'aspirational': 9}
+  basket/reverse-pass : 0 shared programmes | reverse-pass edges=none (run Prompt 6b + --coverage)
+  recall_review       : 0 large programmes matched to only 1 strategy (candidate baskets)
+MATURITY: mean=0.271 financing_weighted=0.0
+CEILING TEST: PASS - no strategy over-counted in any year
+UNMATCHED CODES: 0
+QA: PASS - 0 unmatched code(s), ceiling PASS, 0 year warning(s)
 ```
 
 ### build_analytics_html
 ```
-SKIPPED (panel not produced)
+PLAN ONLY: no programme line in this country's budget layer, so there is no money for this page to show. The plan's strategies are in FINAL_PANEL.xlsx and on the union dashboard, each with no funding against it.
 ```
 
 ### audit_checks
 ```
-SKIPPED (panel not produced)
+AUDIT CHECKS: nauru 11/11 PASS
+  ok   A1   Stored programme sums              50 strategy-year(s) / 0 disagree
+  ok   A2   Stored strategy totals             50 strategy-year(s) / 0 disagree
+  --   A3   Programme counted once             sheet absent
+  --   A4   Ceiling holds                      sheet absent
+  --   A6   Panel money matches its edges      sheets absent
+  --   A8   Edges cite real programmes         sheets absent
+  ok   A9   No strategy dropped                17 strategyclean row(s) / 17 panel row(s)
+  ok   A10  Unfunded list is complete          17 zero-funded / 17 listed
+  ok   A11  Evidence chain resolves            45 distinct id(s) / 0 dangle
+  ok   A12  Maturity summary is derivable      8 metric(s) / 0 disagree
+  --   A14  No duplicate edges                 sheet absent
+  ok   A15  One currency                       1 expected / 1 found
+  ok   A16  Components are traceable           80 component(s) / 0 untraceable
+  ok   A17  No workbook open in Excel          0 expected / 0 found
+  ok   A18  Strategies come from the plan      17 strategy(ies) / 0 with no component
+  --   A19  Funding priority is reproducible   no panel rows or no budget columns
+  --   A20  The budget is readable             no programme rows
+  --   A21  Ambiguous codes name their head    no budget rows or no accepted edges
+  ok   A22  Every intervention is traceable to a strategy 45 intervention(s) extracted / 0 uncited (0.0%)
+  --   A23  The sector layer stayed out of the panel no sector run for this country
 ```
 
 ### data_issues
 ```
-SKIPPED (panel not produced)
+data issues  Files/outputs/DATA_ISSUES.xlsx
+  4 detected across 1 country(ies): 2 high, 2 medium, 0 low
+  70 hand-written entr(ies) in 04_Docs_and_Planning/data_issues.json
+  HIGH  nauru     D7       Flag raised while combining the budget years
+  HIGH  nauru     D8       A strategy total its own programmes do not add up to
 ```
