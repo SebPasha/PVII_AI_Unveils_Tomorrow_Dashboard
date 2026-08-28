@@ -3,95 +3,33 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Unveils Tomorrow</title>
 <style>
-:root{--surface-1:#fcfcfb;--surface-2:#f4f3f0;--surface-3:#fff;--text-primary:#0b0b0b;
- --text-secondary:#52514e;--text-muted:#77766f;--line:#e3e2dd;--good:#0ca30c;--warn:#fab219;
- --bad:#d03b3b;--accent:#2a78d6}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface-1:#1a1a19;
- --surface-2:#232322;--surface-3:#2b2b29;--text-primary:#fff;--text-secondary:#c3c2b7;
- --text-muted:#96958c;--line:#383835;--accent:#3987e5}}
-:root[data-theme="dark"]{--surface-1:#1a1a19;--surface-2:#232322;--surface-3:#2b2b29;
- --text-primary:#fff;--text-secondary:#c3c2b7;--text-muted:#96958c;--line:#383835;--accent:#3987e5}
+:root{color-scheme:light dark;--bg:#faf9f5;--surface:#fff;--sunk:#f4f3ee;--text:#26251f;
+ --text2:#52514e;--muted:#77766f;--line:#e3e2dd;--accent:#2a78d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191813;
+ --surface:#211f1a;--sunk:#1c1b16;--text:#f2f1ea;--text2:#c9c7bd;--muted:#8f8e86;
+ --line:#33322c;--accent:#4e93e6}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--surface-1);color:var(--text-primary);
- font:14.5px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:1120px;margin:0 auto;padding:34px 20px 80px}
-h1{font-size:25px;margin:0 0 4px;letter-spacing:-.01em}
-h2{font-size:15px;margin:0 0 12px;font-weight:600}
-.sub{color:var(--text-secondary);margin:0 0 26px;font-size:13.5px;max-width:80ch}
-section{margin:0 0 26px;padding:18px;background:var(--surface-2);border:1px solid var(--line);
- border-radius:10px}
-.hero{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 26px}
-.heroCard{flex:1;min-width:250px;background:var(--surface-2);border:1px solid var(--line);
- border-radius:10px;padding:16px}
-.heroCard h3{margin:0 0 4px;font-size:14px}
-.heroCard p{margin:0 0 10px;color:var(--text-secondary);font-size:12.5px}
-.heroCard a{display:inline-block;color:var(--accent);font-size:13px}
-table{border-collapse:collapse;width:100%;font-size:13px}
-th,td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-thead th{font-size:11.5px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;
- letter-spacing:.03em}
-.r{text-align:right;font-variant-numeric:tabular-nums}
-.slug{color:var(--text-muted);font-size:11.5px}
-.ok{color:var(--good);font-weight:600}.warn{color:var(--warn);font-weight:600}
-.fail{color:var(--bad);font-weight:600}.muted{color:var(--text-muted)}
-td a{color:var(--accent);margin-right:10px}
-.missing{color:var(--text-muted);margin-right:10px;text-decoration:line-through;cursor:help}
-.stale{color:var(--bad);font-size:11px;border:1px solid var(--bad);border-radius:9px;
- padding:0 6px}
-.pill{display:inline-block;padding:1px 8px;border-radius:11px;border:1px solid var(--line);
- font-size:11.5px;color:var(--text-secondary)}
-.note{color:var(--text-muted);font-size:12.5px;margin:12px 0 0;max-width:80ch}
-footer{color:var(--text-muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px;
- margin-top:26px}
+body{margin:0;background:var(--bg);color:var(--text);
+ font:16px/1.6 ui-serif,Georgia,"Times New Roman",serif}
+.wrap{max-width:820px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:26px;margin:0 0 6px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 32px}
+a.card{display:block;background:var(--surface);border:1px solid var(--line);
+ border-radius:12px;padding:18px 20px;margin:0 0 12px;text-decoration:none;color:inherit}
+a.card:hover{border-color:var(--accent)}
+a.card h2{font-size:17px;margin:0 0 4px;color:var(--accent)}
+a.card p{margin:0;font-size:14px;color:var(--text2)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;
+ margin:0 0 30px}
+.fact{background:var(--sunk);border-radius:10px;padding:11px 14px}
+.fact .n{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+.fact .l{font-size:12px;color:var(--muted);line-height:1.35}
+footer{color:var(--muted);font-size:12.5px;margin-top:34px;border-top:1px solid var(--line);
+ padding-top:14px}
 </style></head><body><div class="wrap">
 <h1>AI Unveils Tomorrow</h1>
-<p class="sub"><a href="index.html">Back to the dashboard</a></p>
-<p class="sub">22 of 24 configured countries have been through the pipeline.
-Generated 2026-08-26 19:44.</p>
-
-<div class="hero">
-  <div class="heroCard"><h3>Cross-country dashboard</h3>
-    <p>The deliverable. Every published country together, comparable on shares and counts.</p>
-    <a href="union_dashboard.html">Open &rarr;</a>
-    <a href="UNION_PANEL.xlsx">Workbook</a></div>
-  <div class="heroCard"><h3>Audit trail</h3>
-    <p>For testing the data: every match rationale, the arithmetic behind every figure, and
-    the plan text each strategy stands on. Filter it to one country with the chips.</p>
-    <a href="union_dashboard.html#audit">Open &rarr;</a></div>
-  <div class="heroCard"><h3>Sector strategies</h3>
-    <p>What the sector strategies carry that the national plan does not, which parts of the
-    plan have a sector strategy behind them, and which risks nobody addresses.</p>
-    <a href="union_dashboard.html#sector">Open &rarr;</a>
-    <a href="SECTOR_GAP.xlsx">Workbook</a></div>
-</div>
-
-<section><h2>Review</h2>
-<p class="note">The two judgements a machine cannot make. Both are keyboard-driven, one card
-at a time, and both save to your browser as you go and export a CSV when you are done.</p>
-<div class="hero">
-  <div class="heroCard"><h3>Precision review</h3>
-    <p>Which plan strategy, if any, does this budget line fund? The sampled edges, grouped by
-    budget line, with the head each programme sits under and its share of it. Answers give the
-    precision figure that no automatic check can produce.</p>
-    <a href="precision_review.html">Open &rarr;</a></div>
-  <div class="heroCard"><h3>Strategy grouping</h3>
-    <p>Are these two the same strategy? Clusters of near-duplicate strategy names. The
-    strategy count is the denominator of every share-mapped figure, so folding two into one
-    moves numbers a reader sees.</p>
-    <a href="strategy_review.html">Open &rarr;</a></div>
-</div>
-</section>
-
-<section><h2>Countries</h2>
-<table><thead><tr><th>Country</th><th>Verdict</th><th class="r">Strategies</th>
-<th class="r">Unfunded</th><th class="r">Budget mapped</th><th>Years</th><th>Currency</th>
-<th>Audit checks</th><th>Artefacts</th></tr></thead>
-<tbody><tr><td><strong>_intern_review</strong><div class="slug">_intern_review</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country _intern_review">dashboard</span></td></tr><tr><td><strong>_regions</strong><div class="slug">_regions</div></td><td class="muted">NOT READY</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="muted">-</td><td><span class="missing" title="not built - run run_pipeline.py --country _regions">dashboard</span></td></tr><tr><td><strong>Afghanistan</strong><div class="slug">afghanistan</div></td><td class="warn">REVIEW NEEDED</td><td class="r">30</td><td class="r">8</td><td class="r">26.1%</td><td class="r">2022</td><td>AFN</td><td class="ok">19/19</td><td><a href="afghanistan/budget_strategy_analytics.html">dashboard</a> <a href="afghanistan/FINAL_PANEL.xlsx">workbook</a> <a href="afghanistan/run_report.md">report</a></td></tr><tr><td><strong>Bangladesh</strong><div class="slug">bangladesh</div></td><td class="warn">REVIEW NEEDED</td><td class="r">438</td><td class="r">438</td><td class="r">0.0%</td><td class="r">-</td><td>-</td><td class="fail">8/11 (A11, A15, A16)</td><td><span class="missing" title="not built - run run_pipeline.py --country bangladesh">dashboard</span> <a href="bangladesh/FINAL_PANEL.xlsx">workbook</a> <a href="bangladesh/run_report.md">report</a></td></tr><tr><td><strong>Bhutan</strong><div class="slug">bhutan</div></td><td class="warn">REVIEW NEEDED</td><td class="r">41</td><td class="r">18</td><td class="r">38.9%</td><td class="r">2024, 2025, 2026</td><td>Nu. million</td><td class="ok">19/19</td><td><a href="bhutan/budget_strategy_analytics.html">dashboard</a> <a href="bhutan/FINAL_PANEL.xlsx">workbook</a> <a href="bhutan/run_report.md">report</a></td></tr><tr><td><strong>Brazil</strong><div class="slug">brazil</div></td><td class="ok">PASS</td><td class="r">127</td><td class="r">37</td><td class="r">31.6%</td><td class="r">2024</td><td>BRL million</td><td class="ok">19/19</td><td><a href="brazil/budget_strategy_analytics.html">dashboard</a> <a href="brazil/FINAL_PANEL.xlsx">workbook</a> <a href="brazil/run_report.md">report</a></td></tr><tr><td><strong>Brunei</strong><div class="slug">brunei</div></td><td class="warn">REVIEW NEEDED</td><td class="r">83</td><td class="r">10</td><td class="r">45.0%</td><td class="r">2021, 2022, 2025, 2026</td><td>BND million</td><td class="fail">18/20 (A11, A16)</td><td><a href="brunei/budget_strategy_analytics.html">dashboard</a> <a href="brunei/FINAL_PANEL.xlsx">workbook</a> <a href="brunei/run_report.md">report</a></td></tr><tr><td><strong>Cambodia</strong><div class="slug">cambodia</div></td><td class="warn">REVIEW NEEDED</td><td class="r">176</td><td class="r">176</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="fail">8/9 (A11)</td><td><span class="missing" title="not built - run run_pipeline.py --country cambodia">dashboard</span> <a href="cambodia/FINAL_PANEL.xlsx">workbook</a> <a href="cambodia/run_report.md">report</a></td></tr><tr><td><strong>China</strong><div class="slug">china</div></td><td class="warn">REVIEW NEEDED</td><td class="r">168</td><td class="r">98</td><td class="r">106.3%</td><td class="r">2026</td><td>yuan</td><td class="ok">19/19</td><td><a href="china/budget_strategy_analytics.html">dashboard</a> <a href="china/FINAL_PANEL.xlsx">workbook</a> <a href="china/run_report.md">report</a></td></tr><tr><td><strong>Fiji</strong><div class="slug">fiji</div></td><td class="warn">REVIEW NEEDED</td><td class="r">220</td><td class="r">2</td><td class="r">44.1%</td><td class="r">2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019</td><td>FJD thousand</td><td class="fail">18/19 (A16)</td><td><a href="fiji/budget_strategy_analytics.html">dashboard</a> <a href="fiji/FINAL_PANEL.xlsx">workbook</a> <a href="fiji/run_report.md">report</a></td></tr><tr><td><strong>Ghana</strong><div class="slug">ghana</div></td><td class="warn">REVIEW NEEDED</td><td class="r">241</td><td class="r">55</td><td class="r">31.3%</td><td class="r">2019, 2024</td><td>GHS million</td><td class="fail">18/19 (A16)</td><td><a href="ghana/budget_strategy_analytics.html">dashboard</a> <a href="ghana/FINAL_PANEL.xlsx">workbook</a> <a href="ghana/run_report.md">report</a></td></tr><tr><td><strong>India</strong><div class="slug">india</div></td><td class="warn">REVIEW NEEDED</td><td class="r">359</td><td class="r">359</td><td class="r">0.0%</td><td class="r">2026</td><td>INR crore</td><td class="ok">14/14</td><td><span class="missing" title="not built - run run_pipeline.py --country india">dashboard</span> <a href="india/FINAL_PANEL.xlsx">workbook</a> <a href="india/run_report.md">report</a></td></tr><tr><td><strong>Indonesia</strong><div class="slug">indonesia</div></td><td class="warn">REVIEW NEEDED</td><td class="r">122</td><td class="r">122</td><td class="r">-</td><td class="r">-</td><td>-</td><td class="ok">9/9</td><td><span class="missing" title="not built - run run_pipeline.py --country indonesia">dashboard</span> <a href="indonesia/FINAL_PANEL.xlsx">workbook</a> <a href="indonesia/run_report.md">report</a></td></tr><tr><td><strong>Jamaica</strong><div class="slug">jamaica</div></td><td class="warn">REVIEW NEEDED</td><td class="r">135</td><td class="r">4</td><td class="r">86.8%</td><td class="r">2019, 2022, 2024</td><td>JMD thousand</td><td class="ok">19/19</td><td><a href="jamaica/budget_strategy_analytics.html">dashboard</a> <a href="jamaica/FINAL_PANEL.xlsx">workbook</a> <a href="jamaica/run_report.md">report</a></td></tr><tr><td><strong>Kenya</strong><div class="slug">kenya</div></td><td class="warn">REVIEW NEEDED</td><td class="r">281</td><td class="r">42</td><td class="r">49.4%</td><td class="r">2020, 2025</td><td>KES</td><td class="fail">16/19 (A2, A11, A16)</td><td><a href="kenya/budget_strategy_analytics.html">dashboard</a> <a href="kenya/FINAL_PANEL.xlsx">workbook</a> <a href="kenya/run_report.md">report</a></td></tr><tr><td><strong>Kiribati</strong><div class="slug">kiribati</div></td><td class="warn">REVIEW NEEDED</td><td class="r">56</td><td class="r">11</td><td class="r">62.4%</td><td class="r">2023, 2024, 2025, 2026</td><td>AUD</td><td class="fail">18/19 (A2)</td><td><a href="kiribati/budget_strategy_analytics.html">dashboard</a> <a href="kiribati/FINAL_PANEL.xlsx">workbook</a> <a href="kiribati/run_report.md">report</a></td></tr><tr><td><strong>Malaysia</strong><div class="slug">malaysia</div></td><td class="warn">REVIEW NEEDED</td><td class="r">382</td><td class="r">44</td><td class="r">87.3%</td><td class="r">2022, 2023, 2024, 2025, 2026</td><td>MYR</td><td class="fail">18/20 (A11, A16)</td><td><a href="malaysia/budget_strategy_analytics.html">dashboard</a> <a href="malaysia/FINAL_PANEL.xlsx">workbook</a> <a href="malaysia/run_report.md">report</a></td></tr><tr><td><strong>Maldives</strong><div class="slug">maldives</div></td><td class="warn">REVIEW NEEDED</td><td class="r">261</td><td class="r">153</td><td class="r">6.3%</td><td class="r">2007, 2008, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019</td><td>MVR</td><td class="fail">17/19 (A2, A16)</td><td><a href="maldives/budget_strategy_analytics.html">dashboard</a> <a href="maldives/FINAL_PANEL.xlsx">workbook</a> <a href="maldives/run_report.md">report</a></td></tr><tr><td><strong>Nauru</strong><div class="slug">nauru</div></td><td class="warn">REVIEW NEEDED</td><td class="r">17</td><td class="r">17</td><td class="r">0.0%</td><td class="r">-</td><td>-</td><td class="ok">11/11</td><td><span class="missing" title="not built - run run_pipeline.py --country nauru">dashboard</span> <a href="nauru/FINAL_PANEL.xlsx">workbook</a> <a href="nauru/run_report.md">report</a></td></tr><tr><td><strong>Papua New Guinea</strong><div class="slug">papua_new_guinea</div></td><td class="warn">REVIEW NEEDED</td><td class="r">89</td><td class="r">23</td><td class="r">35.7%</td><td class="r">2014, 2019, 2024</td><td>PGK million</td><td class="fail">18/19 (A4)</td><td><a href="papua_new_guinea/budget_strategy_analytics.html">dashboard</a> <a href="papua_new_guinea/FINAL_PANEL.xlsx">workbook</a> <a href="papua_new_guinea/run_report.md">report</a></td></tr><tr><td><strong>Rwanda</strong><div class="slug">rwanda</div></td><td class="warn">REVIEW NEEDED</td><td class="r">106</td><td class="r">-</td><td class="r">92.7%</td><td class="r">2017, 2020, 2025</td><td>RWF million</td><td class="ok">19/19</td><td><a href="rwanda/budget_strategy_analytics.html">dashboard</a> <a href="rwanda/FINAL_PANEL.xlsx">workbook</a> <a href="rwanda/run_report.md">report</a></td></tr><tr><td><strong>Samoa</strong><div class="slug">samoa</div></td><td class="warn">REVIEW NEEDED</td><td class="r">28</td><td class="r">9</td><td class="r">27.9%</td><td class="r">2023, 2024, 2025</td><td>WST million</td><td class="ok">19/19</td><td><a href="samoa/budget_strategy_analytics.html">dashboard</a> <a href="samoa/FINAL_PANEL.xlsx">workbook</a> <a href="samoa/run_report.md">report</a></td></tr><tr><td><strong>Sri Lanka</strong><div class="slug">sri_lanka</div></td><td class="warn">REVIEW NEEDED</td><td class="r">143</td><td class="r">143</td><td class="r">0.0%</td><td class="r">-</td><td>-</td><td class="fail">10/11 (A15)</td><td><span class="missing" title="not built - run run_pipeline.py --country sri_lanka">dashboard</span> <a href="sri_lanka/FINAL_PANEL.xlsx">workbook</a> <a href="sri_lanka/run_report.md">report</a></td></tr><tr><td><strong>Thailand</strong><div class="slug">thailand</div></td><td class="warn">REVIEW NEEDED</td><td class="r">99</td><td class="r">3</td><td class="r">49.7%</td><td class="r">2023, 2024, 2025, 2026</td><td>million baht</td><td class="fail">18/19 (A16)</td><td><a href="thailand/budget_strategy_analytics.html">dashboard</a> <a href="thailand/FINAL_PANEL.xlsx">workbook</a> <a href="thailand/run_report.md">report</a></td></tr></tbody></table>
-<p class="note">Budget mapped is a share, so it compares across countries. Absolute money is
-in each country's own currency and is never summed across them. NOT READY means the
-extraction stages have not produced that country's budget layer yet - it is not a QA failure.</p>
-</section>
-
-<footer>Every artefact linked here is a file on disk under Files/outputs/. A struck-through
-link is one that has not been built; hover it for the command that builds it.</footer>
+<p class="sub">National development plans read against national budgets. Built 2026-08-27.</p>
+<div class="facts"><div class="fact"><div class="n">37</div><div class="l">countries held</div></div><div class="fact"><div class="n">3602</div><div class="l">plan strategies extracted</div></div><div class="fact"><div class="n">10381</div><div class="l">budget programmes matched to a strategy</div></div><div class="fact"><div class="n">47 of 160</div><div class="l">country-years with a figure</div></div><div class="fact"><div class="n">1</div><div class="l">comparable across countries</div></div></div>
+<a class="card" href="union_dashboard.html"><h2>The dashboard</h2><p>Every country, its plan and its budget: coverage by plan cycle, the SDG and HDI frameworks, the money behind each strategy, and the plan paragraphs behind each one. Every figure opens the arithmetic that produced it.</p></a><a class="card" href="precision_review.html"><h2>Mapping review</h2><p>One budget line at a time, its candidate plan strategies on the left and the line in its place in the budget on the right. This is the exercise behind the precision figure.</p></a><a class="card" href="recall_review.html"><h2>Recall review</h2><p>Sampled budget lines including the ones the model matched to nothing. A link a person finds that the model did not is a measured miss, which is the figure no model-side bound can give.</p></a><a class="card" href="SECTOR_GAP.xlsx"><h2>Sector strategy gaps</h2><p>Where a national plan is silent on a risk, whether a sector strategy takes it up. Carries no money and is never compared across countries.</p></a><a class="card" href="DATA_ISSUES.xlsx"><h2>The issue register</h2><p>Every known defect, what happened, why, the fix and its status.</p></a>
+<footer>Cross-country comparisons are shares and counts; money keeps its own currency per country and is never added across countries. A share is comparable only where the denominator is the total the budget document itself prints and the extraction accounts for 90% to 105% of it, which is true of Rwanda so far.</footer>
 </div></body></html>
