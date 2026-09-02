@@ -86,6 +86,7 @@ textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent
 <p class="sub">Which risks does this strategy address? The model&#x27;s mapping is pre-ticked; adjust it, or save it unchanged to confirm. 3608 strategies across 23 countries. Marks save in this browser as you go; put your name in the box below so the judgement has an owner.</p>
 <div class="bar"><i id="bar"></i></div>
 <div class="counts" id="counts"></div>
+<div class="seeded" id="namegate" style="display:none;margin:0 0 8px">Your name goes in the box at the bottom before the first mark: every judgement here has an owner.</div>
 <div class="card" id="card"></div>
 <div class="nav">
   <span><button id="prev">Back<kbd>&larr;</kbd></button>
@@ -99,7 +100,7 @@ textarea:focus{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent
   <span class="mark" id="sync"></span>
   <span><input class="namebox" id="who" placeholder="your name" title="Saved with every
 mark and comment, so a judgement has an owner.">
-        <button id="save">Save risk_review.csv</button>
+        <button id="save" title="A copy for yourself; nothing depends on it once marks save to Supabase.">Save risk_review.csv</button>
         <button id="reset">Clear all</button></span>
 </div></div>
 <script>
@@ -271,7 +272,18 @@ function tally(){
   $("#save").disabled = all===0 && !cmts;
 }
 
+// A mark without an owner is not taken. The name box is the first thing a reviewer meets,
+// kept in this browser after the first visit, and marking, toggling and the number keys all
+// stop at the same gate rather than each remembering to check.
+function named(){
+  if((WHO.value||"").trim()) return true;
+  setSync("your name first: nothing is marked without an owner");
+  const nb = $("#namegate"); if(nb) nb.style.display = "block";
+  if(typeof WHO.focus === "function") WHO.focus();
+  return false;
+}
 function toggle(optId){
+  if(!named()) return;
   const id = idOf(ROWS[i]), g = get(id), t = $("#cmt");
   const sel = new Set(g.sel||[]);
   sel.has(optId) ? sel.delete(optId) : sel.add(optId);
@@ -280,6 +292,7 @@ function toggle(optId){
 }
 
 function mark(v){
+  if(!named()) return;
   const id = idOf(ROWS[i]), g = get(id), t = $("#cmt");
   const opts = ROWS[i][SPEC.optionsField||"__none__"] || [];
   let sel = g.sel || [];
@@ -313,10 +326,15 @@ document.addEventListener("keydown", e=>{
 
 const WHO = $("#who");
 try { WHO.value = localStorage.getItem(KEY+".by") || ""; } catch(e){}
-WHO.oninput = ()=>{ try{ localStorage.setItem(KEY+".by", WHO.value); }catch(e){} queueSync(); };
-setSync(SYNC ? ((WHO.value||"").trim() ? "saves to Supabase as you mark"
-                                       : "name yourself to save to Supabase")
+setSync(!(WHO.value||"").trim() ? "your name first: nothing is marked without an owner"
+      : SYNC ? "every mark saves to Supabase on its own; Save only downloads a copy"
              : "saves in this browser; use Save to export");
+WHO.oninput = ()=>{ try{ localStorage.setItem(KEY+".by", WHO.value); }catch(e){}
+  const nb = $("#namegate"); if(nb && (WHO.value||"").trim()) nb.style.display = "none";
+  setSync((WHO.value||"").trim() ? (SYNC ? "every mark saves to Supabase on its own; Save only downloads a copy"
+                                         : "saves in this browser; use Save to export")
+                                 : "your name first: nothing is marked without an owner");
+  queueSync(); };
 
 // The CSV as a string: one row per unit, the same shape the Save button downloads, so what
 // syncs and what a reviewer exports can never be two different files.
@@ -355,7 +373,7 @@ function csvText(){
 function syncNow(){
   if(!SYNC) return;
   const who = (WHO.value||"").trim();
-  if(!who){ setSync("name yourself to save to Supabase"); return; }
+  if(!who){ setSync("your name first: nothing saves without an owner"); return; }
   const name = who.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "unnamed";
   const key = SYNC.prefix+"/live/"+SPEC.storeKey+"/"+name+".csv";
   setSync("saving…");
