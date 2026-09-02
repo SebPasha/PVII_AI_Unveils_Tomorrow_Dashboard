@@ -108,6 +108,7 @@ const KEY = SPEC.storeKey;
 let store = {};
 try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { store = {}; }
 let i = 0;
+let syncTimer = null, syncState = "";   // declared before the first setSync() call below
 const $ = s => document.querySelector(s);
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
   ">":"&gt;",'"':"&quot;"}[c]));
@@ -351,7 +352,6 @@ function csvText(){
 
    SYNC is null unless the build had a PUBLISHABLE key, so a page with no key configured
    behaves exactly as before: browser storage, and the Save button's download. */
-let syncTimer = null, syncState = "";
 function syncNow(){
   if(!SYNC) return;
   const who = (WHO.value||"").trim();
